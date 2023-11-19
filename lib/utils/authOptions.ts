@@ -2,6 +2,7 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import AzureADB2CProvider from 'next-auth/providers/azure-ad-b2c';
 import { AzureB2CProfile } from 'next-auth/providers/azure-ad-b2c';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 if (
   !process.env.AZURE_AD_B2C_TENANT_NAME ||
@@ -27,13 +28,14 @@ export const authOptions: NextAuthOptions = {
         },
       },
       checks: ['pkce'],
-      idToken: true,
+
       profile(profile: AzureB2CProfile) {
-        // console.log('THE PROFILE', profile);
+        console.log('THE PROFILE', profile);
         return {
           ...profile,
           id: profile.oid.toString(),
           email: profile.emails[0].toString(),
+          extension_PhoneNumber: profile.extension_PhoneNumber ?? '123456789',
           /*  role: profile.extension_Role ?? 'user',*/
         };
       },
@@ -63,7 +65,7 @@ export const authOptions: NextAuthOptions = {
           id: '42',
           name: 'Dave',
           password: 'nextauth',
-          role: 'manager',
+          extension_PhoneNumber: '123456789',
         };
 
         if (
@@ -77,19 +79,30 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  pages: {},
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account, profile, email, credentials }) {
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
+    async jwt({ token, user, account }) {
       // IMPORTANT: Persist the access_token to the token right after sign in
       if (user) {
         token.idToken = user.id;
         token.email = user.email;
+        token.extension_PhoneNumber = user.extension_PhoneNumber;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       if (session?.user) {
         session.user.id = token.sub;
         session.user.email = token.email;
+        session.user.extension_PhoneNumber = token.extension_PhoneNumber;
       }
       return session;
     },

@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import React from 'react';
-import { Autocomplete, AutocompleteItem } from '@nextui-org/react'; 
+import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 
 interface CustomAutocompleteProps {
   label: string;
@@ -9,9 +9,18 @@ interface CustomAutocompleteProps {
   data: { value: string; label: string }[];
 }
 
-const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({ label, labelPlacement, placeholder, data }) => (
+const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
+  label,
+  labelPlacement,
+  placeholder,
+  data,
+}) => (
   <div className="mb-4">
-    <Autocomplete label={label} labelPlacement={labelPlacement} placeholder={placeholder}>
+    <Autocomplete
+      label={label}
+      labelPlacement={labelPlacement}
+      placeholder={placeholder}
+    >
       {data.map((item) => (
         <AutocompleteItem key={item.value} value={item.value}>
           {item.label}
@@ -21,4 +30,4 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({ label, labelPla
   </div>
 );
 
-export { CustomAutocomplete};
+export { CustomAutocomplete };

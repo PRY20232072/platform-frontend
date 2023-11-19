@@ -12,6 +12,7 @@ import {
   Button,
 } from '@nextui-org/react';
 import { allergyTableColumns, patientAllergies } from '@/data/data';
+import { useParams, useRouter } from 'next/navigation';
 
 const statusColorMap: Record<string, ChipProps['color']> = {
   resolve: 'success',
@@ -26,6 +27,8 @@ interface AllergyTableProps {
 }
 
 const AllergyTable: React.FC<AllergyTableProps> = ({ items, columns }) => {
+  const router = useRouter();
+   
   const renderCell = React.useCallback(
     (allergy: Allergy, columnKey: React.Key) => {
       const cellValue = allergy[columnKey as keyof Allergy];
@@ -50,6 +53,7 @@ const AllergyTable: React.FC<AllergyTableProps> = ({ items, columns }) => {
                 radius="sm"
                 size="sm"
                 variant={'solid'}
+                onClick={() => router.push(`allergy-intolerance/undefined`)}
               >
                 See more
               </Button>
@@ -67,6 +71,7 @@ const AllergyTable: React.FC<AllergyTableProps> = ({ items, columns }) => {
       <TableHeader columns={columns}>
         {(column) => (
           <TableColumn
+            className="text-bold"
             key={column.uid}
             align={column.uid === 'actions' ? 'center' : 'start'}
             allowsSorting={column.sortable}

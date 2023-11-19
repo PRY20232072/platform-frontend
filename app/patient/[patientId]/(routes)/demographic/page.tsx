@@ -47,6 +47,7 @@ export default async function DemographicPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="mb-4">
               <Input
+                isReadOnly
                 type="text"
                 label="Full name"
                 labelPlacement="outside"
@@ -62,6 +63,7 @@ export default async function DemographicPage() {
 
             <div className="mb-4">
               <Input
+                isReadOnly
                 type="date"
                 label="Birthdate"
                 labelPlacement="outside"
@@ -77,6 +79,7 @@ export default async function DemographicPage() {
 
             <div className=" flex-col items-start gap-[5px] relative !flex-1 !flex !grow">
               <Input
+                isReadOnly
                 type="tel"
                 label="Phone number"
                 labelPlacement="outside"
@@ -99,6 +102,7 @@ export default async function DemographicPage() {
 
             <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
               <Input
+                isReadOnly
                 type="text"
                 label="Address line"
                 labelPlacement="outside"
@@ -107,6 +111,7 @@ export default async function DemographicPage() {
             </div>
             <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
               <Input
+                isReadOnly
                 type="text"
                 label="District"
                 labelPlacement="outside"
@@ -115,6 +120,7 @@ export default async function DemographicPage() {
             </div>
             <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
               <Input
+                isReadOnly
                 type="text"
                 label="City"
                 labelPlacement="outside"
@@ -123,6 +129,7 @@ export default async function DemographicPage() {
             </div>
             <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
               <Input
+                isReadOnly
                 type="text"
                 label="Country"
                 labelPlacement="outside"
@@ -131,6 +138,7 @@ export default async function DemographicPage() {
             </div>
             <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
               <Input
+                isReadOnly
                 type="text"
                 label="Postal code"
                 labelPlacement="outside"

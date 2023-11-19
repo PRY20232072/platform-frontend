@@ -6,7 +6,7 @@ import { allergyTableColumns, patientAllergies } from '@/data/data';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/utils/authOptions';
 
-export default async function AllergyIntolerancePage() {
+export default async function AllergiesPage() {
   const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-col  items-start gap-5 px-4 py-4 md:px-8 lg:px-16 xl:px-20 2xl:px-32">

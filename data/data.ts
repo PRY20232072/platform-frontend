@@ -18,6 +18,27 @@ const addressTypes = [
   { label: 'Both', value: 'Both' },
 ];
 
+const allergyStatus = [
+  { label: 'Active', value: 'active' },
+  { label: 'Innactive', value: 'innactive' },
+  { label: 'Resolve', value: 'resolve' },
+];
+
+const allergyTypes = [
+  { label: 'Dairy', value: 'dairy' },
+  { label: 'Gluten', value: 'gluten' },
+  { label: 'Caffeine', value: 'caffeine' },
+  { label: 'Salicylates', value: 'salicylates' },
+  { label: 'Amines', value: 'amines' },
+  { label: 'Other', value: 'other' },
+];
+const allergyCategories = [
+  { label: 'Food', value: 'food' },
+  { label: 'Medication', value: 'medication' },
+  { label: 'Environment', value: 'environment' },
+  { label: 'Biologic', value: 'biologic' },
+];
+
 const allergyTableColumns = [
   { name: 'DETAIL', uid: 'detail', sortable: true },
   { name: 'TYPE', uid: 'type', sortable: true },
@@ -27,13 +48,74 @@ const allergyTableColumns = [
   { name: 'ACTION', uid: 'actions' },
 ];
 
+const allergyDocTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'FORMAT', uid: 'format_doc', sortable: true },
+  { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const allergyAccessTableColumns = [
+  { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
+  { name: 'ASSIGNED DATE', uid: 'assigned_date', sortable: true },
+  { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const practitionersTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'ID', uid: 'practitioner_id', sortable: true },
+  { name: 'EMAIL', uid: 'email', sortable: true },
+  { name: 'PHONE NUMBER', uid: 'phone_number' },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const practitionerTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'ID', uid: 'practitioner_id', sortable: true },
+  { name: 'EMAIL', uid: 'email', sortable: true },
+  { name: 'PHONE NUMBER', uid: 'phone_number' },
+];
+
+const accessRequestTableColumns = [
+  { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
+  { name: 'REQUEST DATE', uid: 'request_date', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const eventsTableColumns = [
+  { name: 'EVENT DESCRIPTION', uid: 'event_description', sortable: true },
+  { name: 'USER NAME', uid: 'user_name', sortable: true },
+  { name: 'ROLE', uid: 'role', sortable: true },
+  { name: 'EVENT', uid: 'event', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const practitioners = [
+  {
+    id: 1,
+    name: 'Dr. Juan Perez',
+    practitioner_id: '81726354',
+    email: 'juanperez@gmail.com',
+    phone_number: '987654321',
+  },
+  {
+    id: 2,
+    name: 'Dra. Maria Perez',
+    practitioner_id: '81726354',
+    email: 'mariaperez@gmail.com',
+    phone_number: '987654321',
+  },
+];
+
 const patientAllergies = [
   {
     id: 1,
     detail: 'Allergy reaction to peanuts',
     type: 'Food',
     created_by: 'Dr. Juan Perez',
-    created_date: '2023-01-01',
+    created_date: '2023/11/01',
     status: 'active',
   },
   {
@@ -41,7 +123,7 @@ const patientAllergies = [
     detail: 'Allergy reaction to medicine',
     type: 'Medicine',
     created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023-01-01',
+    created_date: '2023/11/01',
     status: 'active',
   },
   {
@@ -49,7 +131,7 @@ const patientAllergies = [
     detail: 'Allergy reaction to cats',
     type: 'Animal',
     created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023-01-01',
+    created_date: '2023/11/01',
     status: 'innactive',
   },
   {
@@ -57,11 +139,90 @@ const patientAllergies = [
     detail: 'Allergy reaction to cats',
     type: 'Animal',
     created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023-01-01',
+    created_date: '2023/11/01',
     status: 'resolve',
   },
 ];
 
+const patientAllergiesDocs = [
+  {
+    id: 1,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+  },
+  {
+    id: 2,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    created_by: 'Dr. Ricardo Montalban',
+    created_date: '2023/11/01',
+  },
+];
+const patientAllergiesAccess = [
+  {
+    id: 1,
+    practitioner_name: 'Dr. Juan Perez',
+    assigned_date: '2023/11/01',
+    expired_date: '2023/11/01',
+  },
+  {
+    id: 2,
+    practitioner_name: 'Dr. Ricardo Montalban',
+    assigned_date: '2023/11/01',
+    expired_date: '2023/11/01',
+  },
+];
 
+const practitionersAccessRequests = [
+  {
+    id: 1,
+    practitioner_name: 'Dr. Juan Perez',
+    request_date: '2023/11/01',
+  },
+  {
+    id: 2,
+    practitioner_name: 'Dr. Ricardo Montalban',
+    request_date: '2023/11/01',
+  },
+];
 
-export { civilStatus, genders, addressTypes, allergyTableColumns,patientAllergies };
+const events = [
+  {
+    id: 1,
+    event_description: 'Patient created',
+    user_name: 'Dr. Juan Perez',
+    role: 'Doctor',
+    event: 'Create Record',
+  },
+  {
+    id: 2,
+    event_description: 'New allergy added',
+    user_name: 'Dr. Juan Perez',
+    role: 'Doctor',
+    event: 'Create Record',
+  },
+];
+
+export {
+  civilStatus,
+  allergyStatus,
+  genders,
+  addressTypes,
+  allergyTypes,
+  allergyCategories,
+  allergyTableColumns,
+  allergyDocTableColumns,
+  allergyAccessTableColumns,
+  practitionersTableColumns,
+  practitionerTableColumns,
+  accessRequestTableColumns,
+  eventsTableColumns,
+  patientAllergies,
+  patientAllergiesDocs,
+  patientAllergiesAccess,
+  practitionersAccessRequests,
+  practitioners,
+  events,
+};
