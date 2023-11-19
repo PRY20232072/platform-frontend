@@ -9,9 +9,12 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from '@nextui-org/navbar';
+import { useParams, usePathname } from 'next/navigation';
+
 
 import {
   Avatar,
+  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -22,14 +25,19 @@ import Link from 'next/link';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { MainNavbar } from '@/components/main-navbar';
 
+import { Bell } from 'lucide-react';
+
 interface NavMenuProps {
   userEmail: any;
 }
 
 export function NavMenu({ userEmail }: NavMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const params = useParams();
+
   const uemail = userEmail?.user?.email;
   const uname = userEmail?.user?.name;
+
   return (
     <NextUINavbar
       maxWidth="xl"
@@ -56,7 +64,14 @@ export function NavMenu({ userEmail }: NavMenuProps) {
         className="hidden  sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        {userEmail ? <MainNavbar className="mx-6" /> : ''}
+        {userEmail ? <MainNavbar className="mx-2" /> : ''}
+        {userEmail ? (
+          <Link href={`/patient/${params.userId}/notifications`}>
+            <Bell color='#006FEE'/>
+          </Link>
+        ) : (
+          ''
+        )}
         <ThemeSwitch />
 
         {userEmail ? (
