@@ -10,12 +10,14 @@ declare module 'next-auth' {
     user: {
       id: string | undefined;
       extension_PhoneNumber: string | undefined;
+      extension_UserRole: string | undefined;
     } & DefaultSession['user'];
   }
 
   interface User {
     id: string | undefined;
     extension_PhoneNumber: string | undefined;
+    extension_UserRole: string | undefined;
   }
 }
 
@@ -25,5 +27,6 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     idToken?: string;
     extension_PhoneNumber?: string;
+    extension_UserRole?: string | undefined;
   }
 }

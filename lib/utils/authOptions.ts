@@ -30,13 +30,13 @@ export const authOptions: NextAuthOptions = {
       checks: ['pkce'],
 
       profile(profile: AzureB2CProfile) {
-        console.log('THE PROFILE', profile);
+        // console.log('THE PROFILE', profile);
         return {
           ...profile,
           id: profile.oid.toString(),
           email: profile.emails[0].toString(),
           extension_PhoneNumber: profile.extension_PhoneNumber ?? '123456789',
-          /*  role: profile.extension_Role ?? 'user',*/
+          extension_UserRole: profile.extension_UserRole ?? 'patient',
         };
       },
       client: {
@@ -66,6 +66,7 @@ export const authOptions: NextAuthOptions = {
           name: 'Dave',
           password: 'nextauth',
           extension_PhoneNumber: '123456789',
+          extension_UserRole: 'practitioner',
         };
 
         if (
@@ -79,6 +80,17 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  cookies: {
+    pkceCodeVerifier: {
+      name: 'next-auth.pkce.code_verifier',
+      options: {
+        httpOnly: true,
+        sameSite: 'none',
+        path: '/',
+        secure: true,
+      },
+    },
+  },
   pages: {},
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
@@ -95,6 +107,7 @@ export const authOptions: NextAuthOptions = {
         token.idToken = user.id;
         token.email = user.email;
         token.extension_PhoneNumber = user.extension_PhoneNumber;
+        token.extension_UserRole = user.extension_UserRole;
       }
       return token;
     },
@@ -103,6 +116,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.sub;
         session.user.email = token.email;
         session.user.extension_PhoneNumber = token.extension_PhoneNumber;
+        session.user.extension_UserRole = token.extension_UserRole;
       }
       return session;
     },
