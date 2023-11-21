@@ -28,7 +28,7 @@ interface AllergyTableProps {
 
 const AllergyTable: React.FC<AllergyTableProps> = ({ items, columns }) => {
   const router = useRouter();
-   
+
   const renderCell = React.useCallback(
     (allergy: Allergy, columnKey: React.Key) => {
       const cellValue = allergy[columnKey as keyof Allergy];
@@ -48,7 +48,7 @@ const AllergyTable: React.FC<AllergyTableProps> = ({ items, columns }) => {
           return (
             <div className="relative flex justify-start items-start gap-2">
               <Button
-                className={'bg-sky-100 text-blue-600 text-sm font-medium '}
+                className={'text-sm font-medium '}
                 color="primary"
                 radius="sm"
                 size="sm"

@@ -55,6 +55,7 @@ export default async function DemographicPage() {
               />
             </div>
             <CustomAutocomplete
+              isDisabled={true}
               label="Gender"
               labelPlacement="outside"
               placeholder="Male"
@@ -71,6 +72,7 @@ export default async function DemographicPage() {
               />
             </div>
             <CustomAutocomplete
+              isDisabled={true}
               label="Civil Status"
               labelPlacement="outside"
               placeholder="Single"
@@ -94,6 +96,7 @@ export default async function DemographicPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CustomAutocomplete
+              isDisabled={true}
               label="Type of address"
               labelPlacement="outside"
               placeholder="Physical"

@@ -1,13 +1,6 @@
 'use client';
 import React from 'react';
-import {
-  Tabs,
-  Tab,
-  Card,
-  CardBody,
-  Input,
-  Textarea,
-} from '@nextui-org/react';
+import { Tabs, Tab, Card, CardBody, Input, Textarea } from '@nextui-org/react';
 import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import {
   allergyStatus,
@@ -20,8 +13,6 @@ import {
   practitioners,
   practitionersTableColumns,
 } from '@/data/data';
-
-
 import { AllergyAccessClient } from './allergy-access-client';
 import { AllergyDocsClient } from './allergy-docs-client';
 import { PractitionersSearch } from './practitioners-search-modal';
@@ -43,6 +34,7 @@ export const AllergyClient = () => {
                 <div className="  gap-5 flex max-md:flex-col max-md:items-stretch ">
                   <div className="  flex flex-col items-stretch w-[33%] max-md:w-full max-md:ml-0">
                     <Input
+                      isReadOnly
                       className="mb-4"
                       type="text"
                       label="Name"
@@ -51,6 +43,7 @@ export const AllergyClient = () => {
                     />
 
                     <CustomAutocomplete
+                      isDisabled={true}
                       label="Category"
                       labelPlacement="outside"
                       placeholder="Food"
@@ -59,6 +52,7 @@ export const AllergyClient = () => {
                   </div>
                   <div className="  flex flex-col items-stretch w-[34%] ml-5 max-md:w-full max-md:ml-0">
                     <CustomAutocomplete
+                      isDisabled={true}
                       label="Status"
                       labelPlacement="outside"
                       placeholder="Active"
@@ -66,6 +60,7 @@ export const AllergyClient = () => {
                     />
 
                     <Input
+                      isReadOnly
                       type="date"
                       label="Recorded date"
                       labelPlacement="outside"
@@ -74,6 +69,7 @@ export const AllergyClient = () => {
                   </div>
                   <div className=" flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0">
                     <CustomAutocomplete
+                      isDisabled={true}
                       label="Type"
                       labelPlacement="outside"
                       placeholder="Dairy"
@@ -81,6 +77,7 @@ export const AllergyClient = () => {
                     />
 
                     <Textarea
+                      isReadOnly
                       disableAnimation
                       disableAutosize
                       classNames={{ input: 'resize-y min-h-[40px]' }}
