@@ -7,6 +7,7 @@ interface CustomAutocompleteProps {
   labelPlacement: any;
   placeholder: string;
   data: { value: string; label: string }[];
+  isDisabled: boolean;
 }
 
 const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
@@ -14,9 +15,11 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
   labelPlacement,
   placeholder,
   data,
+  isDisabled,
 }) => (
   <div className="mb-4">
     <Autocomplete
+      isDisabled={isDisabled}
       label={label}
       labelPlacement={labelPlacement}
       placeholder={placeholder}

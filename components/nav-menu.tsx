@@ -37,6 +37,7 @@ export function NavMenu({ userEmail }: NavMenuProps) {
 
   const uemail = userEmail?.user?.email;
   const uname = userEmail?.user?.name;
+  const urole = userEmail?.user?.extension_UserRole;
 
   return (
     <NextUINavbar
@@ -64,13 +65,15 @@ export function NavMenu({ userEmail }: NavMenuProps) {
         className="hidden  sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        {userEmail ? <MainNavbar className="mx-2" /> : ''}
-        {userEmail ? (
+        {userEmail ? <MainNavbar className="mx-2" userRole={urole} /> : ''}
+        {userEmail && urole === "patient" ? (
           <Link href={`/patient/${params.userId}/notifications`}>
             <Bell color='#006FEE'/>
           </Link>
         ) : (
-          ''
+          <Link href={`/practitioner/${params.userId}/notifications`}>
+            <Bell color='#006FEE'/>
+          </Link>
         )}
         <ThemeSwitch />
 

@@ -71,6 +71,24 @@ const practitionersTableColumns = [
   { name: 'ACTION', uid: 'actions' },
 ];
 
+const patientsTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'ID', uid: 'patient_id', sortable: true },
+  { name: 'EMAIL', uid: 'email', sortable: true },
+  { name: 'PHONE NUMBER', uid: 'phone_number' },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const healthRecordsTableColumns = [
+  { name: 'DETAIL', uid: 'detail', sortable: true },
+  { name: 'PATIENT', uid: 'patient_name', sortable: true },
+  { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
+  { name: 'STATUS', uid: 'status', sortable: true },
+  { name: 'CATEGORY', uid: 'category', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
 const practitionerTableColumns = [
   { name: 'NAME', uid: 'name', sortable: true },
   { name: 'ID', uid: 'practitioner_id', sortable: true },
@@ -92,6 +110,25 @@ const eventsTableColumns = [
   { name: 'ACTION', uid: 'actions' },
 ];
 
+const selectedPatientAllergiesTableColumns = [
+  { name: 'DETAIL', uid: 'detail', sortable: true },
+  { name: 'TYPE', uid: 'type', sortable: true },
+  { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
+  { name: 'STATUS', uid: 'status', sortable: true },
+  { name: 'ACCESS', uid: 'has_access', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const selectedPatientAllergiesDocsTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'FORMAT', uid: 'format_doc', sortable: true },
+  { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
+  { name: 'ACCESS', uid: 'has_access', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
 const practitioners = [
   {
     id: 1,
@@ -105,6 +142,23 @@ const practitioners = [
     name: 'Dra. Maria Perez',
     practitioner_id: '81726354',
     email: 'mariaperez@gmail.com',
+    phone_number: '987654321',
+  },
+];
+
+const patients = [
+  {
+    id: 1,
+    name: 'Elon Musk',
+    patient_id: '81726354',
+    email: 'elonmusk@plataforma.com',
+    phone_number: '987654321',
+  },
+  {
+    id: 2,
+    name: 'Elon Musk',
+    patient_id: '81726354',
+    email: 'elonmusk@plataforma.com',
     phone_number: '987654321',
   },
 ];
@@ -160,6 +214,34 @@ const patientAllergiesDocs = [
     created_date: '2023/11/01',
   },
 ];
+
+const selectedPatientAllergiesDocs = [
+  {
+    id: 1,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    has_access: 'Yes',
+  },
+  {
+    id: 2,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    created_by: 'Dr. Ricardo Montalban',
+    created_date: '2023/11/01',
+    has_access: 'No',
+  },
+  {
+    id: 3,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    created_by: 'Dr. Ricardo Montalban',
+    created_date: '2023/11/01',
+    has_access: 'Pending',
+  },
+];
+
 const patientAllergiesAccess = [
   {
     id: 1,
@@ -205,6 +287,57 @@ const events = [
   },
 ];
 
+const selectedPatientAllergies = [
+  {
+    id: 1,
+    detail: 'Allergy reaction',
+    type: 'Hives',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    status: 'active',
+    has_access: 'Yes',
+  },
+  {
+    id: 2,
+    detail: 'Allergy reaction',
+    type: 'Hives',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    status: 'active',
+    has_access: 'No',
+  },
+  {
+    id: 3,
+    detail: 'Allergy reaction',
+    type: 'Hives',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    status: 'active',
+    has_access: 'Pending',
+  },
+];
+
+const healthRecords = [
+  {
+    id: 1,
+    detail: 'Medical consultation',
+    patient_name: 'Jhon Doe',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    status: 'Partial',
+    category: 'Family History',
+  },
+  {
+    id: 2,
+    detail: 'Allergy reaction',
+    patient_name: 'Jhon Doe',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    status: 'Active',
+    category: 'Allergy',
+  },
+];
+
 export {
   civilStatus,
   allergyStatus,
@@ -219,10 +352,18 @@ export {
   practitionerTableColumns,
   accessRequestTableColumns,
   eventsTableColumns,
+  patientsTableColumns,
+  selectedPatientAllergiesTableColumns,
   patientAllergies,
   patientAllergiesDocs,
   patientAllergiesAccess,
   practitionersAccessRequests,
   practitioners,
   events,
+  patients,
+  selectedPatientAllergies,
+  selectedPatientAllergiesDocs,
+  selectedPatientAllergiesDocsTableColumns,
+  healthRecordsTableColumns,
+  healthRecords,
 };
