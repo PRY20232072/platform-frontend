@@ -31,7 +31,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  session ? console.log('id', session.user?.id,'PhoneNumber', session.user?.extension_PhoneNumber, 'name', session?.user?.name, 'email ', session?.user?.email) : console.log('no session');
+  session ? console.log('id', session.user?.id,'Role', session.user?.extension_UserRole , ' PhoneNumber: ', session.user?.extension_PhoneNumber, 'name', session?.user?.name, 'email ', session?.user?.email) : console.log('no session');
   console.log('session', session!=null);
   return (
     <html lang="en" suppressHydrationWarning>
