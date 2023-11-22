@@ -1,27 +1,27 @@
 const civilStatus = [
-  { label: 'Single', value: 'Single' },
-  { label: 'Married', value: 'Married' },
-  { label: 'Divorced', value: 'Divorced' },
-  { label: 'Widowed', value: 'Widowed' },
-  { label: 'Other', value: 'Other' },
+  { label: 'SINGLE', value: 'SINGLE' },
+  { label: 'MARRIED', value: 'MARRIED' },
+  { label: 'DIVORCED', value: 'DIVORCED' },
+  { label: 'WIDOWED', value: 'WIDOWED' },
+  { label: 'OTHER', value: 'OTHER' },
 ];
 
 const genders = [
-  { label: 'Male', value: 'Male' },
-  { label: 'Female', value: 'Female' },
-  { label: 'Other', value: 'Other' },
+  { label: 'MALE', value: 'MALE' },
+  { label: 'FEMALE', value: 'FEMALE' },
+  { label: 'OTHER', value: 'OTHER' },
 ];
 
 const addressTypes = [
-  { label: 'Postal', value: 'Postal' },
-  { label: 'Physical', value: 'Physical' },
-  { label: 'Both', value: 'Both' },
+  { label: 'POSTAL', value: 'POSTAL' },
+  { label: 'PHYSICAL', value: 'PHYSICAL' },
+  { label: 'BOTH', value: 'BOTH' },
 ];
 
 const allergyStatus = [
-  { label: 'Active', value: 'active' },
-  { label: 'Innactive', value: 'innactive' },
-  { label: 'Resolve', value: 'resolve' },
+  { label: 'ACTIVE', value: 'ACTIVE' },
+  { label: 'INNACTIVE', value: 'INNACTIVE' },
+  { label: 'RESOLVE', value: 'RESOLVE' },
 ];
 
 const allergyTypes = [
@@ -145,6 +145,22 @@ const practitioners = [
     phone_number: '987654321',
   },
 ];
+
+const emptyPatient = {
+  name_id: "",
+  gender: "",
+  birthDate: "",
+  maritalStatus: "",
+  telephone: "",
+  address: {
+    type_address: "",
+    address_line: "",
+    city: "",
+    district: "",
+    country: "",
+    postal_code: "",
+  }
+};
 
 const patients = [
   {
@@ -360,6 +376,7 @@ export {
   practitionersAccessRequests,
   practitioners,
   events,
+  emptyPatient,
   patients,
   selectedPatientAllergies,
   selectedPatientAllergiesDocs,
