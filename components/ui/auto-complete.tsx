@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 
 interface CustomAutocompleteProps {
@@ -8,6 +8,8 @@ interface CustomAutocompleteProps {
   placeholder: string;
   data: { value: string; label: string }[];
   isDisabled: boolean;
+  inputValue: string;
+  onInputChange: (value: string) => void;
 }
 
 const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
@@ -16,6 +18,8 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
   placeholder,
   data,
   isDisabled,
+  inputValue,
+  onInputChange
 }) => (
   <div className="mb-4">
     <Autocomplete
@@ -23,6 +27,9 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
       label={label}
       labelPlacement={labelPlacement}
       placeholder={placeholder}
+      inputValue={inputValue}
+      allowsCustomValue={false}
+      onInputChange={onInputChange}
     >
       {data.map((item) => (
         <AutocompleteItem key={item.value} value={item.value}>
