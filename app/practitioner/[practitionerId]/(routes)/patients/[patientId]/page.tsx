@@ -2,12 +2,12 @@ import { Tabs, Tab, Card, CardBody, Button, Input } from '@nextui-org/react';
 
 import { civilStatus, genders, addressTypes } from '@/data/data';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/utils/authOptions';
 import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import { User2, Pencil } from 'lucide-react';
 import { PatientsClient } from './components/patients-client';
-export default async function PatientPage() {
-  const session = await getServerSession(authOptions);
+import { useSession } from 'next-auth/react';
+export default function PatientPage() {
+  const { data: session } = useSession();
   return (
     <div className="flex flex-col gap-5 px-4 py-4 sm:px-6 md:px-8 lg:px-16 xl:px-20 2xl:px-32 items-stretch">
       <div className="justify-between items-center  border-b border-gray-200 flex w-full max-w-[1100px] gap-5 mt-1 max-md:max-w-full max-md:flex-wrap">

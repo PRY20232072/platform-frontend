@@ -8,7 +8,6 @@ import { title, subtitle } from '@/components/primitives';
 import { GithubIcon } from '@/components/icons';
 import { getServerSession } from 'next-auth/next';
 import UserCard from '@/components/ui/user-card';
-import { authOptions } from '@/lib/utils/authOptions';
 import { redirect } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 
@@ -17,8 +16,8 @@ import { CardDemographic } from '@/components/ui/card-demographic';
 import { useSession } from 'next-auth/react';
 import { User, Users2, TestTube2, FileText } from 'lucide-react';
 
-export default async function Home() {
-  const session = await getServerSession(authOptions);
+export default function Home() {
+  const { data: session } = useSession();
   return (
     <>
       {session ? (

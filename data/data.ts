@@ -40,11 +40,11 @@ const allergyCategories = [
 ];
 
 const allergyTableColumns = [
-  { name: 'DETAIL', uid: 'detail', sortable: true },
+  { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
   { name: 'TYPE', uid: 'type', sortable: true },
-  { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'STATUS', uid: 'status', sortable: true },
+  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
+  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
+  { name: 'STATUS', uid: 'clinical_status', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
