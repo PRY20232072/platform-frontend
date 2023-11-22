@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import { FileText } from 'lucide-react';
@@ -10,6 +10,10 @@ import {
   Divider,
   Button,
 } from '@nextui-org/react';
+import { emptyPatient } from '@/data/data';
+import { useApi } from '@/hooks/useApi';
+import { useSession } from 'next-auth/react';
+import patientService from '@/services/patientService';
 
 interface DemographicInfoProps {
   label: string;
@@ -28,6 +32,25 @@ const DemographicInfo = ({ label, value }: DemographicInfoProps) => (
 );
 
 export const CardDemographic = () => {
+  const [patient, setPatient] = useState(emptyPatient);
+  const [isRegisterPatient, setIsRegisterPatient] = useState<boolean>(false);
+  const { response: getPatientByIdResponse, fetchData: getPatientById } = useApi();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    getPatientById(patientService.getPatientById(session?.user?.id));
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    if (getPatientByIdResponse.isSuccess) {
+      setPatient(getPatientByIdResponse.data.data);
+      setIsRegisterPatient(true);
+    }
+    else {
+      setIsRegisterPatient(false);
+    }
+  }, [getPatientByIdResponse.isSuccess]);
+
   return (
     <CardNextUI className="!w-full !h-[302px] !z-0 ![overflow:unset] !min-w-[355px] rounded-[14px] shadow inline-flex flex-col justify-start items-start">
       <CardHeader className="p-5 flex justify-start items-center gap-2.5 border-b border-zinc-300">
@@ -54,23 +77,37 @@ export const CardDemographic = () => {
             variant={'solid'}
           >
             <Link href="patient/undefined/demographic">See more</Link>
-            
+
           </Button>
         </div>
       </CardHeader>
       <Divider />
       <CardBody className="flex flex-row justify-start items-start p-5 space-x-6">
-        <div className="flex-1">
-          <DemographicInfo label="ID" value="81823182" />
-          <DemographicInfo label="Gender" value="Male" />
-          <DemographicInfo label="Address" value="Av. Brazil 123" />
-        </div>
+        {getPatientByIdResponse.isLoading ? (
+          <div className="flex text-center">Loading...</div>
+        ) : (
+          <>
+            {isRegisterPatient ? (
+              <>
+                <div className="flex-1">
+                  <DemographicInfo label="ID" value={session?.user?.id} />
+                  <DemographicInfo label="Gender" value={patient.gender} />
+                  <DemographicInfo label="Address" value={patient.address.address_line} />
+                </div>
 
-        <div className="flex-1">
-          <DemographicInfo label="Full name" value="Jhon Doe" />
-          <DemographicInfo label="Birthdate" value="01/01/1999" />
-          <DemographicInfo label="Phone Number" value="987654321" />
-        </div>
+                <div className="flex-1">
+                  <DemographicInfo label="Full name" value={patient.name_id} />
+                  <DemographicInfo label="Birthdate" value={patient.birthDate} />
+                  <DemographicInfo label="Phone Number" value={patient.telephone} />
+                </div>
+              </>
+            ) : (
+              <div className="flex text-center">
+                Update your demographic information.
+              </div>
+            )}
+          </>
+        )}
       </CardBody>
     </CardNextUI>
   );
