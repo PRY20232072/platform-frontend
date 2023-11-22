@@ -1,5 +1,6 @@
 'use client';
-import React from 'react';
+
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -7,67 +8,141 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-  Chip,
-  ChipProps,
   Button,
 } from '@nextui-org/react';
 
-import { useRouter } from 'next/router';
 import {
   accessRequestTableColumns,
-  practitionersAccessRequests,
 } from '@/data/data';
+import consentService from '@/services/consentService';
+import { useApi } from '@/hooks/useApi';
+import practitionerService from '@/services/practitionerService';
+import { useSession } from 'next-auth/react';
+import allergyIntoleranceService from '@/services/allergyIntoleranceService';
+import { useParams } from 'next/navigation';
 
-type practitionerAccessRequest = (typeof practitionersAccessRequests)[0];
-
-interface AccessRequestTableProps {
-  columns: typeof accessRequestTableColumns;
-  items: typeof practitionersAccessRequests;
+type AllergiesAccess = {
+  id: string;
+  practitioner_name: string;
+  practitioner_id: string;
+  register_id: string;
 }
 
-const AccessRequestTable: React.FC<AccessRequestTableProps> = ({
-  items,
-  columns,
-}) => {
-  const renderCell = React.useCallback(
-    (practitioner_request: practitionerAccessRequest, columnKey: React.Key) => {
-      const cellValue =
-        practitioner_request[columnKey as keyof practitionerAccessRequest];
+const AccessRequestTable = () => {
+  const { data: session } = useSession();
+  const [items, setItems] = useState<AllergiesAccess[]>([]);
+  const { response: allergyRegisters, fetchData: getAllergyRegisters } = useApi();
+  const params = useParams();
 
-      switch (columnKey) {
-        case 'actions':
-          return (
-            <div className="relative flex justify-start items-start gap-2">
-              <Button
-                className="font-medium"
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
-              >
-                Approve
-              </Button>
-              <Button
-                className="font-medium"
-                color="danger"
-                radius="sm"
-                size="sm"
-                variant="flat"
-              >
-                Reject
-              </Button>
-            </div>
-          );
-        default:
-          return cellValue;
-      }
-    },
-    []
-  );
+  useEffect(() => {
+    getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id));
+  }, [session?.user?.id]);
+
+  useEffect(() => {
+    if (allergyRegisters.isSuccess) {
+      getAllConsents(allergyRegisters.data);
+    }
+  }, [allergyRegisters.isSuccess]);
+
+  const getAllConsents = async (allergyRegisters: any) => {
+    const consentList = await Promise.all(
+      allergyRegisters.map(async (register: any) => {
+        const response = await consentService.getByRegisterId(register.allergy_id);
+        return response.data.data;
+      })
+    );
+
+    const flatArray = consentList.flat();
+
+    parseConsentList(flatArray);
+  };
+
+  const parseConsentList = async (consentList: any) => {
+    if (!Array.isArray(consentList)) return [];
+
+    consentList = consentList.filter((consent) => consent.state !== 'ACTIVE');
+
+    if (consentList.length === 0) return;
+
+    const parsedConsentList = await Promise.all(
+      consentList.map(async (consent: any) => {
+        try {
+          const response = await practitionerService.getPractitionerById(consent.practitioner_id);
+          const practitioner = response.data.data;
+          return {
+            id: consent.register_id + practitioner.practitioner_id,
+            practitioner_name: practitioner.name_id,
+            practitioner_id: practitioner.practitioner_id,
+            register_id: consent.register_id,
+          } as AllergiesAccess;
+        } catch (error) {
+          return {} as AllergiesAccess;
+        }
+      })
+    );
+
+    setItems(parsedConsentList);
+  };
+
+  const handleApprove = async (consent: AllergiesAccess) => {
+    await consentService.approveConsent(consent.register_id, consent.practitioner_id)
+      .then(() => {
+        getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleRevoke = async (consent: AllergiesAccess) => {
+    await consentService.revokeConsent(consent.register_id, consent.practitioner_id)
+      .then(() => {
+        getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const renderCell = useCallback((practitioner_request: AllergiesAccess, columnKey: React.Key) => {
+    const cellValue =
+      practitioner_request[columnKey as keyof AllergiesAccess];
+
+    switch (columnKey) {
+      case 'actions':
+        return (
+          <div className="relative flex justify-start items-start gap-2">
+            <Button
+              className="font-medium"
+              color="primary"
+              radius="sm"
+              size="sm"
+              variant="flat"
+              onClick={() => handleApprove(practitioner_request)}
+            >
+              Approve
+            </Button>
+            <Button
+              className="font-medium"
+              color="danger"
+              radius="sm"
+              size="sm"
+              variant="flat"
+              onClick={() => handleRevoke(practitioner_request)}
+            >
+              Reject
+            </Button>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
   return (
     <>
       <Table aria-label="Practitioners request collection table">
-        <TableHeader columns={columns}>
+        <TableHeader columns={accessRequestTableColumns}>
           {(column) => (
             <TableColumn
               className="text-bold"

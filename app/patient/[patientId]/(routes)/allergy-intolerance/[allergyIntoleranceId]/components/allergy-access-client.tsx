@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -10,19 +10,26 @@ import {
   Button,
 } from '@nextui-org/react';
 
-import { allergyAccessTableColumns, patientAllergiesAccess } from '@/data/data';
+import { allergyAccessTableColumns } from '@/data/data';
+import { useApi } from '@/hooks/useApi';
+import consentService from '@/services/consentService';
+import practitionerService from '@/services/practitionerService';
+import { useParams } from 'next/navigation';
 
-type AllergiesAccess = (typeof patientAllergiesAccess)[0];
-interface AllergyAccessTableProps {
-  columns: typeof allergyAccessTableColumns;
-  items: typeof patientAllergiesAccess;
+type AllergiesAccess = {
+  id: string;
+  practitioner_name: string;
+  practitioner_id: string;
+  register_id: string;
 }
 
-const AllergyAccessClient: React.FC<AllergyAccessTableProps> = ({
-  items,
-  columns,
-}) => {
-  const renderCell = React.useCallback(
+const AllergyAccessClient = () => {
+  const [items, setItems] = useState<AllergiesAccess[]>([]);
+  const params = useParams();
+  const { response: consentList, fetchData: getConsentList } = useApi();
+  const { response: revokeConsentResponse, fetchData: revokeConsent } = useApi();
+
+  const renderCell = useCallback(
     (allergy_access: AllergiesAccess, columnKey: React.Key) => {
       const cellValue = allergy_access[columnKey as keyof AllergiesAccess];
 
@@ -36,6 +43,7 @@ const AllergyAccessClient: React.FC<AllergyAccessTableProps> = ({
                 radius="sm"
                 size="sm"
                 variant="flat"
+                onClick={() => handleRevoke(allergy_access)}
               >
                 Remove
               </Button>
@@ -47,10 +55,57 @@ const AllergyAccessClient: React.FC<AllergyAccessTableProps> = ({
     },
     []
   );
+
+  useEffect(() => {
+    getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId));
+  }, [params.allergyIntoleranceId]);
+
+  useEffect(() => {
+    if (revokeConsentResponse.isSuccess) {
+      getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId));
+    }
+  }, [revokeConsentResponse.isSuccess]);
+
+  useEffect(() => {
+    if (consentList.isSuccess) {
+      parseConsentList(consentList.data.data);
+    }
+  }, [consentList.isSuccess]);
+
+  const parseConsentList = async (consentList: any) => {
+    if (!Array.isArray(consentList)) return [];
+
+    consentList = consentList.filter((consent) => consent.state === 'ACTIVE');
+
+    const parsedConsentList = await Promise.all(
+      consentList.map(async (consent: any) => {
+        console.log(consent.practitioner_id);
+        try {
+          const response = await practitionerService.getPractitionerById(consent.practitioner_id);
+          const practitioner = response.data.data;
+          return {
+            id: consent.register_id + practitioner.practitioner_id,
+            practitioner_name: practitioner.name_id,
+            practitioner_id: practitioner.practitioner_id,
+            register_id: consent.register_id,
+          } as AllergiesAccess;
+        } catch (error) {
+          return {} as AllergiesAccess;
+        }
+      })
+    );
+
+    setItems(parsedConsentList);
+  };
+
+  const handleRevoke = async (consent: AllergiesAccess) => {
+    await revokeConsent(consentService.revokeConsent(consent.register_id, consent.practitioner_id));
+  }
+
   return (
     <>
       <Table aria-label="Allergies Access collection table">
-        <TableHeader columns={columns}>
+        <TableHeader columns={allergyAccessTableColumns}>
           {(column) => (
             <TableColumn
               className="text-bold"

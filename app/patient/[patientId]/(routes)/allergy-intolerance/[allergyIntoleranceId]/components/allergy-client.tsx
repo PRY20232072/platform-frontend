@@ -6,13 +6,9 @@ import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import {
   allergyStatus,
   allergyDocTableColumns,
-  allergyAccessTableColumns,
-  patientAllergiesAccess,
   patientAllergiesDocs,
   allergyCategories,
   allergyTypes,
-  practitioners,
-  practitionersTableColumns,
 } from '@/data/data';
 import { AllergyAccessClient } from './allergy-access-client';
 import { AllergyDocsClient } from './allergy-docs-client';
@@ -20,7 +16,6 @@ import { PractitionersSearch } from './practitioners-search-modal';
 import { useParams } from 'next/navigation';
 import { useApi } from '@/hooks/useApi';
 import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import { all } from 'axios';
 
 export const AllergyClient = () => {
   const [allergy, setAllergy] = useState<any>({});
@@ -125,14 +120,8 @@ export const AllergyClient = () => {
         <Tab key="access" title="Access">
           <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
             <CardBody>
-              <PractitionersSearch
-                items={practitioners}
-                columns={practitionersTableColumns}
-              />
-              <AllergyAccessClient
-                items={patientAllergiesAccess}
-                columns={allergyAccessTableColumns}
-              />
+              <PractitionersSearch />
+              <AllergyAccessClient />
             </CardBody>
           </Card>
         </Tab>

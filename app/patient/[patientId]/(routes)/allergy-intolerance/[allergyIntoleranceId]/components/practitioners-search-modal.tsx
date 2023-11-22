@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Input,
   Button,
@@ -17,26 +18,49 @@ import {
 } from '@nextui-org/react';
 
 import { Plus, SearchIcon } from 'lucide-react';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   practitionersTableColumns,
   practitionerTableColumns,
-  practitioners,
 } from '@/data/data';
+import { useApi } from '@/hooks/useApi';
+import practitionerService from '@/services/practitionerService';
+import consentService from '@/services/consentService';
+import { useParams } from 'next/navigation';
 
-type Practitioners = (typeof practitioners)[0];
-interface PractitionersTableProps {
-  columns: typeof practitionersTableColumns;
-  items: typeof practitioners;
-}
+type Practitioner = {
+  id: string,
+  name: string,
+  email: string,
+  phone_number: string,
+};
 
 interface AllergySelectedPractitionerProps {
   columns: typeof practitionerTableColumns;
+  practitioner: Practitioner;
+  urlParams: any;
+  searchModalClose: () => void;
 }
 const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   columns,
+  practitioner,
+  urlParams,
+  searchModalClose
 }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { fetchData: createConsent } = useApi();
+
+  const handleCreateConsent = () => {
+    createConsent(consentService.createConsent({
+      register_id: urlParams.allergyIntoleranceId,
+      practitioner_id: practitioner.id,
+      register_type: "ALLERGY"
+    }));
+
+    onClose();
+    searchModalClose();
+  }
+
   return (
     <>
       <Button
@@ -87,10 +111,10 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
                   </TableHeader>
                   <TableBody emptyContent={'No allergies docs data available'}>
                     <TableRow key="1">
-                      <TableCell>Dr. Juan Perez</TableCell>
-                      <TableCell>81726354</TableCell>
-                      <TableCell>juanperez@gmail.com</TableCell>
-                      <TableCell>987654321</TableCell>
+                      <TableCell>{practitioner.name}</TableCell>
+                      <TableCell>{practitioner.id}</TableCell>
+                      <TableCell>{practitioner.email}</TableCell>
+                      <TableCell>{practitioner.phone_number}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -99,7 +123,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={handleCreateConsent}>
                   Accept
                 </Button>
               </ModalFooter>
@@ -111,35 +135,50 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   );
 };
 
-export const PractitionersSearch: React.FC<PractitionersTableProps> = ({
-  items,
-  columns,
-}) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+export const PractitionersSearch = () => {
+  const [items, setItems] = useState<Practitioner[]>([]);
+  const params = useParams();
+  const { response: practitioners, fetchData: setPractitioners } = useApi();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [filterValue, setFilterValue] = React.useState('');
-
   const [page, setPage] = React.useState(1);
-
   const hasSearchFilter = Boolean(filterValue);
 
-  const renderCell = React.useCallback(
-    (practitioners: Practitioners, columnKey: React.Key) => {
-      const cellValue = practitioners[columnKey as keyof Practitioners];
+  const renderCell = useCallback((practitioner: Practitioner, columnKey: React.Key) => {
+    const cellValue = practitioner[columnKey as keyof Practitioner];
 
-      switch (columnKey) {
-        case 'actions':
-          return (
-            <div className="relative flex justify-start items-start gap-2">
-              <ConfirmModal columns={practitionerTableColumns} />
-            </div>
-          );
-        default:
-          return cellValue;
-      }
-    },
-    []
-  );
+    switch (columnKey) {
+      case 'actions':
+        return (
+          <div className="relative flex justify-start items-start gap-2">
+            <ConfirmModal columns={practitionerTableColumns} practitioner={practitioner} urlParams={params} searchModalClose={onClose} />
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  useEffect(() => {
+    setPractitioners(practitionerService.getPractitionerList());
+  }, [params.allergyIntoleranceId]);
+
+  useEffect(() => {
+    if (practitioners.isSuccess) {
+      parsePractitioners(practitioners.data);
+    }
+  }, [practitioners.isSuccess]);
+
+  const parsePractitioners = (practitioners: any) => {
+    const parsedPractitioners = practitioners.map((practitioner: any) => ({
+      id: practitioner.practitioner_id,
+      name: practitioner.name_id,
+      email: practitioner.email,
+      phone_number: practitioner.telephone,
+    } as Practitioner));
+
+    setItems(parsedPractitioners);
+  };
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -199,11 +238,8 @@ export const PractitionersSearch: React.FC<PractitionersTableProps> = ({
               <ModalHeader className="flex flex-col gap-1">
                 Search health practitioner
               </ModalHeader>
-               
+
               <Table
-                onRowAction={(key) => {
-                  return <ConfirmModal columns={practitionerTableColumns} />;
-                }}
                 color="primary"
                 aria-label="Health practitioner collection table"
                 selectionBehavior="toggle"
@@ -211,7 +247,7 @@ export const PractitionersSearch: React.FC<PractitionersTableProps> = ({
                 selectionMode="single"
                 topContent={topContent}
               >
-                <TableHeader columns={columns}>
+                <TableHeader columns={practitionersTableColumns}>
                   {(column) => (
                     <TableColumn
                       className="text-bold"
