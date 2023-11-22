@@ -11,12 +11,17 @@ class PatientService {
         return http.get(`${patientPath}/${id}`);
     };
 
-    createPatient = (data: any) => {
-        return http.post(`${patientPath}`, data);
+    createPatient = (id: string, data: any) => {
+        return http.post(`${patientPath}`, {
+            identifier: id,
+            payload: data
+        });
     };
 
     updatePatient = (id: string, data: any) => {
-        return http.put(`${patientPath}/${id}`, data);
+        return http.put(`${patientPath}/${id}`, {
+            payload: data
+        });
     };
 
     deletePatient = (id: string) => {
