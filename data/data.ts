@@ -25,18 +25,19 @@ const allergyStatus = [
 ];
 
 const allergyTypes = [
-  { label: 'Dairy', value: 'dairy' },
-  { label: 'Gluten', value: 'gluten' },
-  { label: 'Caffeine', value: 'caffeine' },
-  { label: 'Salicylates', value: 'salicylates' },
-  { label: 'Amines', value: 'amines' },
-  { label: 'Other', value: 'other' },
+  { label: 'DAIRY', value: 'DAIRY' },
+  { label: 'GLUTEN', value: 'GLUTEN' },
+  { label: 'CAFFEINE', value: 'CAFFEINE' },
+  { label: 'SALICYLATES', value: 'SALICYLATES' },
+  { label: 'AMINES', value: 'AMINES' },
+  { label: 'OTHER', value: 'OTHER' },
 ];
+
 const allergyCategories = [
-  { label: 'Food', value: 'food' },
-  { label: 'Medication', value: 'medication' },
-  { label: 'Environment', value: 'environment' },
-  { label: 'Biologic', value: 'biologic' },
+  { label: 'FOOD', value: 'FOOD' },
+  { label: 'MEDICATION', value: 'MEDICATION' },
+  { label: 'ENVIRONMENT', value: 'ENVIRONMENT' },
+  { label: 'BIOLOGIC', value: 'BIOLOGIC' },
 ];
 
 const allergyTableColumns = [
@@ -58,14 +59,14 @@ const allergyDocTableColumns = [
 
 const allergyAccessTableColumns = [
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  { name: 'ASSIGNED DATE', uid: 'assigned_date', sortable: true },
-  { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
+  // { name: 'ASSIGNED DATE', uid: 'assigned_date', sortable: true },
+  // { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
 const practitionersTableColumns = [
   { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'ID', uid: 'practitioner_id', sortable: true },
+  { name: 'ID', uid: 'id', sortable: true },
   { name: 'EMAIL', uid: 'email', sortable: true },
   { name: 'PHONE NUMBER', uid: 'phone_number' },
   { name: 'ACTION', uid: 'actions' },
@@ -98,7 +99,7 @@ const practitionerTableColumns = [
 
 const accessRequestTableColumns = [
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  { name: 'REQUEST DATE', uid: 'request_date', sortable: true },
+  // { name: 'REQUEST DATE', uid: 'request_date', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
