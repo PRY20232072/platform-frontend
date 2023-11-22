@@ -69,7 +69,7 @@ const AllergyTable: React.FC<AllergyTableProps> = ({ items, columns }) => {
                 radius="sm"
                 size="sm"
                 variant={'solid'}
-                onClick={() => router.push(`allergy-intolerance/undefined`)}
+                onClick={() => router.push(`allergy-intolerance/${allergy.allergy_id}`)}
               >
                 See more
               </Button>
