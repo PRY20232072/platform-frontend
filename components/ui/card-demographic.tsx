@@ -76,7 +76,7 @@ export const CardDemographic = () => {
             size="sm"
             variant={'solid'}
           >
-            <Link href="patient/undefined/demographic">See more</Link>
+            <Link href={`patient/${session?.user?.id}/demographic`}>See more</Link>
 
           </Button>
         </div>

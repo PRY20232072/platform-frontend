@@ -1,5 +1,4 @@
 'use client';
-import { Kbd } from '@nextui-org/kbd';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
@@ -7,8 +6,9 @@ import { useParams, usePathname } from 'next/navigation';
 export function MainNavbar({
   className,
   userRole,
+  userId,
   ...props
-}: React.HTMLAttributes<HTMLElement> & { userRole: string }) {
+}: React.HTMLAttributes<HTMLElement> & { userRole: string, userId: string }) {
   const pathname = usePathname();
   const params = useParams();
   const patient_routes = [
@@ -18,9 +18,9 @@ export function MainNavbar({
       active: pathname === `/`,
     },
     {
-      href: `/patient/${params.userId}/demographic`,
+      href: `/patient/${userId}/demographic`,
       label: 'Demographic information',
-      active: pathname === `/patient/${params.userId}/demographic`,
+      active: pathname === `/patient/${userId}/demographic`,
     },
     /* {
       href: `/patient/${params.userId}/family-history`,
@@ -28,9 +28,9 @@ export function MainNavbar({
       active: pathname === `/${params.userId}/family-history`,
     }, */
     {
-      href: `/patient/${params.userId}/allergy-intolerance`,
+      href: `/patient/${userId}/allergy-intolerance`,
       label: 'Allergies',
-      active: pathname === `/patient/${params.userId}/allergy-intolerance`,
+      active: pathname === `/patient/${userId}/allergy-intolerance`,
     },
   ];
 
@@ -41,14 +41,14 @@ export function MainNavbar({
       active: pathname === `/`,
     },
     {
-      href: `/practitioner/${params.userId}/patients`,
+      href: `/practitioner/${userId}/patients`,
       label: 'Patients',
-      active: pathname === `/practitioner/${params.userId}/patients`,
+      active: pathname === `/practitioner/${userId}/patients`,
     },
     {
-      href: `/practitioner/${params.userId}/health-records`,
+      href: `/practitioner/${userId}/health-records`,
       label: 'Health Records',
-      active: pathname === `/practitioner/${params.userId}/health-records`,
+      active: pathname === `/practitioner/${userId}/health-records`,
     },
   ];
 

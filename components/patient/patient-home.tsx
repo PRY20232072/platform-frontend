@@ -38,7 +38,7 @@ export default function PatientHome() {
         <CardDemographic />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-5 px-4 sm:px-6 md:px-8 lg:px-20 xl:px-24 2xl:px-32 py-0 relative self-stretch w-full mb-6 flex-[0_0_auto]">
-        <Card
+        {/* <Card
           link="/"
           card_title="Family History"
           icon={
@@ -54,9 +54,9 @@ export default function PatientHome() {
             { col1: 'Flu treatment', col2: '24/09/2023' },
             { col1: 'Back pain', col2: '24/09/2023' },
           ]}
-        />
+        /> */}
         <Card
-          link="patient/undefined/allergy-intolerance"
+          link={`patient/${session?.user?.id}/allergy-intolerance`}
           card_title="Allergies"
           icon={
             <TestTube2

@@ -3,23 +3,15 @@ import React from 'react';
 import {
   Navbar as NextUINavbar,
   NavbarContent,
-  NavbarMenu,
   NavbarMenuToggle,
   NavbarBrand,
-  NavbarItem,
-  NavbarMenuItem,
 } from '@nextui-org/navbar';
-import { useParams, usePathname } from 'next/navigation';
-
-
 import {
   Avatar,
-  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  user,
 } from '@nextui-org/react';
 import Link from 'next/link';
 import { ThemeSwitch } from '@/components/theme-switch';
@@ -33,8 +25,8 @@ interface NavMenuProps {
 
 export function NavMenu({ userEmail }: NavMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const params = useParams();
 
+  const id = userEmail?.user?.id;
   const uemail = userEmail?.user?.email;
   const uname = userEmail?.user?.name;
   const urole = userEmail?.user?.extension_UserRole;
@@ -65,14 +57,14 @@ export function NavMenu({ userEmail }: NavMenuProps) {
         className="hidden  sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        {userEmail ? <MainNavbar className="mx-2" userRole={urole} /> : ''}
+        {userEmail ? <MainNavbar className="mx-2" userRole={urole} userId={id} /> : ''}
         {userEmail && urole === "patient" ? (
-          <Link href={`/patient/${params.userId}/notifications`}>
-            <Bell color='#006FEE'/>
+          <Link href={`/patient/${id}/notifications`}>
+            <Bell color='#006FEE' />
           </Link>
         ) : (
-          <Link href={`/practitioner/${params.userId}/notifications`}>
-            <Bell color='#006FEE'/>
+          <Link href={`/practitioner/${id}/notifications`}>
+            <Bell color='#006FEE' />
           </Link>
         )}
         <ThemeSwitch />
