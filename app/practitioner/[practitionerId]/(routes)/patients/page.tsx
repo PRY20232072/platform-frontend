@@ -1,3 +1,5 @@
+"use client";
+
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/lib/utils/authOptions';
 import { PatientsSearch } from './components/patients-table';
@@ -9,7 +11,7 @@ import {
   patients,
 } from '@/data/data';
 import { useSession } from 'next-auth/react';
-export default async function PatientsPage() {
+export default function PatientsPage() {
   const { data: session } = useSession();
   return (
     <div className="flex flex-col  items-center gap-5 px-4 py-4 sm:px-6 md:px-8 lg:px-16 xl:px-20 2xl:px-32">

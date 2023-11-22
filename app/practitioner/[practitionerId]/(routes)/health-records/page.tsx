@@ -1,3 +1,5 @@
+"use client";
+
 import { getServerSession } from 'next-auth/next';
 import { HealthRecordsSearch } from './components/health-records-table';
 import { healthRecords, healthRecordsTableColumns } from '@/data/data';

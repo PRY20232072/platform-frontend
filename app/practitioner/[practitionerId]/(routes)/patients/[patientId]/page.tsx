@@ -1,3 +1,5 @@
+"use client";
+
 import { Tabs, Tab, Card, CardBody, Button, Input } from '@nextui-org/react';
 
 import { civilStatus, genders, addressTypes } from '@/data/data';
