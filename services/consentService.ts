@@ -16,7 +16,9 @@ class ConsetService {
     }
 
     createConsent = (data: any) => {
-        return http.post(`${consentPath}`, data);
+        return http.post(`${consentPath}`, {
+            payload: data
+        });
     };
 
     approveConsent = (registerId: string, practitionerId: string) => {
