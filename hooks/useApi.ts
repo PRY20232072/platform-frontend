@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { AxiosResponse } from "axios";
 
+interface IResponse {
+    data: any;
+    isLoading: boolean;
+    error: any;
+    isSuccess: boolean;
+}
+
 export const useApi = () => {
-    const [response, setResponse] = useState({
+    const [response, setResponse] = useState<IResponse>({
         data: null,
         isLoading: false,
         error: null,
@@ -25,7 +32,6 @@ export const useApi = () => {
                     error: null,
                     isSuccess: true
                 });
-                console.log(response.data);
             })
             .catch((error) => {
                 setResponse({
