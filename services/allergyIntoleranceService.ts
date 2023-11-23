@@ -40,7 +40,7 @@ class AllergyIntoleranceService {
             };
         }
     
-        return http.put(`${allergyPath}/${id}`, data, params);
+        return http.put(`${allergyPath}/${id}`, { payload: data }, params);
     };
     
     deleteAllergy = (id: string, patientId: string | null, practitioner_id: string | null) => {
