@@ -5,7 +5,7 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
 interface CustomAutocompleteProps {
   label: string;
   labelPlacement: any;
-  placeholder: string;
+  placeholder?: string;
   data: { value: string; label: string }[];
   isDisabled: boolean;
   inputValue: string;
