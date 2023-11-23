@@ -23,10 +23,7 @@ export default function PatientsPage() {
         </div>
       </div>
 
-      <PatientsSearch
-        items={patients}
-        columns={patientsTableColumns}
-      />
+      <PatientsSearch />
     </div>
   );
 }

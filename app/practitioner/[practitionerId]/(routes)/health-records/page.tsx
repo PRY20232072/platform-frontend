@@ -15,10 +15,7 @@ export default function HealthRecordsPage() {
           </div>
         </div>
       </div>
-      <HealthRecordsSearch
-        items={healthRecords}
-        columns={healthRecordsTableColumns}
-      />
+      <HealthRecordsSearch />
     </div>
   );
 }

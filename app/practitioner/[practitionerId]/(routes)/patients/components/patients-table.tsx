@@ -1,48 +1,60 @@
 'use client';
+
 import {
   Input,
   Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  useDisclosure,
   Table,
   TableHeader,
   TableBody,
   TableColumn,
   TableRow,
   TableCell,
-  ModalFooter,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 
-import { Plus, SearchIcon } from 'lucide-react';
-import React from 'react';
-import { patientsTableColumns, patients } from '@/data/data';
+import { SearchIcon } from 'lucide-react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { patientsTableColumns } from '@/data/data';
+import { useApi } from '@/hooks/useApi';
+import patientService from '@/services/patientService';
 
-type Patients = (typeof patients)[0];
-interface PatientsTableProps {
-  columns: typeof patientsTableColumns;
-  items: typeof patients;
+type Patients = {
+  name_id: string;
+  telephone: string;
+  patient_id: string;
 }
 
-export const PatientsSearch: React.FC<PatientsTableProps> = ({
-  items,
-  columns,
-}) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  const [filterValue, setFilterValue] = React.useState('');
-
-  const [page, setPage] = React.useState(1);
+export const PatientsSearch = () => {
+  const { response: patientsResponse, fetchData: getPatients } = useApi();
+  const [filterValue, setFilterValue] = useState('');
+  const [patientsList, setPatientsList] = useState<Patients[]>([]);
+  const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
   const router = useRouter();
 
-  const renderCell = React.useCallback(
-    (patients: Patients, columnKey: React.Key) => {
-      const cellValue = patients[columnKey as keyof Patients];
+  useEffect(() => {
+    getPatients(patientService.getPatientList());
+  }, []);
+
+  useEffect(() => {
+    if (patientsResponse?.isSuccess) {
+      parsePatientsData(patientsResponse?.data);
+    }
+  }, [patientsResponse?.isSuccess]);
+
+  const parsePatientsData = (patients: any) => {
+    const paredPatients = patients.map((patient: any) => ({
+      name_id: patient.name_id,
+      telephone: patient.telephone,
+      patient_id: patient.patient_id,
+    } as Patients));
+    setPatientsList(paredPatients);
+  };
+
+  const renderCell = useCallback(
+    (patient: Patients, columnKey: React.Key) => {
+      const cellValue = patient[columnKey as keyof Patients];
 
       switch (columnKey) {
         case 'actions':
@@ -54,13 +66,12 @@ export const PatientsSearch: React.FC<PatientsTableProps> = ({
                 radius="sm"
                 size="sm"
                 variant="flat"
-                onClick={() => router.push(`patients/undefined`)}
+                onClick={() => router.push(`patients/${patient.patient_id}`)}
               >
                 See more
               </Button>
             </div>
           );
-
         default:
           return cellValue;
       }
@@ -112,40 +123,35 @@ export const PatientsSearch: React.FC<PatientsTableProps> = ({
   }, [filterValue, onSearchChange, hasSearchFilter]);
 
   return (
-    <div className="w-full items-stretch justify-end gap-4 inline-flex mb-3">
-      <Table
-        color="primary"
-        aria-label="Patients table"
-        selectionBehavior="toggle"
-        isHeaderSticky
-        selectionMode="single"
-        topContent={topContent}
-      >
-        <TableHeader columns={columns}>
-          {(column) => (
-            <TableColumn
-              className="text-bold"
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent={'No allergies docs data available'}
-          items={items}
-        >
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+    <Table
+      color="primary"
+      aria-label="Patients table"
+      selectionBehavior="toggle"
+      isHeaderSticky
+      selectionMode="single"
+      topContent={topContent}
+    >
+      <TableHeader columns={patientsTableColumns}>
+        {(column) => (
+          <TableColumn
+            className="text-bold"
+            key={column.uid}
+            align={column.uid === 'actions' ? 'center' : 'start'}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={'No allergies data available'} items={patientsList}>
+        {(item) => (
+          <TableRow key={item.patient_id}>
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 };

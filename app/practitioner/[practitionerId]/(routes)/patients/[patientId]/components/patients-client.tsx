@@ -35,7 +35,7 @@ import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import { PatientAllergiesTable } from './patient-allergies-table';
 import { AllergyFormModal } from '../allergy-intolerance/[allergyIntoleranceId]/components/allergy-form-modal';
 
-export const PatientsClient = () => {
+export const PatientsClient = ({ patient }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -57,15 +57,17 @@ export const PatientsClient = () => {
                     type="text"
                     label="Full name"
                     labelPlacement="outside"
-                    placeholder="Jhon Doe"
+                    placeholder="Complete full name"
+                    value={patient.name_id}
                   />
                 </div>
                 <CustomAutocomplete
                   isDisabled={true}
                   label="Gender"
                   labelPlacement="outside"
-                  placeholder="Male"
+                  placeholder="Select an option"
                   data={genders}
+                  inputValue={patient.gender}
                 />
 
                 <div className="mb-4">
@@ -74,15 +76,17 @@ export const PatientsClient = () => {
                     type="date"
                     label="Birthdate"
                     labelPlacement="outside"
-                    placeholder="01/01/1999"
+                    placeholder="Complete data"
+                    value={patient.birthDate}
                   />
                 </div>
                 <CustomAutocomplete
                   isDisabled={true}
                   label="Civil Status"
                   labelPlacement="outside"
-                  placeholder="Single"
+                  placeholder="Select and option"
                   data={civilStatus}
+                  inputValue={patient.maritalStatus}
                 />
 
                 <div className=" flex-col items-start gap-[5px] relative !flex-1 !flex !grow">
@@ -91,7 +95,8 @@ export const PatientsClient = () => {
                     type="tel"
                     label="Phone number"
                     labelPlacement="outside"
-                    placeholder="987654321"
+                    placeholder="Complete phone number"
+                    value={patient.telephone}
                   />
                 </div>
               </div>
@@ -103,8 +108,9 @@ export const PatientsClient = () => {
                   isDisabled={true}
                   label="Type of address"
                   labelPlacement="outside"
-                  placeholder="Physical"
+                  placeholder="Select an option"
                   data={addressTypes}
+                  inputValue={patient.address.type_address}
                 />
 
                 <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
@@ -113,7 +119,8 @@ export const PatientsClient = () => {
                     type="text"
                     label="Address line"
                     labelPlacement="outside"
-                    placeholder="Av. Brazil"
+                    placeholder="Complete address line"
+                    value={patient.address.address_line}
                   />
                 </div>
                 <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
@@ -122,7 +129,8 @@ export const PatientsClient = () => {
                     type="text"
                     label="District"
                     labelPlacement="outside"
-                    placeholder="Lima"
+                    placeholder="Complete district"
+                    value={patient.address.district}
                   />
                 </div>
                 <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
@@ -131,7 +139,8 @@ export const PatientsClient = () => {
                     type="text"
                     label="City"
                     labelPlacement="outside"
-                    placeholder="Lima"
+                    placeholder="Complemete city"
+                    value={patient.address.city}
                   />
                 </div>
                 <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
@@ -140,7 +149,8 @@ export const PatientsClient = () => {
                     type="text"
                     label="Country"
                     labelPlacement="outside"
-                    placeholder="Peru"
+                    placeholder="Complete country"
+                    value={patient.address.country}
                   />
                 </div>
                 <div className="inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]">
@@ -149,7 +159,8 @@ export const PatientsClient = () => {
                     type="text"
                     label="Postal code"
                     labelPlacement="outside"
-                    placeholder="20010"
+                    placeholder="Complete postal code"
+                    value={patient.address.postal_code}
                   />
                 </div>
               </div>
@@ -160,52 +171,8 @@ export const PatientsClient = () => {
         <Tab key="allergies" title="Allergies">
           <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
             <CardBody>
-              <div className="items-stretch justify-end gap-4 inline-flex mb-3">
-                <Button
-                  onPress={onOpen}
-                  className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
-                >
-                  Add New <Plus className="h-4 w-4" />
-                </Button>
-                <Modal
-                  backdrop="blur"
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  className="w-[700px] max-w-full"
-                >
-                  <ModalContent>
-                    {(onClose) => (
-                      <>
-                        <ModalHeader className="flex flex-col gap-1">
-                          Request Access
-                        </ModalHeader>
-                        <ModalBody>
-                          <div>
-                            Do you want to request access to allergy record documents?
-                          </div>
-                        </ModalBody>
-
-                        <ModalFooter>
-                          <Button
-                            color="danger"
-                            variant="flat"
-                            onPress={onClose}
-                          >
-                            Cancel
-                          </Button>
-                          <Button color="primary" onPress={onClose}>
-                            Accept
-                          </Button>
-                        </ModalFooter>
-                      </>
-                    )}
-                  </ModalContent>
-                </Modal>
-              </div>
-              <PatientAllergiesTable
-                items={selectedPatientAllergies}
-                columns={selectedPatientAllergiesTableColumns}
-              />
+              <AllergyFormModal />
+              <PatientAllergiesTable />
             </CardBody>
           </Card>
         </Tab>

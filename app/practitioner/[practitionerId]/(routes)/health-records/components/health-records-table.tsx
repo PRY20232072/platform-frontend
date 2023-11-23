@@ -15,11 +15,14 @@ import {
   TableCell,
   ModalFooter,
 } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { Plus, SearchIcon } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { healthRecordsTableColumns, healthRecords } from '@/data/data';
+import { useApi } from '@/hooks/useApi';
+import allergyIntoleranceService from '@/services/allergyIntoleranceService';
+import { set } from 'react-hook-form';
 
 type HealthRecord = (typeof healthRecords)[0];
 interface HealthRecordsTableProps {
@@ -27,22 +30,47 @@ interface HealthRecordsTableProps {
   items: typeof healthRecords;
 }
 
-export const HealthRecordsSearch: React.FC<HealthRecordsTableProps> = ({
-  items,
-  columns,
-}) => {
+type Allergy = {
+  patient_id: string;
+  participant_id: string;
+  type: string;
+  category: string;
+  criticality: string;
+  severity: string;
+  clinical_status: string;
+  verification_status: string;
+  onset_date: string;
+  recorded_date: string;
+  last_occurrence: string;
+  allergy_notes: string;
+  allergy_id: string;
+  has_access: string;
+}
+
+export const HealthRecordsSearch = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const [filterValue, setFilterValue] = React.useState('');
-
   const [page, setPage] = React.useState(1);
-
   const hasSearchFilter = Boolean(filterValue);
   const router = useRouter();
+  const [allergyList, setAllergyList] = useState<Allergy[]>([]);
+  const { response: getAllergyListResponse, fetchData: getAllergyList } = useApi();
+  const { response: createConsentResponse, fetchData: createConsent } = useApi();
+  const params = useParams();
+
+  useEffect(() => {
+    getAllergyList(allergyIntoleranceService.getAllergyList());
+  }, [params.patientId]);
+
+  useEffect(() => {
+    if (getAllergyListResponse.isSuccess) {
+      setAllergyList(getAllergyListResponse.data);
+    }
+  }, [getAllergyListResponse.isSuccess]);
 
   const renderCell = React.useCallback(
-    (health_records: HealthRecord, columnKey: React.Key) => {
-      const cellValue = health_records[columnKey as keyof HealthRecord];
+    (health_records: Allergy, columnKey: React.Key) => {
+      const cellValue = health_records[columnKey as keyof Allergy];
 
       switch (columnKey) {
         case 'actions':
@@ -54,7 +82,7 @@ export const HealthRecordsSearch: React.FC<HealthRecordsTableProps> = ({
                 radius="sm"
                 size="sm"
                 variant="flat"
-                onClick={() => router.push(`patients/undefined`)}
+                onClick={() => router.push(`patients/${health_records.patient_id}`)}
               >
                 See more
               </Button>
@@ -121,7 +149,7 @@ export const HealthRecordsSearch: React.FC<HealthRecordsTableProps> = ({
         selectionMode="single"
         topContent={topContent}
       >
-        <TableHeader columns={columns}>
+        <TableHeader columns={healthRecordsTableColumns}>
           {(column) => (
             <TableColumn
               className="text-bold"
@@ -135,10 +163,10 @@ export const HealthRecordsSearch: React.FC<HealthRecordsTableProps> = ({
         </TableHeader>
         <TableBody
           emptyContent={'No allergies docs data available'}
-          items={items}
+          items={(allergyList || [] as Allergy[])}
         >
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.allergy_id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

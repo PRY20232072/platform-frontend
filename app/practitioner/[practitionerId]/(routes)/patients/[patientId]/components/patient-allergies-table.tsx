@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   TableHeader,
@@ -14,39 +14,93 @@ import {
 
 import {
   selectedPatientAllergiesTableColumns,
-  selectedPatientAllergies,
 } from '@/data/data';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useApi } from '@/hooks/useApi';
+import allergyIntoleranceService from '@/services/allergyIntoleranceService';
+import consentService from '@/services/consentService';
+
 const statusColorMap: Record<string, ChipProps['color']> = {
-  resolve: 'success',
-  active: 'danger',
-  innactive: 'warning',
+  RESOLVE: 'success',
+  ACTIVE: 'danger',
+  INNACTIVE: 'warning',
 };
 
-type SelectedPatientAllergy = (typeof selectedPatientAllergies)[0];
-interface SelectedPatientAllergiesProps {
-  columns: typeof selectedPatientAllergiesTableColumns;
-  items: typeof selectedPatientAllergies;
+type Allergy = {
+  patient_id: string;
+  participant_id: string;
+  type: string;
+  category: string;
+  criticality: string;
+  severity: string;
+  clinical_status: string;
+  verification_status: string;
+  onset_date: string;
+  recorded_date: string;
+  last_occurrence: string;
+  allergy_notes: string;
+  allergy_id: string;
+  has_access: string;
 }
 
-const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
-  items,
-  columns,
-}) => {
+export const PatientAllergiesTable = () => {
+  const [allergyList, setAllergyList] = useState<Allergy[]>([]);
+  const { response: getAllergyListResponse, fetchData: getAllergyList } = useApi();
+  const { response: createConsentResponse, fetchData: createConsent } = useApi();
+  const params = useParams();
   const router = useRouter();
+
+  useEffect(() => {
+    getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+  }, [params.patientId]);
+
+  useEffect(() => {
+    if (getAllergyListResponse.isSuccess) {
+      parseAllergyList(getAllergyListResponse.data);
+    }
+  }, [getAllergyListResponse.isSuccess]);
+
+  const parseAllergyList = async (allergyList: any) => {
+    const parsedAllergyList = await Promise.all(
+      allergyList.map(async (allergy: any) => {
+        try {
+          const response = await consentService.getByRegisteryIdAndPractitionerId(allergy.allergy_id, params.practitionerId);
+          const consent = response.data.data;
+          allergy.has_access = consent.state;
+          return allergy;
+        } catch (error) {
+          allergy.has_access = "NO";
+          return allergy;
+        }
+      })
+    );
+    setAllergyList(parsedAllergyList);
+  }
+
+  const handleCreateConsent = async (allergyId: string) => {
+    await createConsent(consentService.createConsent({
+      register_id: allergyId,
+      practitioner_id: params.practitionerId,
+      register_type: 'ALLERGY'
+    }));
+
+    await getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+    router.refresh();
+  }
+
   const renderCell = React.useCallback(
     (
-      selected_patient_allergy: SelectedPatientAllergy,
+      selected_patient_allergy: Allergy,
       columnKey: React.Key
     ) => {
       const cellValue =
-        selected_patient_allergy[columnKey as keyof SelectedPatientAllergy];
+        selected_patient_allergy[columnKey as keyof Allergy];
 
       switch (columnKey) {
-        case 'status':
+        case 'clinical_status':
           return (
             <Chip
-              color={statusColorMap[selected_patient_allergy.status]}
+              color={statusColorMap[selected_patient_allergy.clinical_status]}
               size="sm"
               variant="flat"
             >
@@ -54,11 +108,11 @@ const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
             </Chip>
           );
         case 'has_access':
-          return selected_patient_allergy.has_access === 'Yes' ? 'Yes' : 'No';
+          return selected_patient_allergy.has_access === 'ACTIVE' ? 'YES' : 'NO';
         case 'actions':
           return (
             <div className="relative flex justify-start items-start gap-2">
-              {selected_patient_allergy.has_access === 'Yes' ? (
+              {selected_patient_allergy.has_access === 'ACTIVE' ? (
                 <Button
                   className="font-medium "
                   color="primary"
@@ -66,12 +120,12 @@ const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
                   size="sm"
                   variant="flat"
                   onClick={() =>
-                    router.push(`undefined/allergy-intolerance/undefined`)
+                    router.push(`${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`)
                   }
                 >
                   View more
                 </Button>
-              ) : selected_patient_allergy.has_access === 'Pending' ? (
+              ) : selected_patient_allergy.has_access === 'PENDING' ? (
                 <Button
                   isDisabled
                   className="font-medium "
@@ -89,8 +143,11 @@ const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
                   radius="sm"
                   size="sm"
                   variant="flat"
+                  onClick={() =>
+                    handleCreateConsent(selected_patient_allergy.allergy_id)
+                  }
                 >
-                  Request access
+                  Request Access
                 </Button>
               )}
             </div>
@@ -101,10 +158,11 @@ const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
     },
     []
   );
+
   return (
     <>
       <Table aria-label="Patient allergy collection table">
-        <TableHeader columns={columns}>
+        <TableHeader columns={selectedPatientAllergiesTableColumns}>
           {(column) => (
             <TableColumn
               className="text-bold"
@@ -118,10 +176,10 @@ const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
         </TableHeader>
         <TableBody
           emptyContent={'No patient allergies data available'}
-          items={items}
+          items={(allergyList || []) as Allergy[]}
         >
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.allergy_id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
@@ -132,5 +190,3 @@ const PatientAllergiesTable: React.FC<SelectedPatientAllergiesProps> = ({
     </>
   );
 };
-
-export { PatientAllergiesTable };
