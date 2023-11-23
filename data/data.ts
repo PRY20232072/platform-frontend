@@ -73,19 +73,20 @@ const practitionersTableColumns = [
 ];
 
 const patientsTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'NAME', uid: 'name_id', sortable: true },
   { name: 'ID', uid: 'patient_id', sortable: true },
-  { name: 'EMAIL', uid: 'email', sortable: true },
-  { name: 'PHONE NUMBER', uid: 'phone_number' },
+  // { name: 'EMAIL', uid: 'email', sortable: true },
+  { name: 'PHONE NUMBER', uid: 'telephone' },
   { name: 'ACTION', uid: 'actions' },
 ];
 
 const healthRecordsTableColumns = [
-  { name: 'DETAIL', uid: 'detail', sortable: true },
-  { name: 'PATIENT', uid: 'patient_name', sortable: true },
-  { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'STATUS', uid: 'status', sortable: true },
+  { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
+  // { name: 'PATIENT', uid: 'patient_name', sortable: true },
+  // { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: "PATIENT ID", uid: "patient_id", sortable: true },
+  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
+  { name: 'STATUS', uid: 'clinical_status', sortable: true },
   { name: 'CATEGORY', uid: 'category', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
@@ -112,11 +113,11 @@ const eventsTableColumns = [
 ];
 
 const selectedPatientAllergiesTableColumns = [
-  { name: 'DETAIL', uid: 'detail', sortable: true },
+  { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
   { name: 'TYPE', uid: 'type', sortable: true },
-  { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'STATUS', uid: 'status', sortable: true },
+  // { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
+  { name: 'STATUS', uid: 'clinical_status', sortable: true },
   { name: 'ACCESS', uid: 'has_access', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
@@ -148,6 +149,7 @@ const practitioners = [
 ];
 
 const emptyPatient = {
+  patient_id: "",
   name_id: "",
   gender: "",
   birthDate: "",
