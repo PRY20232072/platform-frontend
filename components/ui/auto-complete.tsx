@@ -9,7 +9,7 @@ interface CustomAutocompleteProps {
   data: { value: string; label: string }[];
   isDisabled: boolean;
   inputValue: string;
-  onInputChange: (value: string) => void;
+  onInputChange?: (value: string) => void;
 }
 
 const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
