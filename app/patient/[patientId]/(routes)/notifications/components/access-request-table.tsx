@@ -87,7 +87,7 @@ const AccessRequestTable = () => {
   const handleApprove = async (consent: AllergiesAccess) => {
     await consentService.approveConsent(consent.register_id, consent.practitioner_id)
       .then(() => {
-        getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+        getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(params.patientId as string));
       })
       .catch((error) => {
         console.log(error);
@@ -97,7 +97,7 @@ const AccessRequestTable = () => {
   const handleRevoke = async (consent: AllergiesAccess) => {
     await consentService.revokeConsent(consent.register_id, consent.practitioner_id)
       .then(() => {
-        getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+        getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(params.patientId as string));
       })
       .catch((error) => {
         console.log(error);

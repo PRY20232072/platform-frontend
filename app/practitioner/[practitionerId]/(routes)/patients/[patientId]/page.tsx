@@ -19,7 +19,7 @@ export default function PatientPage() {
   const params = useParams();
 
   useEffect(() => {
-    getPatient(patientService.getPatientById(params.patientId));
+    getPatient(patientService.getPatientById(params.patientId as string));
   }, [params.patientId]);
 
   useEffect(() => {

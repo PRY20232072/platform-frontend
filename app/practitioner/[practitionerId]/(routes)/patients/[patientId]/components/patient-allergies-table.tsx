@@ -51,7 +51,7 @@ export const PatientAllergiesTable = () => {
   const router = useRouter();
 
   useEffect(() => {
-    getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+    getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId as string));
   }, [params.patientId]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export const PatientAllergiesTable = () => {
     const parsedAllergyList = await Promise.all(
       allergyList.map(async (allergy: any) => {
         try {
-          const response = await consentService.getByRegisteryIdAndPractitionerId(allergy.allergy_id, params.practitionerId);
+          const response = await consentService.getByRegisteryIdAndPractitionerId(allergy.allergy_id, params.practitionerId as string);
           const consent = response.data.data;
           allergy.has_access = consent.state;
           return allergy;
@@ -84,7 +84,7 @@ export const PatientAllergiesTable = () => {
       register_type: 'ALLERGY'
     }));
 
-    await getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId));
+    await getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId as string));
     router.refresh();
   }
 

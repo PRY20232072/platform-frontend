@@ -23,7 +23,7 @@ export const AllergyClient = () => {
   const params = useParams();
 
   useEffect(() => {
-    fetchData(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId));
+    fetchData(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId as string));
   }, [params.allergyIntoleranceId]);
 
   useEffect(() => {

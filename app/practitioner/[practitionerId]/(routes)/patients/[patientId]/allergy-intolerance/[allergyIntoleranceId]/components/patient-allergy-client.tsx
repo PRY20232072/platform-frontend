@@ -31,7 +31,7 @@ export const PatientAllergyClient = () => {
   const params = useParams();
 
   useEffect(() => {
-    getAllergy(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId));
+    getAllergy(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId as string));
   }, [params.allergyIntoleranceId]);
 
   useEffect(() => {
@@ -42,13 +42,13 @@ export const PatientAllergyClient = () => {
 
   useEffect(() => {
     if (updateAllergyResponse.isSuccess) {
-      getAllergy(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId));
+      getAllergy(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId as string));
     }
   }, [updateAllergyResponse.isSuccess]);
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateAllergy(allergyIntoleranceService.updateAllergy(allergy.allergy_id, allergy, params.practitionerId));
+    await updateAllergy(allergyIntoleranceService.updateAllergy(allergy.allergy_id, allergy, params.practitionerId as string));
     setIsEditing(!isEditing);
   };
 
