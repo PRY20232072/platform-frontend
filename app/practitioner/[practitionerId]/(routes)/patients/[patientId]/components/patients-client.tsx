@@ -1,43 +1,26 @@
 'use client';
+
 import {
   Tabs,
   Tab,
   Input,
   Card,
   CardBody,
-  Textarea,
-  Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
 } from '@nextui-org/react';
-import { Plus } from 'lucide-react';
-
 import {
-  allergyStatus,
-  allergyDocTableColumns,
-  allergyAccessTableColumns,
-  patientAllergiesAccess,
-  patientAllergiesDocs,
-  allergyCategories,
-  allergyTypes,
-  practitioners,
   civilStatus,
   genders,
   addressTypes,
-  selectedPatientAllergiesTableColumns,
-  selectedPatientAllergies,
 } from '@/data/data';
 import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import { PatientAllergiesTable } from './patient-allergies-table';
 import { AllergyFormModal } from '../allergy-intolerance/[allergyIntoleranceId]/components/allergy-form-modal';
 
-export const PatientsClient = ({ patient }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+interface PatientsClientProps {
+  patient: any;
+}
 
+export const PatientsClient: React.FC<PatientsClientProps> = ({ patient }) => {
   return (
     <>
       <Tabs
