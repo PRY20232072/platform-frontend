@@ -57,12 +57,12 @@ const AllergyAccessClient = () => {
   );
 
   useEffect(() => {
-    getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId));
+    getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId as string));
   }, [params.allergyIntoleranceId]);
 
   useEffect(() => {
     if (revokeConsentResponse.isSuccess) {
-      getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId));
+      getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId as string));
     }
   }, [revokeConsentResponse.isSuccess]);
 
