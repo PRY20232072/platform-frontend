@@ -26,6 +26,14 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        with:
+          NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
+          AZURE_AD_B2C_TENANT_NAME=${{ secrets.AZURE_AD_B2C_TENANT_NAME }}
+          AZURE_AD_B2C_CLIENT_ID=${{ secrets.AZURE_AD_B2C_CLIENT_ID }}
+          AZURE_AD_B2C_CLIENT_SECRET=${{ secrets.AZURE_AD_B2C_CLIENT_SECRET }}
+          AZURE_AD_B2C_TENANT_ID=${{ secrets.AZURE_AD_B2C_TENANT_ID }}
+          AZURE_AD_B2C_PRIMARY_USER_FLOW=${{ secrets.AZURE_AD_B2C_PRIMARY_USER_FLOW }}
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
