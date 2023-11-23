@@ -35,7 +35,7 @@ export const useApi = () => {
             })
             .catch((error) => {
                 setResponse({
-                    data: null,
+                    data: error,
                     isLoading: false,
                     error: error,
                     isSuccess: false
