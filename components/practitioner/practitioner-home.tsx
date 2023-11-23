@@ -34,7 +34,7 @@ export default function PractitionerHome() {
 
   const parsePatiensData = () => {
     let patientsData: any[] = [];
-    patientsResponse?.data?.map((patient) => {
+    patientsResponse?.data?.map((patient: any) => {
       patientsData.push({
         col1: patient.name_id,
         col2: patient.patient_id,
@@ -45,7 +45,7 @@ export default function PractitionerHome() {
 
   const parseAllergyData = () => {
     let allergyData: any[] = [];
-    allergyRecordsResponse?.data?.map((allergy) => {
+    allergyRecordsResponse?.data?.map((allergy: any) => {
       allergyData.push({
         col1: allergy.allergy_notes,
         col2: allergy.recorded_date,

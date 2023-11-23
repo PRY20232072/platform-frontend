@@ -23,7 +23,7 @@ export default function DemographicPage() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    getPatientById(patientService.getPatientById(session?.user?.id));
+    getPatientById(patientService.getPatientById(session?.user?.id as string));
   }, [session?.user?.id]);
 
   useEffect(() => {
@@ -38,17 +38,17 @@ export default function DemographicPage() {
 
   useEffect(() => {
     if (updatePatientResponse.isSuccess) {
-      getPatientById(patientService.getPatientById(session?.user?.id));
+      getPatientById(patientService.getPatientById(session?.user?.id as string));
     }
   }, [updatePatientResponse.isSuccess, createPatientResponse.isSuccess]);
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isRegisterPatient) {
-      await updatePatient(patientService.updatePatient(session?.user?.id, patient));
+      await updatePatient(patientService.updatePatient(session?.user?.id as string, patient));
     }
     else {
-      await createPatient(patientService.createPatient(session?.user?.id, patient));
+      await createPatient(patientService.createPatient(session?.user?.id as string, patient));
     }
     setIsEditing(!isEditing);
   };

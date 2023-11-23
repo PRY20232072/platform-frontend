@@ -35,7 +35,7 @@ const AccessRequestTable = () => {
   const params = useParams();
 
   useEffect(() => {
-    getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id));
+    getAllergyRegisters(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id as string));
   }, [session?.user?.id]);
 
   useEffect(() => {

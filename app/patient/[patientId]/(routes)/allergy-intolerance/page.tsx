@@ -15,7 +15,7 @@ export default function AllergiesPage() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    fetchData(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id));
+    fetchData(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id as string));
   }, [session?.user?.id]);
 
   return (

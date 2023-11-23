@@ -38,7 +38,7 @@ export const CardDemographic = () => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    getPatientById(patientService.getPatientById(session?.user?.id));
+    getPatientById(patientService.getPatientById(session?.user?.id as string));
   }, [session?.user?.id]);
 
   useEffect(() => {
@@ -90,7 +90,7 @@ export const CardDemographic = () => {
             {isRegisterPatient ? (
               <>
                 <div className="flex-1">
-                  <DemographicInfo label="ID" value={session?.user?.id} />
+                  <DemographicInfo label="ID" value={session?.user?.id as string} />
                   <DemographicInfo label="Gender" value={patient.gender} />
                   <DemographicInfo label="Address" value={patient.address.address_line} />
                 </div>

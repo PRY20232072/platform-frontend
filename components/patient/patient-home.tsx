@@ -14,7 +14,7 @@ export default function PatientHome() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    fetchData(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id));
+    fetchData(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id as string));
   }, [session?.user?.id]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function PatientHome() {
 
   const getAllergyList = () => {
     let allergyList: any[] = [];
-    response?.data?.map((allergy) => {
+    response?.data?.map((allergy: any) => {
       allergyList.push({
         col1: allergy.allergy_notes,
         col2: allergy.recorded_date,
