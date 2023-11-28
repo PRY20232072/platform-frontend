@@ -12,6 +12,7 @@ import practitionerService from "@/services/practitionerService";
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
 import { Button, Input } from '@nextui-org/react';
 import CustomSuspense from "@/components/custom-suspense";
+import Loading from "@/components/loading";
 
 export default function PractitionerProfileForm() {
   const [practitioner, serPractitioner] = useState(emptyPractitioner);
@@ -54,7 +55,7 @@ export default function PractitionerProfileForm() {
   };
 
   return (
-    <CustomSuspense isLoading={getPractitionerByIdResponse.isLoading}>
+    <CustomSuspense isLoading={getPractitionerByIdResponse.isLoading} fallback={<Loading />}>
       <form onSubmit={handleEdit}>
         <div className="w-full max-w-4xl mx-auto">
           <div className="mb-8">

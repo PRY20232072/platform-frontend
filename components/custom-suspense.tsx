@@ -1,8 +1,12 @@
-import Loading from "./loading";
+interface CustomSuspenseProps {
+    isLoading: Boolean;
+    fallback: React.ReactNode;
+    children: React.ReactNode;
+}
 
-export default function CustomSuspense({ isLoading, children }: { isLoading: Boolean, children: React.ReactNode }) {
+export default function CustomSuspense({ isLoading, fallback, children }: CustomSuspenseProps) {
     if (isLoading) {
-        return <Loading />;
+        return fallback;
     }
     return <>{children}</>;
 }

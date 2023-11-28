@@ -3,12 +3,13 @@
 import { Pencil, User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import CustomSuspense from "@/components/custom-suspense";
+import Loading from "@/components/loading";
 
 export default function PractitionerProfileBasicInfo() {
   const { data: session } = useSession();
 
   return (
-    <CustomSuspense isLoading={session?.user === undefined}>
+    <CustomSuspense isLoading={session?.user === undefined} fallback={<Loading />}>
       <div className="justify-between items-center  border-b border-gray-200 flex w-full max-w-[1100px] gap-5 mt-1 max-md:max-w-full max-md:flex-wrap">
         <div className="flex grow basis-[0%] flex-col items-stretch my-auto max-md:max-w-full">
           <div className="text-4xl font-bold leading-10 max-md:max-w-full">
