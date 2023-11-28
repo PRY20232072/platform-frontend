@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { CardDemographic } from "@/components/ui/card-demographic";
 import { useApi } from "@/hooks/useApi";
 import allergyIntoleranceService from "@/services/allergyIntoleranceService";
-import { Users2, TestTube2 } from 'lucide-react';
+import { TestTube2 } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -38,23 +38,6 @@ export default function PatientHome() {
         <CardDemographic />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-5 px-4 sm:px-6 md:px-8 lg:px-20 xl:px-24 2xl:px-32 py-0 relative self-stretch w-full mb-6 flex-[0_0_auto]">
-        {/* <Card
-          link="/"
-          card_title="Family History"
-          icon={
-            <Users2
-              color="white"
-              className="w-5 h-[18px] left-[2px] top-[3px] absolute"
-            />
-          }
-          heading_one="Detail"
-          heading_two="Date"
-          cardData={[
-            { col1: 'Medical consultation', col2: '24/09/2023' },
-            { col1: 'Flu treatment', col2: '24/09/2023' },
-            { col1: 'Back pain', col2: '24/09/2023' },
-          ]}
-        /> */}
         <Card
           link={`patient/${session?.user?.id}/allergy-intolerance`}
           card_title="Allergies"
