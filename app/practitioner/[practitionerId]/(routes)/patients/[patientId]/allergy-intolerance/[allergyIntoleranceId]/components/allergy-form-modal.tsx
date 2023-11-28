@@ -37,7 +37,7 @@ interface AllergySelectedPractitionerProps {
   allergyFormModalClose: () => void;
 }
 
-const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({ 
+const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   allergy,
   allergyFormModalClose
 }) => {
@@ -54,9 +54,9 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
       payload: allergy
     }));
 
+    router.refresh();
     onClose();
     allergyFormModalClose();
-    router.refresh();
   }
 
   return (
@@ -112,7 +112,7 @@ export const AllergyFormModal = () => {
       participant_id: params.practitionerId as string,
     });
   }, [params.patientId, params.practitionerId]);
-  
+
   return (
     <div className="items-stretch justify-end gap-4 inline-flex mb-3">
       <Button
@@ -138,8 +138,8 @@ export const AllergyFormModal = () => {
                   placeholder="Complete the name"
                   classNames={{ label: 'text-md font-bold' }}
                   value={allergy.name}
-                  onChange={(e) =>{
-                    setAllergy({...allergy, name: e.target.value})
+                  onChange={(e) => {
+                    setAllergy({ ...allergy, name: e.target.value })
                   }}
                 />
                 <RadioOptions
@@ -147,7 +147,7 @@ export const AllergyFormModal = () => {
                   defaultValue={allergyTypes[0].value}
                   data={allergyTypes}
                   onChange={(e) => {
-                    setAllergy({...allergy, type: e.target.value})
+                    setAllergy({ ...allergy, type: e.target.value })
                   }}
                 />
                 <RadioOptions
@@ -155,7 +155,7 @@ export const AllergyFormModal = () => {
                   defaultValue={allergyCategories[0].value}
                   data={allergyCategories}
                   onChange={(e) => {
-                    setAllergy({...allergy, category: e.target.value})
+                    setAllergy({ ...allergy, category: e.target.value })
                   }}
                 />
                 <RadioOptions
@@ -163,7 +163,7 @@ export const AllergyFormModal = () => {
                   defaultValue={allergyStatus[0].value}
                   data={allergyStatus}
                   onChange={(e) => {
-                    setAllergy({...allergy, clinical_status: e.target.value})
+                    setAllergy({ ...allergy, clinical_status: e.target.value })
                   }}
                 />
                 <Textarea
@@ -172,7 +172,7 @@ export const AllergyFormModal = () => {
                   placeholder="Write the record note"
                   value={allergy.allergy_notes}
                   onChange={(e) => {
-                    setAllergy({...allergy, allergy_notes: e.target.value})
+                    setAllergy({ ...allergy, allergy_notes: e.target.value })
                   }}
                 />
               </ModalBody>

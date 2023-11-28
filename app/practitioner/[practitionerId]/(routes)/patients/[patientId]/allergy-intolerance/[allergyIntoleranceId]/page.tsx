@@ -1,22 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Tabs, Tab, Card, CardBody, Input, Textarea } from '@nextui-org/react';
-import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import {
-  allergyStatus,
-  allergyDocTableColumns,
-  allergyAccessTableColumns,
-  patientAllergiesAccess,
-  patientAllergiesDocs,
-  allergyCategories,
-  allergyTypes,
-  practitioners,
-  practitionersTableColumns,
   emptyPatient,
 } from '@/data/data';
 import { PatientAllergyClient } from './components/patient-allergy-client';
-import { useSession } from 'next-auth/react';
 import { useParams } from 'next/navigation';
 import patientService from '@/services/patientService';
 import { useApi } from '@/hooks/useApi';
