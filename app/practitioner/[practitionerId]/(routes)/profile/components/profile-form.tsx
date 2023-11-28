@@ -13,6 +13,7 @@ import { CustomAutocomplete } from "@/components/ui/auto-complete";
 import { Button, Input } from '@nextui-org/react';
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
+import { toast } from "react-toastify";
 
 export default function PractitionerProfileForm() {
   const [practitioner, serPractitioner] = useState(emptyPractitioner);
@@ -52,6 +53,17 @@ export default function PractitionerProfileForm() {
       await createPatient(practitionerService.createPractitioner(session?.user?.id as string, practitioner));
     }
     setIsEditing(!isEditing);
+
+    //show toast
+    toast.info("Info updated", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: 'colored',
+    });
   };
 
   return (

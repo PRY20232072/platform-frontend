@@ -4,12 +4,12 @@ import { siteConfig } from '@/config/site';
 import { fontSans } from '@/config/fonts';
 import { Providers } from '@/providers/providers';
 import { Navbar } from '@/components/navbar';
-import { Link } from '@nextui-org/link';
 import clsx from 'clsx';
 import { Footer } from '@/components/footer';
 import AuthProvider from './context/AuthProvider';
 import { getServerSession } from 'next-auth/next';
- 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { authOptions } from '@/lib/utils/authOptions';
 export const metadata: Metadata = {
   title: {
@@ -52,6 +52,7 @@ export default async function RootLayout({
               <Footer isLoggedIn={session != null}/>
             </div>
           </Providers>
+          <ToastContainer />
         </body>
       </AuthProvider>
     </html>
