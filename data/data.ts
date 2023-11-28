@@ -165,6 +165,23 @@ const emptyPatient = {
   }
 };
 
+const emptyPractitioner = {
+  patient_id: "",
+  name_id: "",
+  gender: "",
+  birthDate: "",
+  maritalStatus: "",
+  telephone: "",
+  address: {
+    type_address: "",
+    address_line: "",
+    city: "",
+    district: "",
+    country: "",
+    postal_code: "",
+  }
+};
+
 const patients = [
   {
     id: 1,
@@ -380,6 +397,7 @@ export {
   practitioners,
   events,
   emptyPatient,
+  emptyPractitioner,
   patients,
   selectedPatientAllergies,
   selectedPatientAllergiesDocs,

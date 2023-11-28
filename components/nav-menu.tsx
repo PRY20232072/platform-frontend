@@ -86,6 +86,15 @@ export function NavMenu({ userEmail }: NavMenuProps) {
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{uemail}</p>
               </DropdownItem>
+              {
+                urole === "patient" ? (
+                  <></>
+                ) : (
+                  <DropdownItem key="profile" color="primary">
+                    <Link href={`/practitioner/${id}/profile`}>Profile</Link>
+                  </DropdownItem>
+                )
+              }
               <DropdownItem key="logout" color="danger">
                 <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
               </DropdownItem>
