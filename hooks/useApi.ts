@@ -11,7 +11,7 @@ interface IResponse {
 export const useApi = () => {
     const [response, setResponse] = useState<IResponse>({
         data: null,
-        isLoading: false,
+        isLoading: true,
         error: null,
         isSuccess: false
     });
