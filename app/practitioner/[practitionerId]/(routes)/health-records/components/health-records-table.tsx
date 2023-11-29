@@ -1,34 +1,23 @@
 'use client';
+
 import {
   Input,
   Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  useDisclosure,
   Table,
   TableHeader,
   TableBody,
   TableColumn,
   TableRow,
   TableCell,
-  ModalFooter,
 } from '@nextui-org/react';
 import { useParams, useRouter } from 'next/navigation';
-
-import { Plus, SearchIcon } from 'lucide-react';
+import { SearchIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { healthRecordsTableColumns, healthRecords } from '@/data/data';
+import { healthRecordsTableColumns } from '@/data/data';
 import { useApi } from '@/hooks/useApi';
 import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import { set } from 'react-hook-form';
-
-type HealthRecord = (typeof healthRecords)[0];
-interface HealthRecordsTableProps {
-  columns: typeof healthRecordsTableColumns;
-  items: typeof healthRecords;
-}
+import CustomSuspense from '@/components/custom-suspense';
+import TableSkeleton from '@/components/ui/skeletons/table-skeleton';
 
 type Allergy = {
   patient_id: string;
@@ -48,14 +37,12 @@ type Allergy = {
 }
 
 export const HealthRecordsSearch = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [filterValue, setFilterValue] = React.useState('');
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
   const router = useRouter();
   const [allergyList, setAllergyList] = useState<Allergy[]>([]);
   const { response: getAllergyListResponse, fetchData: getAllergyList } = useApi();
-  const { response: createConsentResponse, fetchData: createConsent } = useApi();
   const params = useParams();
 
   useEffect(() => {
@@ -141,39 +128,41 @@ export const HealthRecordsSearch = () => {
 
   return (
     <div className="w-full items-stretch justify-end gap-4 inline-flex mb-3">
-      <Table
-        color="primary"
-        aria-label="Health Records table"
-        selectionBehavior="toggle"
-        isHeaderSticky
-        selectionMode="single"
-        topContent={topContent}
-      >
-        <TableHeader columns={healthRecordsTableColumns}>
-          {(column) => (
-            <TableColumn
-              className="text-bold"
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent={'No allergies docs data available'}
-          items={(allergyList || [] as Allergy[])}
+      <CustomSuspense isLoading={getAllergyListResponse.isLoading} fallback={<TableSkeleton />}>
+        <Table
+          color="primary"
+          aria-label="Health Records table"
+          selectionBehavior="toggle"
+          isHeaderSticky
+          selectionMode="single"
+          topContent={topContent}
         >
-          {(item) => (
-            <TableRow key={item.allergy_id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+          <TableHeader columns={healthRecordsTableColumns}>
+            {(column) => (
+              <TableColumn
+                className="text-bold"
+                key={column.uid}
+                align={column.uid === 'actions' ? 'center' : 'start'}
+                allowsSorting={column.sortable}
+              >
+                {column.name}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            emptyContent={'No allergies docs data available'}
+            items={(allergyList || [] as Allergy[])}
+          >
+            {(item) => (
+              <TableRow key={item.allergy_id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CustomSuspense>
     </div>
   );
 };
