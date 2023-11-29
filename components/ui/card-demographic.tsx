@@ -14,6 +14,8 @@ import { emptyPatient } from '@/data/data';
 import { useApi } from '@/hooks/useApi';
 import { useSession } from 'next-auth/react';
 import patientService from '@/services/patientService';
+import CustomSuspense from '../custom-suspense';
+import CardSkeleton from './skeletons/card-skeleton';
 
 interface DemographicInfoProps {
   label: string;
@@ -52,63 +54,59 @@ export const CardDemographic = () => {
   }, [getPatientByIdResponse.isSuccess]);
 
   return (
-    <CardNextUI className="!w-full !h-[302px] !z-0 ![overflow:unset] !min-w-[355px] rounded-[14px] shadow inline-flex flex-col justify-start items-start">
-      <CardHeader className="p-5 flex justify-start items-center gap-2.5 border-b border-zinc-300">
-        <div className="w-14 h-14 relative">
-          <div className="w-14 h-14 left-0 top-0 absolute bg-blue-600 rounded-xl" />
-          <div className="w-6 h-6 left-[16px] top-[16px] absolute">
-            <FileText
-              color="white"
-              className="w-4 h-5 left-[4px] top-[2px] absolute"
-            />
+    <CustomSuspense isLoading={getPatientByIdResponse.isLoading} fallback={<CardSkeleton />}>
+      <CardNextUI className="!w-full !h-[302px] !z-0 ![overflow:unset] !min-w-[355px] rounded-[14px] shadow inline-flex flex-col justify-start items-start">
+        <CardHeader className="p-5 flex justify-start items-center gap-2.5 border-b border-zinc-300">
+          <div className="w-14 h-14 relative">
+            <div className="w-14 h-14 left-0 top-0 absolute bg-blue-600 rounded-xl" />
+            <div className="w-6 h-6 left-[16px] top-[16px] absolute">
+              <FileText
+                color="white"
+                className="w-4 h-5 left-[4px] top-[2px] absolute"
+              />
+            </div>
           </div>
-        </div>
 
-        <div className=" text-base font-bold  leading-normal">
-          Demographic information
-        </div>
+          <div className=" text-base font-bold  leading-normal">
+            Demographic information
+          </div>
 
-        <div className="flex flex-grow flex-shrink flex-basis-0 h-8 justify-end items-center gap-2.5">
-          <Button
-            className={'bg-sky-100 text-blue-600 text-sm font-medium '}
-            color="primary"
-            radius="sm"
-            size="sm"
-            variant={'solid'}
-          >
-            <Link href={`patient/${session?.user?.id}/demographic`}>See more</Link>
+          <div className="flex flex-grow flex-shrink flex-basis-0 h-8 justify-end items-center gap-2.5">
+            <Button
+              className={'bg-sky-100 text-blue-600 text-sm font-medium '}
+              color="primary"
+              radius="sm"
+              size="sm"
+              variant={'solid'}
+            >
+              <Link href={`patient/${session?.user?.id}/demographic`}>See more</Link>
 
-          </Button>
-        </div>
-      </CardHeader>
-      <Divider />
-      <CardBody className="flex flex-row justify-start items-start p-5 space-x-6">
-        {getPatientByIdResponse.isLoading ? (
-          <div className="flex text-center">Loading...</div>
-        ) : (
-          <>
-            {isRegisterPatient ? (
-              <>
-                <div className="flex-1">
-                  <DemographicInfo label="ID" value={session?.user?.id as string} />
-                  <DemographicInfo label="Gender" value={patient.gender} />
-                  <DemographicInfo label="Address" value={patient.address.address_line} />
-                </div>
-
-                <div className="flex-1">
-                  <DemographicInfo label="Full name" value={patient.name_id} />
-                  <DemographicInfo label="Birthdate" value={patient.birthDate} />
-                  <DemographicInfo label="Phone Number" value={patient.telephone} />
-                </div>
-              </>
-            ) : (
-              <div className="flex text-center">
-                Update your demographic information.
+            </Button>
+          </div>
+        </CardHeader>
+        <Divider />
+        <CardBody className="flex flex-row justify-start items-start p-5 space-x-6">
+          {isRegisterPatient ? (
+            <>
+              <div className="flex-1">
+                <DemographicInfo label="ID" value={session?.user?.id as string} />
+                <DemographicInfo label="Gender" value={patient.gender} />
+                <DemographicInfo label="Address" value={patient.address.address_line} />
               </div>
-            )}
-          </>
-        )}
-      </CardBody>
-    </CardNextUI>
+
+              <div className="flex-1">
+                <DemographicInfo label="Full name" value={patient.name_id} />
+                <DemographicInfo label="Birthdate" value={patient.birthDate} />
+                <DemographicInfo label="Phone Number" value={patient.telephone} />
+              </div>
+            </>
+          ) : (
+            <div className="flex text-center">
+              Update your demographic information.
+            </div>
+          )}
+        </CardBody>
+      </CardNextUI>
+    </CustomSuspense>
   );
 };

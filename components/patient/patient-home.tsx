@@ -7,6 +7,8 @@ import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 import { TestTube2 } from 'lucide-react';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import CustomSuspense from "../custom-suspense";
+import CardSkeleton from "../ui/skeletons/card-skeleton";
 
 export default function PatientHome() {
   const {response, fetchData} = useApi();
@@ -38,19 +40,21 @@ export default function PatientHome() {
         <CardDemographic />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-5 px-4 sm:px-6 md:px-8 lg:px-20 xl:px-24 2xl:px-32 py-0 relative self-stretch w-full mb-6 flex-[0_0_auto]">
-        <Card
-          link={`patient/${session?.user?.id}/allergy-intolerance`}
-          card_title="Allergies"
-          icon={
-            <TestTube2
-              color="white"
-              className="w-5 h-[18px] left-[2px] top-[3px] absolute"
-            />
-          }
-          heading_one="Detail"
-          heading_two="Date"
-          cardData={allergyList}
-        />
+        <CustomSuspense isLoading={response.isLoading} fallback={<CardSkeleton />}>
+          <Card
+            link={`patient/${session?.user?.id}/allergy-intolerance`}
+            card_title="Allergies"
+            icon={
+              <TestTube2
+                color="white"
+                className="w-5 h-[18px] left-[2px] top-[3px] absolute"
+              />
+            }
+            heading_one="Detail"
+            heading_two="Date"
+            cardData={allergyList}
+          />
+        </CustomSuspense>
       </div>
     </>
   );
