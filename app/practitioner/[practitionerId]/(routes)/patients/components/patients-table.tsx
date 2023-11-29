@@ -11,12 +11,13 @@ import {
   TableCell,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
-
 import { SearchIcon } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { patientsTableColumns } from '@/data/data';
 import { useApi } from '@/hooks/useApi';
 import patientService from '@/services/patientService';
+import CustomSuspense from '@/components/custom-suspense';
+import TableSkeleton from '@/components/ui/skeletons/table-skeleton';
 
 type Patients = {
   name_id: string;
@@ -123,35 +124,37 @@ export const PatientsSearch = () => {
   }, [filterValue, onSearchChange, hasSearchFilter]);
 
   return (
-    <Table
-      color="primary"
-      aria-label="Patients table"
-      selectionBehavior="toggle"
-      isHeaderSticky
-      selectionMode="single"
-      topContent={topContent}
-    >
-      <TableHeader columns={patientsTableColumns}>
-        {(column) => (
-          <TableColumn
-            className="text-bold"
-            key={column.uid}
-            align={column.uid === 'actions' ? 'center' : 'start'}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={'No allergies data available'} items={patientsList}>
-        {(item) => (
-          <TableRow key={item.patient_id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <CustomSuspense isLoading={patientsResponse.isLoading} fallback={<TableSkeleton />}>
+      <Table
+        color="primary"
+        aria-label="Patients table"
+        selectionBehavior="toggle"
+        isHeaderSticky
+        selectionMode="single"
+        topContent={topContent}
+      >
+        <TableHeader columns={patientsTableColumns}>
+          {(column) => (
+            <TableColumn
+              className="text-bold"
+              key={column.uid}
+              align={column.uid === 'actions' ? 'center' : 'start'}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={'No allergies data available'} items={patientsList}>
+          {(item) => (
+            <TableRow key={item.patient_id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </CustomSuspense>
   );
 };
