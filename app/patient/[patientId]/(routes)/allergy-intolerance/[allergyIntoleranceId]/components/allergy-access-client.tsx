@@ -79,7 +79,6 @@ const AllergyAccessClient = () => {
 
     const parsedConsentList = await Promise.all(
       consentList.map(async (consent: any) => {
-        console.log(consent.practitioner_id);
         try {
           const response = await practitionerService.getPractitionerById(consent.practitioner_id);
           const practitioner = response.data.data;
