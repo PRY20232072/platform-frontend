@@ -1,10 +1,10 @@
 interface CustomSuspenseProps {
     isLoading: Boolean;
-    fallback: React.ReactNode;
-    children: React.ReactNode;
+    fallback: React.JSX.Element;
+    children: React.JSX.Element;
 }
 
-export default function CustomSuspense({ isLoading, fallback, children }: CustomSuspenseProps) {
+export default function CustomSuspense({ isLoading, fallback, children }: CustomSuspenseProps): React.JSX.Element {
     if (isLoading) {
         return fallback;
     }
