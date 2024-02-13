@@ -1,18 +1,10 @@
-import {
-  Tabs,
-  Tab,
-  Input,
-  Card,
-  CardBody,
-} from '@nextui-org/react';
-import {
-  civilStatus,
-  genders,
-  addressTypes,
-} from '@/data/data';
+import { Tabs, Tab, Input, Card, CardBody } from '@nextui-org/react';
+import { civilStatus, genders, addressTypes } from '@/data/data';
 import { CustomAutocomplete } from '@/components/ui/auto-complete';
 import { PatientAllergiesTable } from './patient-allergies-table';
 import { AllergyFormModal } from '../allergy-intolerance/[allergyIntoleranceId]/components/allergy-form-modal';
+import { FamilyRecordFormModal } from '@/components/modal/family-record-form';
+import { PatientFamilyRecordsTable } from './patient-family-records-table';
 
 interface PatientsClientProps {
   patient: any;
@@ -148,7 +140,14 @@ export const PatientsClient: React.FC<PatientsClientProps> = ({ patient }) => {
             </CardBody>
           </Card>
         </Tab>
-
+        <Tab key="familyRecords" title="Family Records">
+          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
+            <CardBody>
+              <FamilyRecordFormModal />
+              <PatientFamilyRecordsTable />
+            </CardBody>
+          </Card>
+        </Tab>
         <Tab key="allergies" title="Allergies">
           <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
             <CardBody>
