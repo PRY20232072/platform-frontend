@@ -9,6 +9,8 @@ import {
   TableColumn,
   TableRow,
   TableCell,
+  Selection,
+  SortDescriptor,
 } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import { SearchIcon } from 'lucide-react';
@@ -19,20 +21,30 @@ import patientService from '@/services/patientService';
 import CustomSuspense from '@/components/custom-suspense';
 import TableSkeleton from '@/components/ui/skeletons/table-skeleton';
 
-type Patients = {
+type Patient = {
   name_id: string;
   telephone: string;
   patient_id: string;
-}
+};
 
 export const PatientsSearch = () => {
   const { response: patientsResponse, fetchData: getPatients } = useApi();
   const [filterValue, setFilterValue] = useState('');
-  const [patientsList, setPatientsList] = useState<Patients[]>([]);
+  const [patientsList, setPatientsList] = useState<Patient[]>([]);
   const [page, setPage] = useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
   const router = useRouter();
+
+  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
+    new Set([])
+  );
+  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+    column: 'name_id',
+    direction: 'ascending',
+  });
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [statusFilter, setStatusFilter] = React.useState<Selection>('all');
 
   useEffect(() => {
     getPatients(patientService.getPatientList());
@@ -45,40 +57,81 @@ export const PatientsSearch = () => {
   }, [patientsResponse?.isSuccess]);
 
   const parsePatientsData = (patients: any) => {
-    const paredPatients = patients.map((patient: any) => ({
-      name_id: patient.name_id,
-      telephone: patient.telephone,
-      patient_id: patient.patient_id,
-    } as Patients));
+    const paredPatients = patients.map(
+      (patient: any) =>
+        ({
+          name_id: patient.name_id,
+          telephone: patient.telephone,
+          patient_id: patient.patient_id,
+        } as Patient)
+    );
     setPatientsList(paredPatients);
   };
 
-  const renderCell = useCallback(
-    (patient: Patients, columnKey: React.Key) => {
-      const cellValue = patient[columnKey as keyof Patients];
+  const renderCell = useCallback((patient: Patient, columnKey: React.Key) => {
+    const cellValue = patient[columnKey as keyof Patient];
 
-      switch (columnKey) {
-        case 'actions':
-          return (
-            <div className="relative flex justify-start items-start gap-2">
-              <Button
-                className={' text-sm font-medium '}
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
-                onClick={() => router.push(`patients/${patient.patient_id}`)}
-              >
-                See more
-              </Button>
-            </div>
-          );
-        default:
-          return cellValue;
-      }
+    switch (columnKey) {
+      case 'actions':
+        return (
+          <div className="relative flex justify-start items-start gap-2">
+            <Button
+              className={' text-sm font-medium '}
+              color="primary"
+              radius="sm"
+              size="sm"
+              variant="flat"
+              onClick={() => router.push(`patients/${patient.patient_id}`)}
+            >
+              See more
+            </Button>
+          </div>
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
+  const onRowsPerPageChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
     },
     []
   );
+
+  const filteredItems = React.useMemo(() => {
+    let filteredUsers = [...patientsList];
+
+    if (hasSearchFilter) {
+      filteredUsers = filteredUsers.filter((patient) =>
+        patient.name_id.toLowerCase().includes(filterValue.toLowerCase())
+      );
+    }
+
+    return filteredUsers;
+  }, [patientsList, filterValue]);
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return filteredItems.slice(start, end);
+  }, [page, filteredItems, rowsPerPage]);
+
+  const sortedItems = React.useMemo(() => {
+    return [...items].sort((a: Patient, b: Patient) => {
+      const first = a[
+        sortDescriptor.column as keyof Patient
+      ] as unknown as number;
+      const second = b[
+        sortDescriptor.column as keyof Patient
+      ] as unknown as number;
+      const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+      return sortDescriptor.direction === 'descending' ? -cmp : cmp;
+    });
+  }, [sortDescriptor, items]);
 
   const onSearchChange = React.useCallback((value?: string) => {
     if (value) {
@@ -96,7 +149,7 @@ export const PatientsSearch = () => {
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="bg-blue-100 flex flex-col gap-4">
+      <div className="bg-blue-100 flex flex-col gap-4 rounded-lg">
         <div className="flex gap-3 items-end">
           <Input
             isClearable
@@ -124,14 +177,21 @@ export const PatientsSearch = () => {
   }, [filterValue, onSearchChange, hasSearchFilter]);
 
   return (
-    <CustomSuspense isLoading={patientsResponse.isLoading} fallback={<TableSkeleton />}>
+    <CustomSuspense
+      isLoading={patientsResponse.isLoading}
+      fallback={<TableSkeleton />}
+    >
       <Table
         color="primary"
-        aria-label="Patients table"
+        aria-label="Patient table"
         selectionBehavior="toggle"
         isHeaderSticky
         selectionMode="single"
         topContent={topContent}
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+        sortDescriptor={sortDescriptor}
+        selectedKeys={selectedKeys}
       >
         <TableHeader columns={patientsTableColumns}>
           {(column) => (
@@ -145,7 +205,10 @@ export const PatientsSearch = () => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={'No allergies data available'} items={patientsList}>
+        <TableBody
+          emptyContent={'No allergies data available'}
+          items={patientsList}
+        >
           {(item) => (
             <TableRow key={item.patient_id}>
               {(columnKey) => (
