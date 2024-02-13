@@ -22,11 +22,11 @@ export function MainNavbar({
       label: 'Demographic information',
       active: pathname === `/patient/${userId}/demographic`,
     },
-    /* {
-      href: `/patient/${params.userId}/family-history`,
-      label: 'Historial Familiar',
-      active: pathname === `/${params.userId}/family-history`,
-    }, */
+    {
+      href: `/patient/${userId}/family-records`,
+      label: 'Family Records',
+      active: pathname === `/patient/${userId}/family-records`,
+    }, 
     {
       href: `/patient/${userId}/allergy-intolerance`,
       label: 'Allergies',

@@ -16,6 +16,7 @@ import {
 import Link from 'next/link';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { MainNavbar } from '@/components/main-navbar';
+import { useRouter } from 'next/navigation';
 
 import { Bell } from 'lucide-react';
 
@@ -25,6 +26,7 @@ interface NavMenuProps {
 
 export function NavMenu({ userEmail }: NavMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const router = useRouter();
 
   const id = userEmail?.user?.id;
   const uemail = userEmail?.user?.email;
@@ -57,14 +59,18 @@ export function NavMenu({ userEmail }: NavMenuProps) {
         className="hidden  sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        {userEmail ? <MainNavbar className="mx-2" userRole={urole} userId={id} /> : ''}
-        {userEmail && urole === "patient" ? (
+        {userEmail ? (
+          <MainNavbar className="mx-2" userRole={urole} userId={id} />
+        ) : (
+          ''
+        )}
+        {userEmail && urole === 'patient' ? (
           <Link href={`/patient/${id}/notifications`}>
-            <Bell color='#006FEE' />
+            <Bell color="#006FEE" />
           </Link>
         ) : (
           <Link href={`/practitioner/${id}/notifications`}>
-            <Bell color='#006FEE' />
+            <Bell color="#006FEE" />
           </Link>
         )}
         <ThemeSwitch />
@@ -82,21 +88,25 @@ export function NavMenu({ userEmail }: NavMenuProps) {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
+              <DropdownItem key="email" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
                 <p className="font-semibold">{uemail}</p>
               </DropdownItem>
-              {
-                urole === "patient" ? (
-                  <></>
-                ) : (
-                  <DropdownItem key="profile" color="primary">
-                    <Link href={`/practitioner/${id}/profile`}>Profile</Link>
-                  </DropdownItem>
-                )
-              }
-              <DropdownItem key="logout" color="danger">
-                <Link href="/api/auth/signout?callbackUrl=/">Logout</Link>
+              <DropdownItem
+                key="profile"
+                color="primary"
+                onClick={() =>
+                  router.push(
+                    urole === 'patient'
+                      ? `/patient/${id}/demographic`
+                      : `/practitioner/${id}/profile`
+                  )
+                }
+              >
+                Profile
+              </DropdownItem>
+              <DropdownItem key="logout" color="danger" onClick={()=>router.push(`/api/auth/signout?callbackUrl=/`)}>
+                 Logout
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
