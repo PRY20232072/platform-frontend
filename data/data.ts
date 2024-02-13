@@ -40,6 +40,12 @@ const allergyCategories = [
   { label: 'BIOLOGIC', value: 'BIOLOGIC' },
 ];
 
+const familyRecordStatus = [
+  { label: 'PARTIAL', value: 'PARTIAL' },
+  { label: 'COMPLETE', value: 'COMPLETE' },
+  { label: 'UNKNOWN HEALTH', value: 'UNKNOWN' },
+];
+
 const allergyTableColumns = [
   { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
   { name: 'TYPE', uid: 'type', sortable: true },
@@ -63,6 +69,22 @@ const allergyAccessTableColumns = [
   // { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
+
+const familyRecordAccessTableColumns = [
+  { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
+  { name: 'ASSIGNED DATE', uid: 'assigned_date', sortable: true },
+  { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const familyRecordTableColumns = [
+  { name: 'DETAIL', uid: 'family_record_notes', sortable: true },
+  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
+  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
+  { name: 'STATUS', uid: 'clinical_status', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
 
 const practitionersTableColumns = [
   { name: 'NAME', uid: 'name', sortable: true },
@@ -251,6 +273,33 @@ const patientAllergiesDocs = [
   },
 ];
 
+const patientFamilyRecordDocs = [
+  {
+    id: 1,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    participant_id: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+  },
+  {
+    id: 2,
+    name: 'Allergy examination report',
+    format_doc: 'PDF',
+    participant_id: 'Dr. Ricardo Montalban',
+    created_date: '2023/11/01',
+  },
+];
+
+
+const patientFamilyRecordDocTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'FORMAT', uid: 'format_doc', sortable: true },
+  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
+  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+
 const selectedPatientAllergiesDocs = [
   {
     id: 1,
@@ -374,6 +423,35 @@ const healthRecords = [
   },
 ];
 
+const practitionerFamilyRecordsTableColumns = [
+  { name: 'DETAIL', uid: 'family_record_note', sortable: true },
+  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
+  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
+  { name: 'STATUS', uid: 'clinical_status', sortable: true },
+  { name: 'ACCESS', uid: 'has_access', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const selectedPatientFamilyRecordDocsTableColumns = [
+  { name: 'NAME', uid: 'name', sortable: true },
+  { name: 'FORMAT', uid: 'format_doc', sortable: true },
+  { name: 'CREATED BY', uid: 'created_by', sortable: true },
+  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
+  { name: 'ACCESS', uid: 'has_access', sortable: true },
+  { name: 'ACTION', uid: 'actions' },
+];
+
+const selectedPatientFamilyRecordDocs= [
+  {
+    id: 1,
+    name: 'The family record examination report',
+    format_doc: 'PDF',
+    created_by: 'Dr. Juan Perez',
+    created_date: '2023/11/01',
+    has_access: 'Yes',
+  },
+]
+
 export {
   civilStatus,
   allergyStatus,
@@ -387,6 +465,7 @@ export {
   practitionersTableColumns,
   practitionerTableColumns,
   accessRequestTableColumns,
+  familyRecordAccessTableColumns,
   eventsTableColumns,
   patientsTableColumns,
   selectedPatientAllergiesTableColumns,
@@ -404,4 +483,11 @@ export {
   selectedPatientAllergiesDocsTableColumns,
   healthRecordsTableColumns,
   healthRecords,
+  familyRecordTableColumns,
+  patientFamilyRecordDocs,
+  patientFamilyRecordDocTableColumns,
+  familyRecordStatus,
+  practitionerFamilyRecordsTableColumns,
+  selectedPatientFamilyRecordDocsTableColumns,
+  selectedPatientFamilyRecordDocs
 };
