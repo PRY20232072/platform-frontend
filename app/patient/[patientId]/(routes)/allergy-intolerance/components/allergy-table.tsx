@@ -52,7 +52,7 @@ const AllergyTable: React.FC = () => {
   }, [session?.user?.id]);
 
   useEffect(() => {
-    if (response?.data) {
+    if (response?.data && response?.data.length > 0) {
       setItems(response?.data);
     }
   }, [response?.data]);
