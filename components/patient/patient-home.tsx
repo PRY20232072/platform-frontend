@@ -1,20 +1,21 @@
-'use client';
+"use client";
 
-import { Card } from '@/components/ui/card';
-import { CardDemographic } from '@/components/ui/card-demographic';
-import { useApi } from '@/hooks/useApi';
-import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import familyRecordService from '@/services/familyRecordService';
+import { Card } from "@/components/ui/card";
+import { CardDemographic } from "@/components/ui/card-demographic";
+import { useApi } from "@/hooks/useApi";
+import allergyIntoleranceService from "@/services/allergyIntoleranceService";
+import familyRecordService from "@/services/familyRecordService";
 
-import { TestTube2, Users2 } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import CustomSuspense from '../custom-suspense';
-import CardSkeleton from '../ui/skeletons/card-skeleton';
+import { TestTube2, Users2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import CustomSuspense from "../custom-suspense";
+import CardSkeleton from "../ui/skeletons/card-skeleton";
 
 export default function PatientHome() {
   const { response: allergiesResponse, fetchData: getAllergies } = useApi();
-  const { response: familyRecordResponse, fetchData: getFamilyRecords } = useApi();
+  const { response: familyRecordResponse, fetchData: getFamilyRecords } =
+    useApi();
   const [allergyList, setAllergyList] = useState<any>([]);
   const [familyRecordList, setfamilyRecordList] = useState<any>([]);
   const { data: session } = useSession();
@@ -29,7 +30,7 @@ export default function PatientHome() {
       familyRecordService.getFamilyRecordByPatientId(
         session?.user?.id as string
       )
-    )
+    );
   }, [session?.user?.id]);
 
   useEffect(() => {
@@ -37,10 +38,13 @@ export default function PatientHome() {
     setfamilyRecordList(getFamilyRecordList());
   }, [allergiesResponse?.data, familyRecordResponse?.data]);
 
-   
-
   const getAllergyList = () => {
     let allergyList: any[] = [];
+    const response = allergiesResponse?.data;
+
+    if (!response || !response.data || response.data.length === 0)
+      return allergyList;
+
     allergiesResponse?.data?.map((allergy: any) => {
       allergyList.push({
         col1: allergy.allergy_notes,
@@ -52,6 +56,11 @@ export default function PatientHome() {
 
   const getFamilyRecordList = () => {
     let familyRecordList: any[] = [];
+    const response = familyRecordResponse?.data;
+
+    if (!response || !response.data || response.data.length === 0)
+      return familyRecordList;
+
     familyRecordResponse?.data?.map((familyRecord: any) => {
       familyRecordList.push({
         col1: familyRecord.family_record_notes,

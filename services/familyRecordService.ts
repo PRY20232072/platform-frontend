@@ -1,5 +1,5 @@
 import http from './httpCommon';
-const familyRecordPath = '/FamilyRecord';
+const familyRecordPath = '/FamilyHistory';
 
 class FamilyRecordService {
   getFamilyRecordList = () => {
