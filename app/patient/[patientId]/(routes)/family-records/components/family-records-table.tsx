@@ -1,5 +1,5 @@
-'use client';
-import React, { Suspense, useEffect, useState } from 'react';
+"use client";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -10,19 +10,19 @@ import {
   Chip,
   ChipProps,
   Button,
-} from '@nextui-org/react';
-import { familyRecordTableColumns as columns } from '@/data/data';
-import { useRouter } from 'next/navigation';
-import { useApi } from '@/hooks/useApi';
-import { useSession } from 'next-auth/react';
-import familyRecordService from '@/services/familyRecordService';
-import CustomSuspense from '@/components/custom-suspense';
-import TableSkeleton from '@/components/ui/skeletons/table-skeleton';
+} from "@nextui-org/react";
+import { familyRecordTableColumns as columns } from "@/data/data";
+import { useRouter } from "next/navigation";
+import { useApi } from "@/hooks/useApi";
+import { useSession } from "next-auth/react";
+import familyRecordService from "@/services/familyRecordService";
+import CustomSuspense from "@/components/custom-suspense";
+import TableSkeleton from "@/components/ui/skeletons/table-skeleton";
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  RESOLVE: 'success',
-  ACTIVE: 'danger',
-  INNACTIVE: 'warning',
+const statusColorMap: Record<string, ChipProps["color"]> = {
+  RESOLVE: "success",
+  ACTIVE: "danger",
+  INNACTIVE: "warning",
 };
 
 type PatientFamilyRecord = {
@@ -44,19 +44,25 @@ const FamilyRecordsTable: React.FC = () => {
   const router = useRouter();
   const { response, fetchData } = useApi();
   const { data: session } = useSession();
-  const [items, setItems] = useState<PatientFamilyRecord[]>();
+  const [items, setItems] = useState<PatientFamilyRecord[]>([]);
 
   useEffect(() => {
-    fetchData(
-      familyRecordService.getFamilyRecordByPatientId(
-        session?.user?.id as string
-      )
-    );
+    if (session?.user?.id) {
+      fetchData(
+        familyRecordService.getFamilyRecordByPatientId(
+          session?.user?.id as string
+        )
+      );
+    }
   }, [session?.user?.id]);
 
   useEffect(() => {
     if (response?.data) {
-      setItems(response?.data);
+      const data = response?.data;
+
+      if (data && data.length > 0) {
+        setItems(data);
+      }
     }
   }, [response?.data]);
 
@@ -65,7 +71,7 @@ const FamilyRecordsTable: React.FC = () => {
       const cellValue = familyRecord[columnKey as keyof PatientFamilyRecord];
 
       switch (columnKey) {
-        case 'clinical_status':
+        case "clinical_status":
           return (
             <Chip
               color={statusColorMap[familyRecord.clinical_status]}
@@ -75,15 +81,15 @@ const FamilyRecordsTable: React.FC = () => {
               {cellValue}
             </Chip>
           );
-        case 'actions':
+        case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
               <Button
-                className={'text-sm font-medium '}
+                className={"text-sm font-medium "}
                 color="primary"
                 radius="sm"
                 size="sm"
-                variant={'solid'}
+                variant={"solid"}
                 onClick={() =>
                   router.push(`family-records/${familyRecord.family_record_id}`)
                 }
@@ -100,6 +106,9 @@ const FamilyRecordsTable: React.FC = () => {
   );
 
   return (
+    // <CustomSuspense isLoading={response.isLoading} fallback={<TableSkeleton />}>
+    //   <div>Hola</div>
+    // </CustomSuspense>
     <CustomSuspense isLoading={response.isLoading} fallback={<TableSkeleton />}>
       <Table aria-label="Family records collection table">
         <TableHeader columns={columns}>

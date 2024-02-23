@@ -31,7 +31,7 @@ export default function PatientDemographicForm() {
 
   useEffect(() => {
     if (getPatientByIdResponse.isSuccess) {
-      setPatient(getPatientByIdResponse.data.data);
+      setPatient(getPatientByIdResponse.data);
       setIsRegisterPatient(true);
     }
     else {

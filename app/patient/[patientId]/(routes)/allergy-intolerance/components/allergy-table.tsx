@@ -1,5 +1,5 @@
-'use client';
-import React, { Suspense, useEffect, useState } from 'react';
+"use client";
+import React, { Suspense, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -10,19 +10,19 @@ import {
   Chip,
   ChipProps,
   Button,
-} from '@nextui-org/react';
-import { allergyTableColumns as columns } from '@/data/data';
-import { useRouter } from 'next/navigation';
-import { useApi } from '@/hooks/useApi';
-import { useSession } from 'next-auth/react';
-import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import CustomSuspense from '@/components/custom-suspense';
-import TableSkeleton from '@/components/ui/skeletons/table-skeleton';
+} from "@nextui-org/react";
+import { allergyTableColumns as columns } from "@/data/data";
+import { useRouter } from "next/navigation";
+import { useApi } from "@/hooks/useApi";
+import { useSession } from "next-auth/react";
+import allergyIntoleranceService from "@/services/allergyIntoleranceService";
+import CustomSuspense from "@/components/custom-suspense";
+import TableSkeleton from "@/components/ui/skeletons/table-skeleton";
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  RESOLVE: 'success',
-  ACTIVE: 'danger',
-  INNACTIVE: 'warning',
+const statusColorMap: Record<string, ChipProps["color"]> = {
+  RESOLVE: "success",
+  ACTIVE: "danger",
+  INNACTIVE: "warning",
 };
 
 type Allergy = {
@@ -39,7 +39,7 @@ type Allergy = {
   last_occurrence: string;
   allergy_notes: string;
   allergy_id: string;
-}
+};
 
 const AllergyTable: React.FC = () => {
   const router = useRouter();
@@ -48,12 +48,20 @@ const AllergyTable: React.FC = () => {
   const [items, setItems] = useState<Allergy[]>([]);
 
   useEffect(() => {
-    fetchData(allergyIntoleranceService.getAllergyByPatientId(session?.user?.id as string));
+    fetchData(
+      allergyIntoleranceService.getAllergyByPatientId(
+        session?.user?.id as string
+      )
+    );
   }, [session?.user?.id]);
 
   useEffect(() => {
-    if (response?.data && response?.data.length > 0) {
-      setItems(response?.data);
+    if (response?.data) {
+      const data = response?.data;
+
+      if (data && data.length > 0) {
+        setItems(data);
+      }
     }
   }, [response?.data]);
 
@@ -62,7 +70,7 @@ const AllergyTable: React.FC = () => {
       const cellValue = allergy[columnKey as keyof Allergy];
 
       switch (columnKey) {
-        case 'clinical_status':
+        case "clinical_status":
           return (
             <Chip
               color={statusColorMap[allergy.clinical_status]}
@@ -72,16 +80,18 @@ const AllergyTable: React.FC = () => {
               {cellValue}
             </Chip>
           );
-        case 'actions':
+        case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
               <Button
-                className={'text-sm font-medium '}
+                className={"text-sm font-medium "}
                 color="primary"
                 radius="sm"
                 size="sm"
-                variant={'solid'}
-                onClick={() => router.push(`allergy-intolerance/${allergy.allergy_id}`)}
+                variant={"solid"}
+                onClick={() =>
+                  router.push(`allergy-intolerance/${allergy.allergy_id}`)
+                }
               >
                 See more
               </Button>
@@ -102,14 +112,14 @@ const AllergyTable: React.FC = () => {
             <TableColumn
               className="text-bold"
               key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
+              align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}
             >
               {column.name}
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={'No allergies data available'} items={items}>
+        <TableBody emptyContent={"No allergies data available"} items={items}>
           {(item) => (
             <TableRow key={item.allergy_id}>
               {(columnKey) => (

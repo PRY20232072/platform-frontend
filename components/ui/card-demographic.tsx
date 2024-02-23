@@ -45,7 +45,7 @@ export const CardDemographic = () => {
 
   useEffect(() => {
     if (getPatientByIdResponse.isSuccess) {
-      setPatient(getPatientByIdResponse.data.data);
+      setPatient(getPatientByIdResponse.data);
       setIsRegisterPatient(true);
     }
     else {

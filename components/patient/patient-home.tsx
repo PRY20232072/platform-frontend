@@ -40,33 +40,35 @@ export default function PatientHome() {
 
   const getAllergyList = () => {
     let allergyList: any[] = [];
-    const response = allergiesResponse?.data;
+    const data = allergiesResponse?.data;
 
-    if (!response || !response.data || response.data.length === 0)
+    if (!data || data.length === 0)
       return allergyList;
 
-    allergiesResponse?.data?.map((allergy: any) => {
+    data?.map((allergy: any) => {
       allergyList.push({
         col1: allergy.allergy_notes,
         col2: allergy.recorded_date,
       });
     });
+
     return allergyList;
   };
 
   const getFamilyRecordList = () => {
     let familyRecordList: any[] = [];
-    const response = familyRecordResponse?.data;
+    const data = familyRecordResponse?.data;
 
-    if (!response || !response.data || response.data.length === 0)
+    if (!data || data.length === 0)
       return familyRecordList;
 
-    familyRecordResponse?.data?.map((familyRecord: any) => {
+    data?.map((familyRecord: any) => {
       familyRecordList.push({
         col1: familyRecord.family_record_notes,
         col2: familyRecord.recorded_date,
       });
     });
+
     return familyRecordList;
   };
 

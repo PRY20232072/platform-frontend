@@ -27,7 +27,7 @@ export const useApi = () => {
         await apiFunction
             .then((response) => {
                 setResponse({
-                    data: response.data,
+                    data: response.data.data,
                     isLoading: false,
                     error: null,
                     isSuccess: true
