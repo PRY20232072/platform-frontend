@@ -7,6 +7,7 @@ declare module 'next-auth' {
    */
 
   interface Session {
+    accessToken: undefined;
     user: {
       id: string | undefined;
       extension_PhoneNumber: string | undefined;
