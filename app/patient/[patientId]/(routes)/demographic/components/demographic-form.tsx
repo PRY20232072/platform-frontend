@@ -26,7 +26,15 @@ export default function PatientDemographicForm() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    getPatientById(patientService.getPatientById(session?.user?.id as string));
+    const fetchData = async () => {
+      if (session?.user?.id) {
+        await getPatientById(
+          patientService.getPatientById(session?.user?.id as string)
+        );
+      }
+    };
+
+    fetchData();
   }, [session?.user?.id]);
 
   useEffect(() => {
@@ -37,13 +45,13 @@ export default function PatientDemographicForm() {
     else {
       setIsRegisterPatient(false);
     }
-  }, [getPatientByIdResponse.isSuccess]);
+  }, [getPatientByIdResponse]);
 
   useEffect(() => {
-    if (updatePatientResponse.isSuccess) {
+    if (updatePatientResponse.isSuccess || createPatientResponse.isSuccess) {
       getPatientById(patientService.getPatientById(session?.user?.id as string));
     }
-  }, [updatePatientResponse.isSuccess, createPatientResponse.isSuccess]);
+  }, [updatePatientResponse, createPatientResponse]);
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
