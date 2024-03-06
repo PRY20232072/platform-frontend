@@ -1,119 +1,16 @@
-"use client";
-
-import { Card } from "@/components/ui/card";
-import { CardDemographic } from "@/components/ui/card-demographic";
-import { useApi } from "@/hooks/useApi";
-import allergyIntoleranceService from "@/services/allergyIntoleranceService";
-import familyRecordService from "@/services/familyRecordService";
-
-import { TestTube2, Users2 } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import CustomSuspense from "../custom-suspense";
-import CardSkeleton from "../ui/skeletons/card-skeleton";
+import { CardDemographic } from "@/components/patient/card-demographic";
+import CardFamilyRecords from "./card-family-records";
+import CardAllergies from "./card-allergies";
 
 export default function PatientHome() {
-  const { response: allergiesResponse, fetchData: getAllergies } = useApi();
-  const { response: familyRecordResponse, fetchData: getFamilyRecords } =
-    useApi();
-  const [allergyList, setAllergyList] = useState<any>([]);
-  const [familyRecordList, setfamilyRecordList] = useState<any>([]);
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    getAllergies(
-      allergyIntoleranceService.getAllergyByPatientId(
-        session?.user?.id as string
-      )
-    );
-    getFamilyRecords(
-      familyRecordService.getFamilyRecordByPatientId(
-        session?.user?.id as string
-      )
-    );
-  }, [session?.user?.id]);
-
-  useEffect(() => {
-    setAllergyList(getAllergyList());
-    setfamilyRecordList(getFamilyRecordList());
-  }, [allergiesResponse?.data, familyRecordResponse?.data]);
-
-  const getAllergyList = () => {
-    let allergyList: any[] = [];
-    const data = allergiesResponse?.data;
-
-    if (!data || data.length === 0)
-      return allergyList;
-
-    data?.map((allergy: any) => {
-      allergyList.push({
-        col1: allergy.allergy_notes,
-        col2: allergy.recorded_date,
-      });
-    });
-
-    return allergyList;
-  };
-
-  const getFamilyRecordList = () => {
-    let familyRecordList: any[] = [];
-    const data = familyRecordResponse?.data;
-
-    if (!data || data.length === 0)
-      return familyRecordList;
-
-    data?.map((familyRecord: any) => {
-      familyRecordList.push({
-        col1: familyRecord.family_record_notes,
-        col2: familyRecord.recorded_date,
-      });
-    });
-
-    return familyRecordList;
-  };
-
   return (
     <>
       <div className="flex flex-col items-center gap-5 sm:gap-10 md:gap-14 lg:gap-20 xl:gap-24 2xl:gap-28 px-4 sm:px-6 md:px-8 lg:px-20 xl:px-24 2xl:px-32 py-5 relative self-stretch w-full flex-[0_0_auto]">
         <CardDemographic />
       </div>
       <div className="flex flex-wrap items-center justify-center gap-5 px-4 sm:px-6 md:px-8 lg:px-20 xl:px-24 2xl:px-32 py-0 relative self-stretch w-full mb-6 flex-[0_0_auto]">
-        <CustomSuspense
-          isLoading={allergiesResponse.isLoading}
-          fallback={<CardSkeleton />}
-        >
-          <Card
-            link={`patient/${session?.user?.id}/family-records`}
-            card_title="Family Records"
-            icon={
-              <Users2
-                color="white"
-                className="w-5 h-[18px] left-[2px] top-[3px] absolute"
-              />
-            }
-            heading_one="Detail"
-            heading_two="Date"
-            cardData={allergyList}
-          />
-        </CustomSuspense>
-        <CustomSuspense
-          isLoading={familyRecordResponse.isLoading}
-          fallback={<CardSkeleton />}
-        >
-          <Card
-            link={`patient/${session?.user?.id}/allergy-intolerance`}
-            card_title="Allergies"
-            icon={
-              <TestTube2
-                color="white"
-                className="w-5 h-[18px] left-[2px] top-[3px] absolute"
-              />
-            }
-            heading_one="Detail"
-            heading_two="Date"
-            cardData={familyRecordList}
-          />
-        </CustomSuspense>
+        <CardFamilyRecords />
+        <CardAllergies />
       </div>
     </>
   );

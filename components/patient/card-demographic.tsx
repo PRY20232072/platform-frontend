@@ -1,21 +1,21 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+"use client";
 
-import { FileText } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { FileText } from "lucide-react";
 import {
   Card as CardNextUI,
   CardHeader,
   CardBody,
   Divider,
   Button,
-} from '@nextui-org/react';
-import { emptyPatient } from '@/data/data';
-import { useApi } from '@/hooks/useApi';
-import { useSession } from 'next-auth/react';
-import patientService from '@/services/patientService';
-import CustomSuspense from '../custom-suspense';
-import CardSkeleton from './skeletons/card-skeleton';
+} from "@nextui-org/react";
+import { emptyPatient } from "@/data/data";
+import { useApi } from "@/hooks/useApi";
+import { useSession } from "next-auth/react";
+import patientService from "@/services/patientService";
+import CustomSuspense from "../custom-suspense";
+import CardSkeleton from "../ui/skeletons/card-skeleton";
 
 interface DemographicInfoProps {
   label: string;
@@ -36,25 +36,36 @@ const DemographicInfo = ({ label, value }: DemographicInfoProps) => (
 export const CardDemographic = () => {
   const [patient, setPatient] = useState(emptyPatient);
   const [isRegisterPatient, setIsRegisterPatient] = useState<boolean>(false);
-  const { response: getPatientByIdResponse, fetchData: getPatientById } = useApi();
+  const { response: getPatientByIdResponse, fetchData: getPatientById } =
+    useApi();
   const { data: session } = useSession();
 
   useEffect(() => {
-    getPatientById(patientService.getPatientById(session?.user?.id as string));
+    const fetchData = async () => {
+      if (session?.user?.id) {
+        await getPatientById(
+          patientService.getPatientById(session?.user?.id as string)
+        );
+      }
+    };
+
+    fetchData();
   }, [session?.user?.id]);
 
   useEffect(() => {
     if (getPatientByIdResponse.isSuccess) {
       setPatient(getPatientByIdResponse.data);
       setIsRegisterPatient(true);
-    }
-    else {
+    } else {
       setIsRegisterPatient(false);
     }
-  }, [getPatientByIdResponse.isSuccess]);
+  }, [getPatientByIdResponse]);
 
   return (
-    <CustomSuspense isLoading={getPatientByIdResponse.isLoading} fallback={<CardSkeleton />}>
+    <CustomSuspense
+      isLoading={getPatientByIdResponse.isLoading}
+      fallback={<CardSkeleton />}
+    >
       <CardNextUI className="!w-full !h-[302px] !z-0 ![overflow:unset] !min-w-[355px] rounded-[14px] shadow inline-flex flex-col justify-start items-start">
         <CardHeader className="p-5 flex justify-start items-center gap-2.5 border-b border-zinc-300">
           <div className="w-14 h-14 relative">
@@ -73,14 +84,15 @@ export const CardDemographic = () => {
 
           <div className="flex flex-grow flex-shrink flex-basis-0 h-8 justify-end items-center gap-2.5">
             <Button
-              className={'bg-sky-100 text-blue-600 text-sm font-medium '}
+              className={"bg-sky-100 text-blue-600 text-sm font-medium "}
               color="primary"
               radius="sm"
               size="sm"
-              variant={'solid'}
+              variant={"solid"}
             >
-              <Link href={`patient/${session?.user?.id}/demographic`}>See more</Link>
-
+              <Link href={`patient/${session?.user?.id}/demographic`}>
+                See more
+              </Link>
             </Button>
           </div>
         </CardHeader>
@@ -89,15 +101,24 @@ export const CardDemographic = () => {
           {isRegisterPatient ? (
             <>
               <div className="flex-1">
-                <DemographicInfo label="ID" value={session?.user?.id as string} />
+                <DemographicInfo
+                  label="ID"
+                  value={session?.user?.id as string}
+                />
                 <DemographicInfo label="Gender" value={patient.gender} />
-                <DemographicInfo label="Address" value={patient.address.address_line} />
+                <DemographicInfo
+                  label="Address"
+                  value={patient.address.address_line}
+                />
               </div>
 
               <div className="flex-1">
                 <DemographicInfo label="Full name" value={patient.name_id} />
                 <DemographicInfo label="Birthdate" value={patient.birthDate} />
-                <DemographicInfo label="Phone Number" value={patient.telephone} />
+                <DemographicInfo
+                  label="Phone Number"
+                  value={patient.telephone}
+                />
               </div>
             </>
           ) : (
