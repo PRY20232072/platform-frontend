@@ -34,7 +34,7 @@ export default function CardSkeleton() {
             <div className="h-3 w-1/2 rounded-lg bg-default-200"></div>
           </Skeleton>
         </div>
-      </CardBody>      
+      </CardBody>
     </Card>
   );
 }
