@@ -1,5 +1,5 @@
-'use client';
-import React, { useDebugValue, useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Tabs,
   Tab,
@@ -8,19 +8,19 @@ import {
   Input,
   Textarea,
   Button,
-} from '@nextui-org/react';
-import { CustomAutocomplete } from '@/components/ui/auto-complete';
+} from "@nextui-org/react";
+import { CustomAutocomplete } from "@/components/ui/auto-complete";
 import {
   familyRecordStatus,
   selectedPatientFamilyRecordDocs,
   selectedPatientFamilyRecordDocsTableColumns,
   genders,
-} from '@/data/data';
-import { FamilyRecordDocs } from './family-record-docs';
-import { useParams } from 'next/navigation';
-import { useApi } from '@/hooks/useApi';
-import familyRecordService from '@/services/familyRecordService';
-import { FamilyRecordDocFormModal } from '@/components/modal/family-record-doc-form';
+} from "@/data/data";
+import { FamilyRecordDocs } from "./family-record-docs";
+import { useParams } from "next/navigation";
+import { useApi } from "@/hooks/useApi";
+import familyRecordService from "@/services/familyRecordService";
+import { FamilyRecordDocFormModal } from "@/components/modal/family-record-doc-form";
 
 export const FamilyRecordClient = () => {
   const [family_record, setFamilyRecord] = useState<any>({});
@@ -33,10 +33,18 @@ export const FamilyRecordClient = () => {
   const params = useParams();
 
   useEffect(() => {
-    getAllergy(
-      familyRecordService.getFamilyRecordById(params.familyRecordid as string)
-    );
-  }, [params.familyRecordid]);
+    const fetchData = async () => {
+      if (params.familyRecordId) {
+        await getAllergy(
+          familyRecordService.getFamilyRecordById(
+            params.familyRecordId as string
+          )
+        );
+      }
+    };
+
+    fetchData();
+  }, [params.familyRecordId]);
 
   useEffect(() => {
     if (familyRecordResponse.isSuccess) {
@@ -56,7 +64,7 @@ export const FamilyRecordClient = () => {
     e.preventDefault();
     await updateFamilyRecord(
       familyRecordService.updateFamilyRecord(
-        family_record.family_record_id,
+        family_record.familyHistory_id,
         family_record,
         params.practitionerId as string
       )
@@ -69,7 +77,7 @@ export const FamilyRecordClient = () => {
     <>
       <Tabs
         aria-label="Options"
-        classNames={{ tabList: 'bg-sky-100', tabContent: 'text-black' }}
+        classNames={{ tabList: "bg-sky-100", tabContent: "text-black" }}
       >
         <Tab key="details" title="Details">
           <Card>
@@ -126,10 +134,10 @@ export const FamilyRecordClient = () => {
                     isReadOnly={!isEditing}
                     disableAnimation
                     disableAutosize
-                    classNames={{ input: 'resize-y min-h-[40px]' }}
+                    classNames={{ input: "resize-y min-h-[40px]" }}
                     label="Note"
                     labelPlacement="outside"
-                    value={family_record.note}
+                    value={family_record.notes}
                     onChange={(e) => {
                       setFamilyRecord({
                         ...family_record,
