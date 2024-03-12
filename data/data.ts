@@ -65,20 +65,16 @@ const allergyDocTableColumns = [
 
 const allergyAccessTableColumns = [
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  // { name: 'ASSIGNED DATE', uid: 'assigned_date', sortable: true },
-  // { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
 const familyRecordAccessTableColumns = [
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  { name: 'ASSIGNED DATE', uid: 'assigned_date', sortable: true },
-  { name: 'EXPIRED DATE', uid: 'expired_date', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
 const familyRecordTableColumns = [
-  { name: 'DETAIL', uid: 'family_record_notes', sortable: true },
+  { name: 'DETAIL', uid: 'notes', sortable: true },
   { name: 'CREATED BY', uid: 'participant_id', sortable: true },
   { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
   { name: 'STATUS', uid: 'clinical_status', sortable: true },
@@ -122,7 +118,8 @@ const practitionerTableColumns = [
 
 const accessRequestTableColumns = [
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  // { name: 'REQUEST DATE', uid: 'request_date', sortable: true },
+  { name: 'REGISTER TYPE', uid: 'register_type' },
+  { name: 'REGISTER ID', uid: 'register_id' },
   { name: 'ACTION', uid: 'actions' },
 ];
 
@@ -424,7 +421,7 @@ const healthRecords = [
 ];
 
 const practitionerFamilyRecordsTableColumns = [
-  { name: 'DETAIL', uid: 'family_record_note', sortable: true },
+  { name: 'DETAIL', uid: 'notes', sortable: true },
   { name: 'CREATED BY', uid: 'participant_id', sortable: true },
   { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
   { name: 'STATUS', uid: 'clinical_status', sortable: true },
