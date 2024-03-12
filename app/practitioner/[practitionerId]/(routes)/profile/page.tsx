@@ -1,3 +1,5 @@
+"use client";
+
 import PractitionerProfileBasicInfo from "./components/profile-basic-info";
 import PractitionerProfileForm from "./components/profile-form";
 

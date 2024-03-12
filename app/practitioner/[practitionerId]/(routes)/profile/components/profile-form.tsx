@@ -25,12 +25,18 @@ export default function PractitionerProfileForm() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    getPractitionerById(practitionerService.getPractitionerById(session?.user?.id as string));
+    const fetchData = async () => {
+      if (session?.user?.id) {
+        await getPractitionerById(practitionerService.getPractitionerById(session?.user?.id as string));
+      }
+    };
+
+    fetchData();
   }, [session?.user?.id]);
 
   useEffect(() => {
     if (getPractitionerByIdResponse.isSuccess) {
-      serPractitioner(getPractitionerByIdResponse.data.data);
+      serPractitioner(getPractitionerByIdResponse.data);
       setIsRegisterPractitioner(true);
     }
     else {
