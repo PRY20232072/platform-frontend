@@ -26,7 +26,7 @@ type FamilyRecordDoc = {
   recorded_date: string;
   patient_id: string;
   participant_id: string;
-  family_record_id: string;
+  familyHistory_id: string;
 };
 
 interface FamilyRecordSelectedPractitionerProps {
@@ -45,11 +45,11 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
 
   const handleCreate = () => {
     familyRecordDoc.recorded_date = new Date().toISOString().split('T')[0];
-    const family_record_id = uuidv4();
+    const familyHistory_id = uuidv4();
 
     createFamilyRecord(
       familyRecordService.createFamilyRecord({
-        identifier: family_record_id,
+        identifier: familyHistory_id,
         payload: familyRecordDoc,
       })
     );
@@ -110,7 +110,7 @@ export const FamilyRecordDocFormModal = () => {
       recorded_date: '',
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
-      family_record_id: params.familyRecordId as string,
+      familyHistory_id: params.familyRecordId as string,
     });
   }, [params.patientId, params.practitionerId,params.familyRecordId]);
 

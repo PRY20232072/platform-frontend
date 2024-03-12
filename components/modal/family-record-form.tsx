@@ -30,10 +30,10 @@ type PatientFamilyRecord = {
   clinical_status: string;
   onset_date: string;
   recorded_date: string;
-  family_record_note: string;
-  family_name: string;
-  family_gender: string;
-  family_birthdate: string;
+  notes: string;
+  // family_name: string;
+  // family_gender: string;
+  // family_birthdate: string;
 };
 
 interface FamilyRecordSelectedPractitionerProps {
@@ -54,11 +54,11 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
 
   const handleCreate = () => {
     familyRecord.recorded_date = new Date().toISOString().split('T')[0];
-    const family_record_id = uuidv4();
+    const familyHistory_id = uuidv4();
 
     createFamilyRecord(
       familyRecordService.createFamilyRecord({
-        identifier: family_record_id,
+        identifier: familyHistory_id,
         payload: familyRecord,
       })
     );
@@ -119,10 +119,10 @@ export const FamilyRecordFormModal = () => {
       clinical_status: 'PARTIAL',
       onset_date: '',
       recorded_date: '',
-      family_record_note: '',
-      family_name: '',
-      family_gender: 'MALE',
-      family_birthdate: '',
+      notes: '',
+      // family_name: '',
+      // family_gender: 'MALE',
+      // family_birthdate: '',
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
     });
@@ -160,19 +160,19 @@ export const FamilyRecordFormModal = () => {
                   }}
                 />
 
-                <Input
+                {/* <Input
                   type="date"
                   label="Record Date"
                   placeholder="Complete the relative birthdate"
                   classNames={{ label: 'text-md font-bold' }}
-                  value={familyRecord.family_birthdate}
+                  value={familyRecord.recorded_date}
                   onChange={(e) => {
                     setRecord({
                       ...familyRecord,
                       family_birthdate: e.target.value,
                     });
                   }}
-                />
+                /> */}
 
                 <Textarea
                   classNames={{ label: 'text-md font-bold' }}
@@ -191,15 +191,15 @@ export const FamilyRecordFormModal = () => {
                   classNames={{ label: 'text-md font-bold' }}
                   label="Note"
                   placeholder="Write the record note"
-                  value={familyRecord.family_record_note}
+                  value={familyRecord.notes}
                   onChange={(e) => {
                     setRecord({
                       ...familyRecord,
-                      family_record_note: e.target.value,
+                      notes: e.target.value,
                     });
                   }}
                 />
-                <RadioOptions
+                {/* <RadioOptions
                   label="Gender"
                   defaultValue={genders[0].value}
                   data={genders}
@@ -209,7 +209,7 @@ export const FamilyRecordFormModal = () => {
                       family_gender: e.target.value,
                     });
                   }}
-                />
+                /> */}
 
                 <RadioOptions
                   label="Status"
