@@ -1,5 +1,5 @@
-'use client';
-import React, { useDebugValue, useEffect, useState } from 'react';
+"use client";
+import React, { useEffect, useState } from "react";
 import {
   Tabs,
   Tab,
@@ -8,30 +8,35 @@ import {
   Input,
   Textarea,
   Button,
-} from '@nextui-org/react';
-import { CustomAutocomplete } from '@/components/ui/auto-complete';
+} from "@nextui-org/react";
+import { CustomAutocomplete } from "@/components/ui/auto-complete";
 import {
   allergyStatus,
   allergyCategories,
   allergyTypes,
   selectedPatientAllergiesDocs,
   selectedPatientAllergiesDocsTableColumns,
-} from '@/data/data';
-import { PatientAllergyDocsClient } from './patient-allergy-docs';
-import { AllergyFormModal } from '../components/allergy-form-modal';
-import { useParams } from 'next/navigation';
-import { useApi } from '@/hooks/useApi';
-import allergyIntoleranceService from '@/services/allergyIntoleranceService';
+} from "@/data/data";
+import { PatientAllergyDocsClient } from "./patient-allergy-docs";
+import { AllergyFormModal } from "../components/allergy-form-modal";
+import { useParams } from "next/navigation";
+import { useApi } from "@/hooks/useApi";
+import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 
 export const PatientAllergyClient = () => {
   const [allergy, setAllergy] = useState<any>({});
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { response: allergyResponse, fetchData: getAllergy } = useApi();
-  const { response: updateAllergyResponse, fetchData: updateAllergy } = useApi();
+  const { response: updateAllergyResponse, fetchData: updateAllergy } =
+    useApi();
   const params = useParams();
 
   useEffect(() => {
-    getAllergy(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId as string));
+    getAllergy(
+      allergyIntoleranceService.getAllergyById(
+        params.allergyIntoleranceId as string
+      )
+    );
   }, [params.allergyIntoleranceId]);
 
   useEffect(() => {
@@ -42,13 +47,23 @@ export const PatientAllergyClient = () => {
 
   useEffect(() => {
     if (updateAllergyResponse.isSuccess) {
-      getAllergy(allergyIntoleranceService.getAllergyById(params.allergyIntoleranceId as string));
+      getAllergy(
+        allergyIntoleranceService.getAllergyById(
+          params.allergyIntoleranceId as string
+        )
+      );
     }
   }, [updateAllergyResponse.isSuccess]);
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateAllergy(allergyIntoleranceService.updateAllergy(allergy.allergy_id, allergy, params.practitionerId as string));
+    await updateAllergy(
+      allergyIntoleranceService.updateAllergy(
+        allergy.allergy_id,
+        allergy,
+        params.practitionerId as string
+      )
+    );
     setIsEditing(!isEditing);
   };
 
@@ -56,7 +71,7 @@ export const PatientAllergyClient = () => {
     <>
       <Tabs
         aria-label="Options"
-        classNames={{ tabList: 'bg-sky-100', tabContent: 'text-black' }}
+        classNames={{ tabList: "bg-sky-100", tabContent: "text-black" }}
       >
         <Tab key="details" title="Details">
           <Card>
@@ -75,7 +90,7 @@ export const PatientAllergyClient = () => {
                       labelPlacement="outside"
                       value={allergy.name}
                       onChange={(e) => {
-                        setAllergy({ ...allergy, name: e.target.value })
+                        setAllergy({ ...allergy, name: e.target.value });
                       }}
                     />
 
@@ -86,7 +101,7 @@ export const PatientAllergyClient = () => {
                       data={allergyCategories}
                       inputValue={allergy.category}
                       onInputChange={(value) => {
-                        setAllergy({ ...allergy, category: value })
+                        setAllergy({ ...allergy, category: value });
                       }}
                     />
                   </div>
@@ -98,7 +113,7 @@ export const PatientAllergyClient = () => {
                       data={allergyStatus}
                       inputValue={allergy.clinical_status}
                       onInputChange={(value) => {
-                        setAllergy({ ...allergy, clinical_status: value })
+                        setAllergy({ ...allergy, clinical_status: value });
                       }}
                     />
 
@@ -109,7 +124,10 @@ export const PatientAllergyClient = () => {
                       labelPlacement="outside"
                       value={allergy.recorded_date}
                       onChange={(e) => {
-                        setAllergy({ ...allergy, recorded_date: e.target.value })
+                        setAllergy({
+                          ...allergy,
+                          recorded_date: e.target.value,
+                        });
                       }}
                     />
                   </div>
@@ -121,7 +139,7 @@ export const PatientAllergyClient = () => {
                       data={allergyTypes}
                       inputValue={allergy.type}
                       onInputChange={(value) => {
-                        setAllergy({ ...allergy, type: value })
+                        setAllergy({ ...allergy, type: value });
                       }}
                     />
 
@@ -129,18 +147,21 @@ export const PatientAllergyClient = () => {
                       isReadOnly={!isEditing}
                       disableAnimation
                       disableAutosize
-                      classNames={{ input: 'resize-y min-h-[40px]' }}
+                      classNames={{ input: "resize-y min-h-[40px]" }}
                       label="Note"
                       labelPlacement="outside"
                       value={allergy.allergy_notes}
                       onChange={(e) => {
-                        setAllergy({ ...allergy, allergy_notes: e.target.value })
+                        setAllergy({
+                          ...allergy,
+                          allergy_notes: e.target.value,
+                        });
                       }}
                     />
                   </div>
                 </div>
                 <div className="flex justify-center">
-                  {(isEditing ? (
+                  {isEditing ? (
                     <>
                       <Button
                         className="text-red-600 font-medium leading-6 whitespace-nowrap justify-center items-center bg-red-300 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl"
@@ -152,7 +173,7 @@ export const PatientAllergyClient = () => {
                       </Button>
                       <Button
                         className="text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl"
-                        type='submit'
+                        type="submit"
                       >
                         Save
                       </Button>
@@ -166,7 +187,7 @@ export const PatientAllergyClient = () => {
                     >
                       Edit
                     </Button>
-                  ))}
+                  )}
                 </div>
               </form>
             </CardBody>

@@ -124,7 +124,7 @@ export const AllergyFormModal = () => {
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="w-[700px] max-w-full"
+        className="w-[700px] max-w-full h-5/6 overflow-y-scroll"
       >
         <ModalContent>
           {(onClose) => (
