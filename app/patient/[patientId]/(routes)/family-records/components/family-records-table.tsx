@@ -33,11 +33,12 @@ type PatientFamilyRecord = {
   clinical_status: string;
   onset_date: string;
   recorded_date: string;
-  family_record_note: string;
-  family_name: string;
-  family_gender: string;
-  family_birthdate: string;
-  family_record_id: string;
+  notes: string;
+  familyHistory_id: string;
+  // family_name: string;
+  // family_gender: string;
+  // family_birthdate: string;
+  // family_record_id: string;
 };
 
 const FamilyRecordsTable: React.FC = () => {
@@ -91,7 +92,7 @@ const FamilyRecordsTable: React.FC = () => {
                 size="sm"
                 variant={"solid"}
                 onClick={() =>
-                  router.push(`family-records/${familyRecord.family_record_id}`)
+                  router.push(`family-records/${familyRecord.familyHistory_id}`)
                 }
               >
                 See more
@@ -106,9 +107,6 @@ const FamilyRecordsTable: React.FC = () => {
   );
 
   return (
-    // <CustomSuspense isLoading={response.isLoading} fallback={<TableSkeleton />}>
-    //   <div>Hola</div>
-    // </CustomSuspense>
     <CustomSuspense isLoading={response.isLoading} fallback={<TableSkeleton />}>
       <Table aria-label="Family records collection table">
         <TableHeader columns={columns}>
@@ -128,7 +126,7 @@ const FamilyRecordsTable: React.FC = () => {
           items={items}
         >
           {(item) => (
-            <TableRow key={item.family_record_id}>
+            <TableRow key={item.familyHistory_id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

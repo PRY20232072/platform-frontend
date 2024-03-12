@@ -54,7 +54,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
     createConsent(consentService.createConsent({
       register_id: urlParams.familyRecordId,
       practitioner_id: practitioner.id,
-      register_type: "FAMILY_RECORD"
+      register_type: "FAMILY_HISTORY"
     }));
 
     onClose();

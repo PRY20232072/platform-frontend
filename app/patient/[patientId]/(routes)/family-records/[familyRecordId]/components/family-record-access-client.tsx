@@ -57,7 +57,13 @@ const FamilyRecordAccessClient = () => {
   );
 
   useEffect(() => {
-    getConsentList(consentService.getByRegisterId(params.familyRecordId as string));
+    const fetchData = async () => {
+      if (params.familyRecordId) {
+        await getConsentList(consentService.getByRegisterId(params.familyRecordId as string));
+      }
+    };
+
+    fetchData();
   }, [params.familyRecordId]);
 
   useEffect(() => {
@@ -68,7 +74,7 @@ const FamilyRecordAccessClient = () => {
 
   useEffect(() => {
     if (consentList.isSuccess) {
-      parseConsentList(consentList.data.data);
+      parseConsentList(consentList.data);
     }
   }, [consentList.isSuccess]);
 
