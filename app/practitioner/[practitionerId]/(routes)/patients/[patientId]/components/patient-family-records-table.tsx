@@ -1,5 +1,6 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -10,18 +11,18 @@ import {
   Button,
   Chip,
   ChipProps,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import { practitionerFamilyRecordsTableColumns } from '@/data/data';
-import { useParams, useRouter } from 'next/navigation';
-import { useApi } from '@/hooks/useApi';
-import familyRecordService from '@/services/familyRecordService';
-import consentService from '@/services/consentService';
+import { practitionerFamilyRecordsTableColumns } from "@/data/data";
+import { useParams, useRouter } from "next/navigation";
+import { useApi } from "@/hooks/useApi";
+import familyRecordService from "@/services/familyRecordService";
+import consentService from "@/services/consentService";
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  RESOLVE: 'success',
-  ACTIVE: 'danger',
-  INNACTIVE: 'warning',
+const statusColorMap: Record<string, ChipProps["color"]> = {
+  RESOLVE: "success",
+  ACTIVE: "danger",
+  INNACTIVE: "warning",
 };
 
 type FamilyRecord = {
@@ -31,12 +32,13 @@ type FamilyRecord = {
   clinical_status: string;
   onset_date: string;
   recorded_date: string;
-  family_record_note: string;
-  family_name: string;
-  family_gender: string;
-  family_birthdate: string;
-  family_record_id: string;
+  notes: string;
+  familyHistory_id: string;
   has_access: string;
+  // family_name: string;
+  // family_gender: string;
+  // family_birthdate: string;
+  // family_record_id: string;
 };
 
 export const PatientFamilyRecordsTable = () => {
@@ -52,9 +54,17 @@ export const PatientFamilyRecordsTable = () => {
   const router = useRouter();
 
   useEffect(() => {
-    getFamilyRecordList(
-      familyRecordService.getFamilyRecordByPatientId(params.patientId as string)
-    );
+    const fetchData = async () => {
+      if (params.patientId) {
+        await getFamilyRecordList(
+          familyRecordService.getFamilyRecordByPatientId(
+            params.patientId as string
+          )
+        );
+      }
+    };
+
+    fetchData();
   }, [params.patientId]);
 
   useEffect(() => {
@@ -69,14 +79,14 @@ export const PatientFamilyRecordsTable = () => {
         try {
           const response =
             await consentService.getByRegisteryIdAndPractitionerId(
-              family_record.family_record_id,
+              family_record.familyHistory_id,
               params.practitionerId as string
             );
           const consent = response.data.data;
           family_record.has_access = consent.state;
           return family_record;
         } catch (error) {
-          family_record.has_access = 'NO';
+          family_record.has_access = "NO";
           return family_record;
         }
       })
@@ -89,7 +99,7 @@ export const PatientFamilyRecordsTable = () => {
       consentService.createConsent({
         register_id: familyRecordId,
         practitioner_id: params.practitionerId,
-        register_type: 'FAMILY_RECORD',
+        register_type: "FAMILY_HISTORY",
       })
     );
 
@@ -105,7 +115,7 @@ export const PatientFamilyRecordsTable = () => {
         selected_patient_family_record[columnKey as keyof FamilyRecord];
 
       switch (columnKey) {
-        case 'clinical_status':
+        case "clinical_status":
           return (
             <Chip
               color={
@@ -117,14 +127,14 @@ export const PatientFamilyRecordsTable = () => {
               {cellValue}
             </Chip>
           );
-        case 'has_access':
-          return selected_patient_family_record.has_access === 'ACTIVE'
-            ? 'YES'
-            : 'NO';
-        case 'actions':
+        case "has_access":
+          return selected_patient_family_record.has_access === "ACTIVE"
+            ? "YES"
+            : "NO";
+        case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
-              {selected_patient_family_record.has_access === 'ACTIVE' ? (
+              {selected_patient_family_record.has_access === "ACTIVE" ? (
                 <Button
                   className="font-medium "
                   color="primary"
@@ -133,13 +143,13 @@ export const PatientFamilyRecordsTable = () => {
                   variant="flat"
                   onClick={() =>
                     router.push(
-                      `${params.patientId}/family-records/${selected_patient_family_record.family_record_id}`
+                      `${params.patientId}/family-records/${selected_patient_family_record.familyHistory_id}`
                     )
                   }
                 >
                   View more
                 </Button>
-              ) : selected_patient_family_record.has_access === 'PENDING' ? (
+              ) : selected_patient_family_record.has_access === "PENDING" ? (
                 <Button
                   isDisabled
                   className="font-medium "
@@ -159,7 +169,7 @@ export const PatientFamilyRecordsTable = () => {
                   variant="flat"
                   onClick={() =>
                     handleCreateConsent(
-                      selected_patient_family_record.family_record_id
+                      selected_patient_family_record.familyHistory_id
                     )
                   }
                 >
@@ -183,7 +193,7 @@ export const PatientFamilyRecordsTable = () => {
             <TableColumn
               className="text-bold"
               key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
+              align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}
             >
               {column.name}
@@ -191,11 +201,11 @@ export const PatientFamilyRecordsTable = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No patient family record data available'}
+          emptyContent={"No patient family record data available"}
           items={(familyRecordList || []) as FamilyRecord[]}
         >
           {(item) => (
-            <TableRow key={item.family_record_id}>
+            <TableRow key={item.familyHistory_id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

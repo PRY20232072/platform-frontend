@@ -1,5 +1,6 @@
-'use client';
-import React, { useEffect, useState } from 'react';
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -10,20 +11,18 @@ import {
   Button,
   Chip,
   ChipProps,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import {
-  selectedPatientAllergiesTableColumns,
-} from '@/data/data';
-import { useParams, useRouter } from 'next/navigation';
-import { useApi } from '@/hooks/useApi';
-import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import consentService from '@/services/consentService';
+import { selectedPatientAllergiesTableColumns } from "@/data/data";
+import { useParams, useRouter } from "next/navigation";
+import { useApi } from "@/hooks/useApi";
+import allergyIntoleranceService from "@/services/allergyIntoleranceService";
+import consentService from "@/services/consentService";
 
-const statusColorMap: Record<string, ChipProps['color']> = {
-  RESOLVE: 'success',
-  ACTIVE: 'danger',
-  INNACTIVE: 'warning',
+const statusColorMap: Record<string, ChipProps["color"]> = {
+  RESOLVE: "success",
+  ACTIVE: "danger",
+  INNACTIVE: "warning",
 };
 
 type Allergy = {
@@ -41,17 +40,23 @@ type Allergy = {
   allergy_notes: string;
   allergy_id: string;
   has_access: string;
-}
+};
 
 export const PatientAllergiesTable = () => {
   const [allergyList, setAllergyList] = useState<Allergy[]>([]);
-  const { response: getAllergyListResponse, fetchData: getAllergyList } = useApi();
-  const { response: createConsentResponse, fetchData: createConsent } = useApi();
+  const { response: getAllergyListResponse, fetchData: getAllergyList } =
+    useApi();
+  const { response: createConsentResponse, fetchData: createConsent } =
+    useApi();
   const params = useParams();
   const router = useRouter();
 
   useEffect(() => {
-    getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId as string));
+    getAllergyList(
+      allergyIntoleranceService.getAllergyByPatientId(
+        params.patientId as string
+      )
+    );
   }, [params.patientId]);
 
   useEffect(() => {
@@ -64,7 +69,11 @@ export const PatientAllergiesTable = () => {
     const parsedAllergyList = await Promise.all(
       allergyList.map(async (allergy: any) => {
         try {
-          const response = await consentService.getByRegisteryIdAndPractitionerId(allergy.allergy_id, params.practitionerId as string);
+          const response =
+            await consentService.getByRegisteryIdAndPractitionerId(
+              allergy.allergy_id,
+              params.practitionerId as string
+            );
           const consent = response.data.data;
           allergy.has_access = consent.state;
           return allergy;
@@ -75,29 +84,31 @@ export const PatientAllergiesTable = () => {
       })
     );
     setAllergyList(parsedAllergyList);
-  }
+  };
 
   const handleCreateConsent = async (allergyId: string) => {
-    await createConsent(consentService.createConsent({
-      register_id: allergyId,
-      practitioner_id: params.practitionerId,
-      register_type: 'ALLERGY'
-    }));
+    await createConsent(
+      consentService.createConsent({
+        register_id: allergyId,
+        practitioner_id: params.practitionerId,
+        register_type: "ALLERGY",
+      })
+    );
 
-    await getAllergyList(allergyIntoleranceService.getAllergyByPatientId(params.patientId as string));
+    await getAllergyList(
+      allergyIntoleranceService.getAllergyByPatientId(
+        params.patientId as string
+      )
+    );
     router.refresh();
-  }
+  };
 
   const renderCell = React.useCallback(
-    (
-      selected_patient_allergy: Allergy,
-      columnKey: React.Key
-    ) => {
-      const cellValue =
-        selected_patient_allergy[columnKey as keyof Allergy];
+    (selected_patient_allergy: Allergy, columnKey: React.Key) => {
+      const cellValue = selected_patient_allergy[columnKey as keyof Allergy];
 
       switch (columnKey) {
-        case 'clinical_status':
+        case "clinical_status":
           return (
             <Chip
               color={statusColorMap[selected_patient_allergy.clinical_status]}
@@ -107,12 +118,14 @@ export const PatientAllergiesTable = () => {
               {cellValue}
             </Chip>
           );
-        case 'has_access':
-          return selected_patient_allergy.has_access === 'ACTIVE' ? 'YES' : 'NO';
-        case 'actions':
+        case "has_access":
+          return selected_patient_allergy.has_access === "ACTIVE"
+            ? "YES"
+            : "NO";
+        case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
-              {selected_patient_allergy.has_access === 'ACTIVE' ? (
+              {selected_patient_allergy.has_access === "ACTIVE" ? (
                 <Button
                   className="font-medium "
                   color="primary"
@@ -120,12 +133,14 @@ export const PatientAllergiesTable = () => {
                   size="sm"
                   variant="flat"
                   onClick={() =>
-                    router.push(`${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`)
+                    router.push(
+                      `${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`
+                    )
                   }
                 >
                   View more
                 </Button>
-              ) : selected_patient_allergy.has_access === 'PENDING' ? (
+              ) : selected_patient_allergy.has_access === "PENDING" ? (
                 <Button
                   isDisabled
                   className="font-medium "
@@ -167,7 +182,7 @@ export const PatientAllergiesTable = () => {
             <TableColumn
               className="text-bold"
               key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
+              align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}
             >
               {column.name}
@@ -175,7 +190,7 @@ export const PatientAllergiesTable = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No patient allergies data available'}
+          emptyContent={"No patient allergies data available"}
           items={(allergyList || []) as Allergy[]}
         >
           {(item) => (
