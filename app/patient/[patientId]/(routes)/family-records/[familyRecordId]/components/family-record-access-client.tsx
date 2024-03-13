@@ -1,5 +1,5 @@
-'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+"use client";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -8,33 +8,35 @@ import {
   TableRow,
   TableCell,
   Button,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import { familyRecordAccessTableColumns } from '@/data/data';
-import { useApi } from '@/hooks/useApi';
-import consentService from '@/services/consentService';
-import practitionerService from '@/services/practitionerService';
-import { useParams } from 'next/navigation';
+import { familyRecordAccessTableColumns } from "@/data/data";
+import { useApi } from "@/hooks/useApi";
+import consentService from "@/services/consentService";
+import practitionerService from "@/services/practitionerService";
+import { useParams } from "next/navigation";
 
 type FamilyRecordAccess = {
   id: string;
   practitioner_name: string;
   practitioner_id: string;
   register_id: string;
-}
+};
 
 const FamilyRecordAccessClient = () => {
   const [items, setItems] = useState<FamilyRecordAccess[]>([]);
   const params = useParams();
   const { response: consentList, fetchData: getConsentList } = useApi();
-  const { response: revokeConsentResponse, fetchData: revokeConsent } = useApi();
+  const { response: revokeConsentResponse, fetchData: revokeConsent } =
+    useApi();
 
   const renderCell = useCallback(
     (family_record_access: FamilyRecordAccess, columnKey: React.Key) => {
-      const cellValue = family_record_access[columnKey as keyof FamilyRecordAccess];
+      const cellValue =
+        family_record_access[columnKey as keyof FamilyRecordAccess];
 
       switch (columnKey) {
-        case 'actions':
+        case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
               <Button
@@ -59,7 +61,9 @@ const FamilyRecordAccessClient = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (params.familyRecordId) {
-        await getConsentList(consentService.getByRegisterId(params.familyRecordId as string));
+        await getConsentList(
+          consentService.getByRegisterId(params.familyRecordId as string)
+        );
       }
     };
 
@@ -68,7 +72,9 @@ const FamilyRecordAccessClient = () => {
 
   useEffect(() => {
     if (revokeConsentResponse.isSuccess) {
-      getConsentList(consentService.getByRegisterId(params.familyRecordId as string));
+      getConsentList(
+        consentService.getByRegisterId(params.familyRecordId as string)
+      );
     }
   }, [revokeConsentResponse.isSuccess]);
 
@@ -81,12 +87,14 @@ const FamilyRecordAccessClient = () => {
   const parseConsentList = async (consentList: any) => {
     if (!Array.isArray(consentList)) return [];
 
-    consentList = consentList.filter((consent) => consent.state === 'ACTIVE');
+    consentList = consentList.filter((consent) => consent.state === "ACTIVE");
 
     const parsedConsentList = await Promise.all(
       consentList.map(async (consent: any) => {
         try {
-          const response = await practitionerService.getPractitionerById(consent.practitioner_id);
+          const response = await practitionerService.getPractitionerById(
+            consent.practitioner_id
+          );
           const practitioner = response.data.data;
           return {
             id: consent.register_id + practitioner.practitioner_id,
@@ -104,8 +112,10 @@ const FamilyRecordAccessClient = () => {
   };
 
   const handleRevoke = async (consent: FamilyRecordAccess) => {
-    await revokeConsent(consentService.revokeConsent(consent.register_id, consent.practitioner_id));
-  }
+    await revokeConsent(
+      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
+    );
+  };
 
   return (
     <>
@@ -115,7 +125,7 @@ const FamilyRecordAccessClient = () => {
             <TableColumn
               className="text-bold"
               key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
+              align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}
             >
               {column.name}
@@ -123,7 +133,7 @@ const FamilyRecordAccessClient = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No family record access data available'}
+          emptyContent={"No family record access data available"}
           items={items}
         >
           {(item) => (

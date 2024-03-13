@@ -55,7 +55,7 @@ export const FamilyRecordClient = () => {
   useEffect(() => {
     if (updateFamilyRecordResponse.isSuccess) {
       getAllergy(
-        familyRecordService.getFamilyRecordById(params.familyRecordid as string)
+        familyRecordService.getFamilyRecordById(params.familyRecordId as string)
       );
     }
   }, [updateFamilyRecordResponse.isSuccess]);
