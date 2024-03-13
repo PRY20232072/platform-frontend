@@ -1,9 +1,9 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
-
+ 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:4002/",
-    // baseURL: "https://sawtooth-platform-rest-api.azurewebsites.net/",
+    //baseURL: "http://localhost:4002/",
+    baseURL: "https://sawtooth-platform-rest-api.azurewebsites.net/",
     headers: {
         "Content-type": "application/json",
         'Access-Control-Allow-Origin' : '*',
