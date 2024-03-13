@@ -1,5 +1,5 @@
-'use client';
-import React, { useCallback, useEffect, useState } from 'react';
+"use client";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -8,33 +8,34 @@ import {
   TableRow,
   TableCell,
   Button,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import { allergyAccessTableColumns } from '@/data/data';
-import { useApi } from '@/hooks/useApi';
-import consentService from '@/services/consentService';
-import practitionerService from '@/services/practitionerService';
-import { useParams } from 'next/navigation';
+import { allergyAccessTableColumns } from "@/data/data";
+import { useApi } from "@/hooks/useApi";
+import consentService from "@/services/consentService";
+import practitionerService from "@/services/practitionerService";
+import { useParams } from "next/navigation";
 
 type AllergiesAccess = {
   id: string;
   practitioner_name: string;
   practitioner_id: string;
   register_id: string;
-}
+};
 
 const AllergyAccessClient = () => {
   const [items, setItems] = useState<AllergiesAccess[]>([]);
   const params = useParams();
   const { response: consentList, fetchData: getConsentList } = useApi();
-  const { response: revokeConsentResponse, fetchData: revokeConsent } = useApi();
+  const { response: revokeConsentResponse, fetchData: revokeConsent } =
+    useApi();
 
   const renderCell = useCallback(
     (allergy_access: AllergiesAccess, columnKey: React.Key) => {
       const cellValue = allergy_access[columnKey as keyof AllergiesAccess];
 
       switch (columnKey) {
-        case 'actions':
+        case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
               <Button
@@ -57,30 +58,42 @@ const AllergyAccessClient = () => {
   );
 
   useEffect(() => {
-    getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId as string));
+    const fetchData = async () => {
+      if (params.allergyIntoleranceId) {
+        await getConsentList(
+          consentService.getByRegisterId(params.allergyIntoleranceId as string)
+        );
+      }
+    };
+
+    fetchData();
   }, [params.allergyIntoleranceId]);
 
   useEffect(() => {
     if (revokeConsentResponse.isSuccess) {
-      getConsentList(consentService.getByRegisterId(params.allergyIntoleranceId as string));
+      getConsentList(
+        consentService.getByRegisterId(params.allergyIntoleranceId as string)
+      );
     }
   }, [revokeConsentResponse.isSuccess]);
 
   useEffect(() => {
     if (consentList.isSuccess) {
-      parseConsentList(consentList.data.data);
+      parseConsentList(consentList.data);
     }
   }, [consentList.isSuccess]);
 
   const parseConsentList = async (consentList: any) => {
     if (!Array.isArray(consentList)) return [];
 
-    consentList = consentList.filter((consent) => consent.state === 'ACTIVE');
+    consentList = consentList.filter((consent) => consent.state === "ACTIVE");
 
     const parsedConsentList = await Promise.all(
       consentList.map(async (consent: any) => {
         try {
-          const response = await practitionerService.getPractitionerById(consent.practitioner_id);
+          const response = await practitionerService.getPractitionerById(
+            consent.practitioner_id
+          );
           const practitioner = response.data.data;
           return {
             id: consent.register_id + practitioner.practitioner_id,
@@ -98,8 +111,10 @@ const AllergyAccessClient = () => {
   };
 
   const handleRevoke = async (consent: AllergiesAccess) => {
-    await revokeConsent(consentService.revokeConsent(consent.register_id, consent.practitioner_id));
-  }
+    await revokeConsent(
+      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
+    );
+  };
 
   return (
     <>
@@ -109,7 +124,7 @@ const AllergyAccessClient = () => {
             <TableColumn
               className="text-bold"
               key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
+              align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}
             >
               {column.name}
@@ -117,7 +132,7 @@ const AllergyAccessClient = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No allergies access data available'}
+          emptyContent={"No allergies access data available"}
           items={items}
         >
           {(item) => (
