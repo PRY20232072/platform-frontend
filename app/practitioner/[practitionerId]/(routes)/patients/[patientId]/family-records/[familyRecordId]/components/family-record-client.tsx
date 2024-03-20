@@ -141,7 +141,7 @@ export const FamilyRecordClient = () => {
                     onChange={(e) => {
                       setFamilyRecord({
                         ...family_record,
-                        note: e.target.value,
+                        notes: e.target.value,
                       });
                     }}
                   />
