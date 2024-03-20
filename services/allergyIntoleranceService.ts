@@ -11,7 +11,7 @@ class AllergyIntoleranceService {
         return http.get(`${allergyPath}/${id}`);
     };
     
-    getAllergyByPatientId = (id: string) => {
+    getAllergyListByPatientId = (id: string) => {
         return http.get(`${allergyPath}/patient/${id}`);
     };
     

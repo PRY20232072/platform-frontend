@@ -18,7 +18,7 @@ export default function CardAllergies() {
     const fetchData = async () => {
       if (session?.user?.id) {
         await getAllergies(
-          allergyIntoleranceService.getAllergyByPatientId(
+          allergyIntoleranceService.getAllergyListByPatientId(
             session?.user?.id as string
           )
         );

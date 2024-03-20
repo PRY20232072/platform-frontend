@@ -41,7 +41,7 @@ const AccessRequestTable = () => {
     const fetchData = async () => {
       if (session?.user?.id) {
         await getAllergyRecords(
-          allergyIntoleranceService.getAllergyByPatientId(
+          allergyIntoleranceService.getAllergyListByPatientId(
             params.patientId as string
           )
         );
@@ -111,7 +111,7 @@ const AccessRequestTable = () => {
       .approveConsent(consent.register_id, consent.practitioner_id)
       .then(() => {
         getAllergyRecords(
-          allergyIntoleranceService.getAllergyByPatientId(
+          allergyIntoleranceService.getAllergyListByPatientId(
             params.patientId as string
           )
         );
@@ -126,7 +126,7 @@ const AccessRequestTable = () => {
       .revokeConsent(consent.register_id, consent.practitioner_id)
       .then(() => {
         getAllergyRecords(
-          allergyIntoleranceService.getAllergyByPatientId(
+          allergyIntoleranceService.getAllergyListByPatientId(
             params.patientId as string
           )
         );

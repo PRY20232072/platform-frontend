@@ -53,7 +53,7 @@ export const PatientAllergiesTable = () => {
 
   useEffect(() => {
     getAllergyList(
-      allergyIntoleranceService.getAllergyByPatientId(
+      allergyIntoleranceService.getAllergyListByPatientId(
         params.patientId as string
       )
     );
@@ -96,7 +96,7 @@ export const PatientAllergiesTable = () => {
     );
 
     await getAllergyList(
-      allergyIntoleranceService.getAllergyByPatientId(
+      allergyIntoleranceService.getAllergyListByPatientId(
         params.patientId as string
       )
     );

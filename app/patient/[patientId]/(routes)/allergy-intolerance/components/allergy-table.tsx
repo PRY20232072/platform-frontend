@@ -49,7 +49,7 @@ const AllergyTable: React.FC = () => {
 
   useEffect(() => {
     fetchData(
-      allergyIntoleranceService.getAllergyByPatientId(
+      allergyIntoleranceService.getAllergyListByPatientId(
         session?.user?.id as string
       )
     );
