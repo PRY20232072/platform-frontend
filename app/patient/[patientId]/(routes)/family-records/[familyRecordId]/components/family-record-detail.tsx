@@ -1,7 +1,7 @@
 "use client";
 
 import CustomSuspense from "@/components/custom-suspense";
-import { FamilyRecordDetailFields } from "@/components/family-records/family-record-detail-fields";
+import FamilyRecordDetailFields from "@/components/family-records/family-record-detail-fields";
 import Loading from "@/components/loading";
 import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";

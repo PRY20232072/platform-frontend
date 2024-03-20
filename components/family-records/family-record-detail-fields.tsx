@@ -8,11 +8,11 @@ interface FamilyRecordDetailsProps {
   handleInputChange: (key: string, value: any) => void;
 }
 
-export const FamilyRecordDetailFields = ({
+export default function FamilyRecordDetailFields({
   familyRecord,
   isEditing,
   handleInputChange,
-}: FamilyRecordDetailsProps) => {
+}: FamilyRecordDetailsProps) {
   return (
     <>
       <div className="mb-4 font-bold text-2xl leading-[24px]">

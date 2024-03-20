@@ -7,7 +7,7 @@ import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
-import { FamilyRecordDetailFields } from "@/components/family-records/family-record-detail-fields";
+import FamilyRecordDetailFields from "@/components/family-records/family-record-detail-fields";
 
 export default function PatientFamilyRecordDetail() {
   const [family_record, setFamilyRecord] = useState<any>({});
