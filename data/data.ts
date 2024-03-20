@@ -21,7 +21,7 @@ const addressTypes = [
 const allergyStatus = [
   { label: 'ACTIVE', value: 'ACTIVE' },
   { label: 'INNACTIVE', value: 'INNACTIVE' },
-  { label: 'RESOLVE', value: 'RESOLVE' },
+  { label: 'RESOLVED', value: 'RESOLVED' },
 ];
 
 const allergyTypes = [
