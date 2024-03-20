@@ -8,11 +8,11 @@ interface PatientDemographicFieldsProps {
   handleInputChange: (key: string, value: any) => void;
 }
 
-export const PatientDemographicFields = ({
+export default function PatientDemographicFields({
   patient,
   isEditing,
   handleInputChange,
-}: PatientDemographicFieldsProps) => {
+}: PatientDemographicFieldsProps) {
   return (
     <>
       <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">

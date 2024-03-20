@@ -8,7 +8,7 @@ import { emptyPatient } from "@/data/data";
 import CustomSuspense from "@/components/custom-suspense";
 import patientService from "@/services/patientService";
 import FormSkeleton from "@/components/ui/skeletons/form-skeleton";
-import { PatientDemographicFields } from "@/components/patient/patient-demographic-fields";
+import PatientDemographicFields from "@/components/patient/patient-demographic-fields";
 
 export default function PatientDemographicInformation() {
   const [patient, setPatient] = useState(emptyPatient);

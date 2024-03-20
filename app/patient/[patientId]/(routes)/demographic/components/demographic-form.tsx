@@ -9,7 +9,7 @@ import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import { toast } from "react-toastify";
 import patientService from "@/services/patientService";
-import { PatientDemographicFields } from "@/components/patient/patient-demographic-fields";
+import PatientDemographicFields from "@/components/patient/patient-demographic-fields";
 
 export default function PatientDemographicForm() {
   const [patient, setPatient] = useState(emptyPatient);
