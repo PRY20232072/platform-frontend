@@ -19,17 +19,16 @@ export default function PatientDemographicFields({
 }: PatientDemographicFieldsProps) {
   const [isInvalid, setIsInvalid] = useState(false);
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
-
-  useEffect(() => {
-    setIsInvalid(patient.telephone ? !validatePhone(patient.telephone) : false);
-  }, [patient.telephone]);
-
   const [provincesOptions, setProvincesOptions] = useState<
     { id: string; name: string; department_id: string }[]
   >([]);
   const [districtsOptions, setDistrictsOptions] = useState<
     { id: string; name: string; province_id: string }[]
   >([]);
+
+  useEffect(() => {
+    setIsInvalid(patient.telephone ? !validatePhone(patient.telephone) : false);
+  }, [patient.telephone]);
 
   useEffect(() => {
     if (patient.address.department) {
@@ -116,10 +115,12 @@ export default function PatientDemographicFields({
           onInputChange={(value) => handleInputChange("maritalStatus", value)}
         />
 
-        <div className=' flex-col items-start gap-[5px] relative !flex-1 !flex !grow'>
+        <div className='flex-col items-start gap-[5px] relative !flex-1 !flex !grow'>
           <Input
             isRequired
-            startContent={<span className="text-default-400 text-small">+51</span>}
+            startContent={
+              <span className='text-default-400 text-small'>+51</span>
+            }
             isReadOnly={!isEditing}
             type='tel'
             label='Phone number'
