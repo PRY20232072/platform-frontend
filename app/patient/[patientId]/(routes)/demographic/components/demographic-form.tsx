@@ -54,6 +54,20 @@ export default function PatientDemographicForm() {
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (patient.telephone && !patient.telephone.match(/^9\d{8}$/)) {
+      toast.error("Invalid phone number", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+      return;
+    }
+
+
     if (isRegisterPatient) {
       await updatePatient(
         patientService.updatePatient(session?.user?.id as string, patient)
@@ -77,7 +91,7 @@ export default function PatientDemographicForm() {
   };
 
   const handleInputChange = (key: string, value: any) => {
-    if (key.includes('address')) {
+    if (key.includes('address')){
       const [prop, field] = key.split('.');
       setPatient((prevState: any) => ({
         ...prevState,
