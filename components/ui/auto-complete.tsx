@@ -23,6 +23,7 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
 }) => (
   <div className="mb-4">
     <Autocomplete
+      isRequired
       isDisabled={isDisabled}
       label={label}
       labelPlacement={labelPlacement}
