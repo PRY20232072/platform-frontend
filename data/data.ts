@@ -177,9 +177,9 @@ const emptyPatient = {
   address: {
     type_address: "",
     address_line: "",
-    city: "",
-    district: "",
-    country: "",
+    province: "",
+    district: "", 
+    department: "",  
     postal_code: "",
   }
 };
@@ -194,9 +194,9 @@ const emptyPractitioner = {
   address: {
     type_address: "",
     address_line: "",
-    city: "",
-    district: "",
-    country: "",
+    province: "",
+    district: "", 
+    department: "",  
     postal_code: "",
   }
 };
