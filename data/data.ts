@@ -131,6 +131,36 @@ const eventsTableColumns = [
   { name: 'ACTION', uid: 'actions' },
 ];
 
+const platformaEventsTableColumns = [
+  {
+    name: "REGISTER ID",
+    uid: "register_id",
+    sortable: true,
+  },
+  {
+    name: "REGISTER TYPE",
+    uid: "register_type",
+  },
+  {
+    name: "PRACTITIONER NAME",
+    uid: "practitioner_name",
+    sortable: true,
+  },
+  {
+    name: "EVENT",
+    uid: "type",
+  },
+  {
+    name: "DATE",
+    uid: "created_at",
+    sortable: true,
+  },
+  {
+    name: "ACTION",
+    uid: "actions",
+  },
+];
+
 const selectedPatientAllergiesTableColumns = [
   { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
   { name: 'TYPE', uid: 'type', sortable: true },
@@ -466,6 +496,7 @@ export {
   eventsTableColumns,
   patientsTableColumns,
   selectedPatientAllergiesTableColumns,
+  platformaEventsTableColumns,
   patientAllergies,
   patientAllergiesDocs,
   patientAllergiesAccess,
