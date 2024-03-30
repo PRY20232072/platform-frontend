@@ -1,32 +1,32 @@
 import http from "./httpCommon";
 
-const practitionerPath = '/Practitioner';
+const practitionerPath = "/Practitioner";
 
 class PractitionerService {
-    getPractitionerList = () => {
-        return http.get(`${practitionerPath}`);
-    };
+  getPractitionerList = () => {
+    return http.get(`${practitionerPath}`);
+  };
 
-    getPractitionerById = (id: string) => {
-        return http.get(`${practitionerPath}/${id}`);
-    };
+  getPractitionerById = (id: string) => {
+    return http.get(`${practitionerPath}/${id}`);
+  };
 
-    createPractitioner = (id: string, data: any) => {
-        return http.post(`${practitionerPath}`, {
-            identifier: id,
-            payload: data
-        });
-    };
+  createPractitioner = (id: string, data: any) => {
+    return http.post(`${practitionerPath}`, {
+      identifier: id,
+      payload: data,
+    });
+  };
 
-    updatePractitioner = (id: string, data: any) => {
-        return http.put(`${practitionerPath}/${id}`, {
-            payload: data
-        });
-    };
+  updatePractitioner = (id: string, data: any) => {
+    return http.put(`${practitionerPath}/${id}`, {
+      payload: data,
+    });
+  };
 
-    deletePractitioner = (id: string) => {
-        return http.delete(`${practitionerPath}/${id}`);
-    };
-};
+  deletePractitioner = (id: string) => {
+    return http.delete(`${practitionerPath}/${id}`);
+  };
+}
 
-export default new PractitionerService;
+export default new PractitionerService();

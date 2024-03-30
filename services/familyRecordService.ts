@@ -1,5 +1,5 @@
-import http from './httpCommon';
-const familyRecordPath = '/FamilyHistory';
+import http from "./httpCommon";
+const familyRecordPath = "/FamilyHistory";
 
 class FamilyRecordService {
   getFamilyRecordList = () => {
@@ -71,6 +71,5 @@ class FamilyRecordService {
 
     return http.delete(`${familyRecordPath}/${id}`, { params });
   };
-
 }
-export default new FamilyRecordService;
+export default new FamilyRecordService();
