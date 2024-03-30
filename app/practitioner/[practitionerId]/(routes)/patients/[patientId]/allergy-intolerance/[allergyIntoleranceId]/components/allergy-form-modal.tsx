@@ -20,6 +20,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { useApi } from '@/hooks/useApi';
 import allergyIntoleranceService from '@/services/allergyIntoleranceService';
+import notificationsService from '@/services/notificationsService';
 
 type Allergy = {
   name: string;
@@ -44,6 +45,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { response: createAllergyResponse, fetchData: createAllergy } = useApi();
   const router = useRouter();
+  const params = useParams();
 
   const handleCreate = () => {
     allergy.recorded_date = new Date().toISOString().split('T')[0];
@@ -53,6 +55,14 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
       identifier: allergy_id,
       payload: allergy
     }));
+
+    notificationsService.createNotifications({
+      user_id: params.patientId,
+      practitioner_id: params.practitionerId,
+      register_id: allergy_id,
+      register_type: "ALLERGY",
+      type: "WRITE",
+    });
 
     router.refresh();
     onClose();

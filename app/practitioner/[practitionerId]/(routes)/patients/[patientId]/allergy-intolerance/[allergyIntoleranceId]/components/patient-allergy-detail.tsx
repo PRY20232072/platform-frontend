@@ -12,6 +12,7 @@ import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 import AllergyDetailFields from "@/components/allergy/allergy-detail-fields";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
+import notificationsService from "@/services/notificationsService";
 
 export default function PatientAllergyDetail() {
   const [allergy, setAllergy] = useState<any>({});
@@ -54,6 +55,15 @@ export default function PatientAllergyDetail() {
         params.practitionerId as string
       )
     );
+
+    notificationsService.createNotifications({
+      user_id: params.patientId,
+      practitioner_id: params.practitionerId,
+      register_id: allergy.allergy_id,
+      register_type: "ALLERGY",
+      type: "WRITE",
+    });
+
     setIsEditing(!isEditing);
   };
 

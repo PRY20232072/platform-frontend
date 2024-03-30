@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Button,
   Modal,
@@ -9,18 +9,19 @@ import {
   ModalBody,
   ModalFooter,
   Input,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import { RadioOptions } from '@/components/ui/radio-options';
+import { RadioOptions } from "@/components/ui/radio-options";
 
-import { Plus } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { familyRecordStatus, genders } from '@/data/data';
+import { Plus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { familyRecordStatus, genders } from "@/data/data";
 
-import { useParams, useRouter } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
-import { useApi } from '@/hooks/useApi';
-import familyRecordService from '@/services/familyRecordService';
+import { useParams, useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import { useApi } from "@/hooks/useApi";
+import familyRecordService from "@/services/familyRecordService";
+import notificationsService from "@/services/notificationsService";
 
 type PatientFamilyRecord = {
   name: string;
@@ -51,9 +52,10 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
     fetchData: createFamilyRecord,
   } = useApi();
   const router = useRouter();
+  const params = useParams();
 
   const handleCreate = () => {
-    familyRecord.recorded_date = new Date().toISOString().split('T')[0];
+    familyRecord.recorded_date = new Date().toISOString().split("T")[0];
     const familyHistory_id = uuidv4();
 
     createFamilyRecord(
@@ -62,6 +64,14 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
         payload: familyRecord,
       })
     );
+
+    notificationsService.createNotifications({
+      user_id: params.patientId,
+      practitioner_id: params.practitionerId,
+      register_id: familyHistory_id,
+      register_type: "FAMILY_HISTORY",
+      type: "WRITE",
+    });
 
     router.refresh();
     onClose();
@@ -114,12 +124,12 @@ export const FamilyRecordFormModal = () => {
 
   useEffect(() => {
     setRecord({
-      name: '',
-      reason: '',
-      clinical_status: 'PARTIAL',
-      onset_date: '',
-      recorded_date: '',
-      notes: '',
+      name: "",
+      reason: "",
+      clinical_status: "PARTIAL",
+      onset_date: "",
+      recorded_date: "",
+      notes: "",
       // family_name: '',
       // family_gender: 'MALE',
       // family_birthdate: '',
@@ -153,7 +163,7 @@ export const FamilyRecordFormModal = () => {
                 <Input
                   label="Name"
                   placeholder="Complete the record's name"
-                  classNames={{ label: 'text-md font-bold' }}
+                  classNames={{ label: "text-md font-bold" }}
                   value={familyRecord.name}
                   onChange={(e) => {
                     setRecord({ ...familyRecord, name: e.target.value });
@@ -175,7 +185,7 @@ export const FamilyRecordFormModal = () => {
                 /> */}
 
                 <Textarea
-                  classNames={{ label: 'text-md font-bold' }}
+                  classNames={{ label: "text-md font-bold" }}
                   label="Reason"
                   placeholder="Write the family record reason"
                   value={familyRecord.reason}
@@ -188,7 +198,7 @@ export const FamilyRecordFormModal = () => {
                 />
 
                 <Textarea
-                  classNames={{ label: 'text-md font-bold' }}
+                  classNames={{ label: "text-md font-bold" }}
                   label="Note"
                   placeholder="Write the record note"
                   value={familyRecord.notes}

@@ -18,6 +18,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";
 import consentService from "@/services/consentService";
+import notificationsService from "@/services/notificationsService";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVE: "success",
@@ -141,11 +142,20 @@ export const PatientFamilyRecordsTable = () => {
                   radius="sm"
                   size="sm"
                   variant="flat"
-                  onClick={() =>
+                  onClick={() => {
+                    notificationsService.createNotifications({
+                      user_id: params.patientId,
+                      practitioner_id: params.practitionerId,
+                      register_id:
+                        selected_patient_family_record.familyHistory_id,
+                      register_type: "FAMILY_HISTORY",
+                      type: "READ",
+                    });
+
                     router.push(
                       `${params.patientId}/family-records/${selected_patient_family_record.familyHistory_id}`
-                    )
-                  }
+                    );
+                  }}
                 >
                   View more
                 </Button>

@@ -8,6 +8,7 @@ import familyRecordService from "@/services/familyRecordService";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import FamilyRecordDetailFields from "@/components/family-records/family-record-detail-fields";
+import notificationsService from "@/services/notificationsService";
 
 export default function PatientFamilyRecordDetail() {
   const [family_record, setFamilyRecord] = useState<any>({});
@@ -56,6 +57,14 @@ export default function PatientFamilyRecordDetail() {
         params.practitionerId as string
       )
     );
+
+    notificationsService.createNotifications({
+      user_id: params.patientId,
+      practitioner_id: params.practitionerId,
+      register_id: family_record.familyHistory_id,
+      register_type: "FAMILY_HISTORY",
+      type: "WRITE",
+    });
 
     setIsEditing(!isEditing);
   };

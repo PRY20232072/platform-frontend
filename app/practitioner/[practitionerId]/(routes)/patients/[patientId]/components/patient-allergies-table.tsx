@@ -18,6 +18,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 import consentService from "@/services/consentService";
+import notificationsService from "@/services/notificationsService";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVE: "success",
@@ -132,11 +133,19 @@ export const PatientAllergiesTable = () => {
                   radius="sm"
                   size="sm"
                   variant="flat"
-                  onClick={() =>
+                  onClick={() => {
+                    notificationsService.createNotifications({
+                      user_id: params.patientId,
+                      practitioner_id: params.practitionerId,
+                      register_id: selected_patient_allergy.allergy_id,
+                      register_type: "ALLERGY",
+                      type: "READ",
+                    });
+
                     router.push(
                       `${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`
-                    )
-                  }
+                    );
+                  }}
                 >
                   View more
                 </Button>
