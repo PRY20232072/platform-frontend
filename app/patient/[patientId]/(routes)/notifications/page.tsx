@@ -1,6 +1,8 @@
 "use client";
 
-import { AccessRequestTable } from './components/access-request-table';
+import { AccessRequestTable } from "./components/access-request-table";
+import EventsHistoryTable from "./components/events-history-table";
+import PlatformEventsTable from "./components/platform-events-table";
 
 export default function NotificationPage() {
   return (
@@ -15,18 +17,14 @@ export default function NotificationPage() {
 
       <div className="w-full max-w-4xl mx-auto">
         <div className="mb-8">
-          <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
-            Access Request
-          </div>
-
           <AccessRequestTable />
         </div>
-        {/* <div className="mb-8">
-          <div className="  mb-4 font-bold  text-2xl tracking-[0] leading-[24px]">
-            Platform events
-          </div>
-          <EventsTable items={events} columns={eventsTableColumns} />
-        </div> */}
+        <div className="mb-8">
+          <PlatformEventsTable />
+        </div>
+        <div className="mb-8">
+          <EventsHistoryTable />
+        </div>
       </div>
     </div>
   );

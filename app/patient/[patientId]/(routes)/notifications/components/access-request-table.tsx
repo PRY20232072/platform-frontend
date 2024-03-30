@@ -176,6 +176,10 @@ const AccessRequestTable = () => {
 
   return (
     <>
+      <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
+        Access Request
+      </div>
+
       <Table aria-label="Practitioners request collection table">
         <TableHeader columns={accessRequestTableColumns}>
           {(column) => (
