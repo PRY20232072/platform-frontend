@@ -215,7 +215,7 @@ const emptyPatient = {
 };
 
 const emptyPractitioner = {
-  patient_id: "",
+  practitioner_id: "",
   name_id: "",
   gender: "",
   birthDate: "",
