@@ -1,4 +1,4 @@
-'use client';
+//'use client';
 import React from 'react';
 import {
   Navbar as NextUINavbar,
@@ -31,7 +31,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
-import { NavMenu } from '@/components/nav-menu';
+import  NavMenu  from '@/components/nav-menu';
 const menuItems = [
   'Profile',
   'Dashboard',
