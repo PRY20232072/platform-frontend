@@ -1,14 +1,15 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
+import dotenv from "dotenv";
+dotenv.config();
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4002/",
-  // baseURL: "https://sawtooth-platform-rest-api.azurewebsites.net/",
-  headers: {
-    "Content-type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-  },
+    baseURL: process.env.BASE_URL,
+    headers: {
+        "Content-type": "application/json",
+        'Access-Control-Allow-Origin' : '*',
+        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+    }
 });
 
 axiosInstance.interceptors.request.use(async (config) => {
