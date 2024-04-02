@@ -13,8 +13,9 @@ import {
 import { familyRecordAccessTableColumns } from "@/data/data";
 import { useApi } from "@/hooks/useApi";
 import consentService from "@/services/consentService";
-import practitionerService from "@/services/practitionerService";
 import { useParams } from "next/navigation";
+import CustomSuspense from "@/components/custom-suspense";
+import Loading from "@/components/loading";
 
 type FamilyRecordAccess = {
   id: string;
@@ -25,10 +26,62 @@ type FamilyRecordAccess = {
 
 const FamilyRecordAccessClient = () => {
   const [items, setItems] = useState<FamilyRecordAccess[]>([]);
-  const params = useParams();
-  const { response: consentList, fetchData: getConsentList } = useApi();
+  const {
+    response: getActiveConsentListResponse,
+    fetchData: getActiveConsentList,
+  } = useApi();
   const { response: revokeConsentResponse, fetchData: revokeConsent } =
     useApi();
+  const params = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (params.patientId) {
+        await getActiveConsentList(
+          consentService.getActiveConsentListByPatientId(
+            params.patientId as string
+          )
+        );
+      }
+    };
+
+    fetchData();
+  }, [params.patientId]);
+
+  useEffect(() => {
+    if (
+      !getActiveConsentListResponse.isLoading &&
+      getActiveConsentListResponse.isSuccess &&
+      params.familyRecordId
+    ) {
+      let activeConsentList =
+        getActiveConsentListResponse.data as FamilyRecordAccess[];
+      activeConsentList = activeConsentList.filter(
+        (consent) => consent.register_id === params.familyRecordId
+      );
+      setItems(activeConsentList);
+    }
+  }, [getActiveConsentListResponse, params.familyRecordId]);
+
+  useEffect(() => {
+    if (
+      !revokeConsentResponse.isLoading &&
+      revokeConsentResponse.isSuccess &&
+      params.patientId
+    ) {
+      getActiveConsentList(
+        consentService.getActiveConsentListByPatientId(
+          params.patientId as string
+        )
+      );
+    }
+  }, [revokeConsentResponse, params.patientId]);
+
+  const handleRevoke = async (consent: FamilyRecordAccess) => {
+    await revokeConsent(
+      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
+    );
+  };
 
   const renderCell = useCallback(
     (family_record_access: FamilyRecordAccess, columnKey: React.Key) => {
@@ -58,93 +111,39 @@ const FamilyRecordAccessClient = () => {
     []
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (params.familyRecordId) {
-        await getConsentList(
-          consentService.getByRegisterId(params.familyRecordId as string)
-        );
-      }
-    };
-
-    fetchData();
-  }, [params.familyRecordId]);
-
-  useEffect(() => {
-    if (revokeConsentResponse.isSuccess) {
-      getConsentList(
-        consentService.getByRegisterId(params.familyRecordId as string)
-      );
-    }
-  }, [revokeConsentResponse.isSuccess]);
-
-  useEffect(() => {
-    if (consentList.isSuccess) {
-      parseConsentList(consentList.data);
-    }
-  }, [consentList.isSuccess]);
-
-  const parseConsentList = async (consentList: any) => {
-    if (!Array.isArray(consentList)) return [];
-
-    consentList = consentList.filter((consent) => consent.state === "ACTIVE");
-
-    const parsedConsentList = await Promise.all(
-      consentList.map(async (consent: any) => {
-        try {
-          const response = await practitionerService.getPractitionerById(
-            consent.practitioner_id
-          );
-          const practitioner = response.data.data;
-          return {
-            id: consent.register_id + practitioner.practitioner_id,
-            practitioner_name: practitioner.name_id,
-            practitioner_id: practitioner.practitioner_id,
-            register_id: consent.register_id,
-          } as FamilyRecordAccess;
-        } catch (error) {
-          return {} as FamilyRecordAccess;
-        }
-      })
-    );
-
-    setItems(parsedConsentList);
-  };
-
-  const handleRevoke = async (consent: FamilyRecordAccess) => {
-    await revokeConsent(
-      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
-    );
-  };
-
   return (
     <>
-      <Table aria-label="Family Record Access collection table">
-        <TableHeader columns={familyRecordAccessTableColumns}>
-          {(column) => (
-            <TableColumn
-              className="text-bold"
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent={"No family record access data available"}
-          items={items}
-        >
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <CustomSuspense
+        isLoading={getActiveConsentListResponse.isLoading}
+        fallback={<Loading />}
+      >
+        <Table aria-label="Family Record Access collection table">
+          <TableHeader columns={familyRecordAccessTableColumns}>
+            {(column) => (
+              <TableColumn
+                className="text-bold"
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+                allowsSorting={column.sortable}
+              >
+                {column.name}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            emptyContent={"No family record access data available"}
+            items={items}
+          >
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CustomSuspense>
     </>
   );
 };
