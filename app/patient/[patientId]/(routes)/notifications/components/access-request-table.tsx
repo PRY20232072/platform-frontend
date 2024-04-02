@@ -14,11 +14,9 @@ import {
 import { accessRequestTableColumns } from "@/data/data";
 import consentService from "@/services/consentService";
 import { useApi } from "@/hooks/useApi";
-import practitionerService from "@/services/practitionerService";
 import { useSession } from "next-auth/react";
-import allergyIntoleranceService from "@/services/allergyIntoleranceService";
-import { useParams } from "next/navigation";
-import familyRecordService from "@/services/familyRecordService";
+import CustomSuspense from "@/components/custom-suspense";
+import Loading from "@/components/loading";
 
 type HealthRecordAccess = {
   id: string;
@@ -31,109 +29,73 @@ type HealthRecordAccess = {
 const AccessRequestTable = () => {
   const { data: session } = useSession();
   const [items, setItems] = useState<HealthRecordAccess[]>([]);
-  const { response: allergyRecordsResponse, fetchData: getAllergyRecords } =
+  const {
+    response: getPendingConsentListResponse,
+    fetchData: getPendingConsentList,
+  } = useApi();
+  const { response: approveConsentResponse, fetchData: approveConsent } =
     useApi();
-  const { response: familyRecordsResponse, fetchData: getFamilyRecords } =
+  const { response: revokeConsentResponse, fetchData: revokeConsent } =
     useApi();
-  const params = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       if (session?.user?.id) {
-        await getAllergyRecords(
-          allergyIntoleranceService.getAllergyListByPatientId(
-            params.patientId as string
-          )
-        );
-        await getFamilyRecords(
-          familyRecordService.getFamilyRecordByPatientId(
-            params.patientId as string
+        await getPendingConsentList(
+          consentService.getPendingConsentListByPatientId(
+            session?.user?.id as string
           )
         );
       }
     };
 
     fetchData();
-  }, [session?.user?.id, params.patientId]);
+  }, [session?.user?.id]);
 
   useEffect(() => {
-    if (allergyRecordsResponse.isSuccess && familyRecordsResponse.isSuccess) {
-      const healthRecordsList = allergyRecordsResponse.data.concat(
-        familyRecordsResponse.data
-      );
-      getAllConsents(healthRecordsList);
+    if (
+      !getPendingConsentListResponse.isLoading &&
+      getPendingConsentListResponse.isSuccess
+    ) {
+      const pendingConsentList =
+        getPendingConsentListResponse.data as HealthRecordAccess[];
+      setItems(pendingConsentList);
     }
-  }, [allergyRecordsResponse?.isSuccess, familyRecordsResponse?.isSuccess]);
+  }, [getPendingConsentListResponse]);
 
-  const getAllConsents = async (healthRecordsList: any) => {
-    const consentList = await Promise.all(
-      healthRecordsList.map(async (register: any) => {
-        const registerId = register.allergy_id || register.familyHistory_id;
-        const response = await consentService.getByRegisterId(registerId);
-        return response.data.data;
-      })
-    );
-    const flatArray = consentList.flat();
-    parseConsentList(flatArray);
-  };
-
-  const parseConsentList = async (consentList: any) => {
-    if (!Array.isArray(consentList)) return [];
-
-    consentList = consentList.filter((consent) => consent.state !== "ACTIVE");
-
-    if (consentList.length === 0) return;
-
-    const parsedConsentList = await Promise.all(
-      consentList.map(async (consent: any) => {
-        try {
-          const response = await practitionerService.getPractitionerById(
-            consent.practitioner_id
-          );
-          const practitioner = response.data.data;
-          return {
-            id: consent.register_id + practitioner.practitioner_id,
-            practitioner_name: practitioner.name_id,
-            practitioner_id: practitioner.practitioner_id,
-            register_id: consent.register_id,
-            register_type: consent.register_type,
-          } as HealthRecordAccess;
-        } catch (error) {
-          return {} as HealthRecordAccess;
-        }
-      })
-    );
-    setItems(parsedConsentList);
-  };
-
-  const handleApprove = async (consent: HealthRecordAccess) => {
-    await consentService
-      .approveConsent(consent.register_id, consent.practitioner_id)
-      .then(() => {
-        getAllergyRecords(
-          allergyIntoleranceService.getAllergyListByPatientId(
-            params.patientId as string
+  useEffect(() => {
+    const fetchData = async () => {
+      if (
+        ((!approveConsentResponse.isLoading &&
+          approveConsentResponse.isSuccess) ||
+          (!revokeConsentResponse.isLoading &&
+            revokeConsentResponse.isSuccess)) &&
+        session?.user?.id
+      ) {
+        await getPendingConsentList(
+          consentService.getPendingConsentListByPatientId(
+            session?.user?.id as string
           )
         );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+    };
+
+    fetchData();
+  }, [approveConsentResponse, revokeConsentResponse, session?.user?.id]);
+
+  const handleApprove = async (consent: HealthRecordAccess) => {
+    await approveConsent(
+      consentService.approveConsent(
+        consent.register_id,
+        consent.practitioner_id
+      )
+    );
   };
 
   const handleRevoke = async (consent: HealthRecordAccess) => {
-    await consentService
-      .revokeConsent(consent.register_id, consent.practitioner_id)
-      .then(() => {
-        getAllergyRecords(
-          allergyIntoleranceService.getAllergyListByPatientId(
-            params.patientId as string
-          )
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    await revokeConsent(
+      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
+    );
   };
 
   const renderCell = useCallback(
@@ -180,32 +142,37 @@ const AccessRequestTable = () => {
         Access Request
       </div>
 
-      <Table aria-label="Practitioners request collection table">
-        <TableHeader columns={accessRequestTableColumns}>
-          {(column) => (
-            <TableColumn
-              className="text-bold"
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent={"No practitioners request data available"}
-          items={items}
-        >
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <CustomSuspense
+        isLoading={getPendingConsentListResponse.isLoading}
+        fallback={<Loading />}
+      >
+        <Table aria-label="Practitioners request collection table">
+          <TableHeader columns={accessRequestTableColumns}>
+            {(column) => (
+              <TableColumn
+                className="text-bold"
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+                allowsSorting={column.sortable}
+              >
+                {column.name}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            emptyContent={"No practitioners request data available"}
+            items={items}
+          >
+            {(item) => (
+              <TableRow key={item.id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CustomSuspense>
     </>
   );
 };

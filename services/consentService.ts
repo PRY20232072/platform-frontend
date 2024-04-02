@@ -20,6 +20,14 @@ class ConsetService {
     );
   };
 
+  getActiveConsentListByPatientId = (id: string) => {
+    return http.get(`${consentPath}/patient/${id}/active`);
+  };
+
+  getPendingConsentListByPatientId = (id: string) => {
+    return http.get(`${consentPath}/patient/${id}/pending`);
+  };
+
   createConsent = (data: any) => {
     return http.post(`${consentPath}`, {
       payload: data,

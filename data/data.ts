@@ -64,11 +64,13 @@ const allergyDocTableColumns = [
 ];
 
 const allergyAccessTableColumns = [
+  { name: 'PRACTITIONER ID', uid: 'practitioner_id', sorteable: true },
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
 const familyRecordAccessTableColumns = [
+  { name: 'PRACTITIONER ID', uid: 'practitioner_id', sorteable: true },
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
@@ -117,6 +119,7 @@ const practitionerTableColumns = [
 ];
 
 const accessRequestTableColumns = [
+  { name: 'PRACTITIONER ID', uid: 'practitioner_id', sorteable: true },
   { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
   { name: 'REGISTER TYPE', uid: 'register_type' },
   { name: 'REGISTER ID', uid: 'register_id' },
