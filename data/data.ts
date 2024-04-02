@@ -134,7 +134,7 @@ const eventsTableColumns = [
   { name: 'ACTION', uid: 'actions' },
 ];
 
-const platformaEventsTableColumns = [
+const platformaPatientEventsTableColumns = [
   {
     name: "REGISTER ID",
     uid: "register_id",
@@ -152,6 +152,27 @@ const platformaEventsTableColumns = [
   {
     name: "EVENT",
     uid: "type",
+  },
+  {
+    name: "DATE",
+    uid: "created_at",
+    sortable: true,
+  },
+  {
+    name: "ACTION",
+    uid: "actions",
+  },
+];
+
+const platformaPractitionerEventsTableColumns = [
+  {
+    name: "PATIENT NAME",
+    uid: "patient_name",
+    sortable: true,
+  },
+  {
+    name: "MESSAGE",
+    uid: "message",
   },
   {
     name: "DATE",
@@ -499,7 +520,8 @@ export {
   eventsTableColumns,
   patientsTableColumns,
   selectedPatientAllergiesTableColumns,
-  platformaEventsTableColumns,
+  platformaPatientEventsTableColumns,
+  platformaPractitionerEventsTableColumns,
   patientAllergies,
   patientAllergiesDocs,
   patientAllergiesAccess,

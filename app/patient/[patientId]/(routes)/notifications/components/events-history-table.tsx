@@ -1,6 +1,6 @@
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
-import { platformaEventsTableColumns } from "@/data/data";
+import { platformaPatientEventsTableColumns } from "@/data/data";
 import { useApi } from "@/hooks/useApi";
 import notificationsService from "@/services/notificationsService";
 import {
@@ -88,7 +88,7 @@ const EventsHistoryTable = () => {
         fallback={<Loading />}
       >
         <Table aria-label="Platform events">
-          <TableHeader columns={platformaEventsTableColumns}>
+          <TableHeader columns={platformaPatientEventsTableColumns}>
             {(column) => (
               <TableColumn
                 className="text-bold"

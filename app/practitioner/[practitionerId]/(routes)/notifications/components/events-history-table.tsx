@@ -1,6 +1,6 @@
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
-import { platformaPatientEventsTableColumns } from "@/data/data";
+import { platformaPractitionerEventsTableColumns } from "@/data/data";
 import { useApi } from "@/hooks/useApi";
 import notificationsService from "@/services/notificationsService";
 import {
@@ -14,55 +14,37 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import EventDetailModal from "./event-detail-modal";
 import { PlatformEvent } from "@/types/platformEvent";
 
-const PlatformEventsTable = () => {
+const EventsHistoryTable = () => {
   const { data: session } = useSession();
+  const params = useParams();
   const [events, setEvents] = useState<PlatformEvent[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { response: getNotificationsResponse, fetchData: getNotifications } =
     useApi();
-  const {
-    response: updateNotificationResponse,
-    fetchData: updateNotification,
-  } = useApi();
 
   useEffect(() => {
     const fetchData = async () => {
       if (session?.user?.id) {
         await getNotifications(
-          notificationsService.getUnreadNotificationsByUserId(session?.user?.id)
+          notificationsService.getReadNotificationsByUserId(session?.user?.id)
         );
       }
     };
 
     fetchData();
-  }, [session?.user?.id]);
+  }, [session?.user?.id, params.patientId]);
 
   useEffect(() => {
     if (getNotificationsResponse.isSuccess) {
       setEvents(getNotificationsResponse.data);
     }
   }, [getNotificationsResponse]);
-
-  useEffect(() => {
-    if (updateNotificationResponse.isSuccess && session?.user?.id) {
-      getNotifications(
-        notificationsService.getUnreadNotificationsByUserId(session?.user?.id)
-      );
-    }
-  }, [session?.user?.id, updateNotificationResponse]);
-
-  const handleMarkAsRead = async (id: string) => {
-    await updateNotification(
-      notificationsService.updateNotifications(id, {
-        read: true,
-      })
-    );
-  };
 
   const renderCell = useCallback(
     (platform_event: PlatformEvent, columnKey: React.Key) => {
@@ -84,16 +66,6 @@ const PlatformEventsTable = () => {
               >
                 View details
               </Button>
-              <Button
-                className="font-medium"
-                color="danger"
-                radius="sm"
-                size="sm"
-                variant="flat"
-                onClick={() => handleMarkAsRead(platform_event.id)}
-              >
-                Mark as read
-              </Button>
             </div>
           );
         case "created_at":
@@ -108,7 +80,7 @@ const PlatformEventsTable = () => {
   return (
     <>
       <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
-        Platform Events
+        Events History
       </div>
 
       <CustomSuspense
@@ -116,7 +88,7 @@ const PlatformEventsTable = () => {
         fallback={<Loading />}
       >
         <Table aria-label="Platform events">
-          <TableHeader columns={platformaPatientEventsTableColumns}>
+          <TableHeader columns={platformaPractitionerEventsTableColumns}>
             {(column) => (
               <TableColumn
                 className="text-bold"
@@ -142,7 +114,6 @@ const PlatformEventsTable = () => {
           </TableBody>
         </Table>
       </CustomSuspense>
-
       <EventDetailModal
         id={selectedEventId}
         onOpenChange={onOpenChange}
@@ -152,4 +123,4 @@ const PlatformEventsTable = () => {
   );
 };
 
-export default PlatformEventsTable;
+export default EventsHistoryTable;
