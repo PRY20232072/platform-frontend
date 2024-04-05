@@ -1,19 +1,9 @@
 "use client";
 
 import React from "react";
-import {
-  Tabs,
-  Tab,
-  Card,
-  CardBody,
-} from "@nextui-org/react";
-import {
-  selectedPatientAllergiesDocs,
-  selectedPatientAllergiesDocsTableColumns,
-} from "@/data/data";
-import { PatientAllergyDocsClient } from "./patient-allergy-docs";
-import { AllergyFormModal } from "../components/allergy-form-modal";
+import { Tabs, Tab } from "@nextui-org/react";
 import PatientAllergyDetail from "./patient-allergy-detail";
+import PatientAllergyDocs from "./patient-allergy-docs";
 
 export const PatientAllergyClient = () => {
   return (
@@ -26,15 +16,7 @@ export const PatientAllergyClient = () => {
           <PatientAllergyDetail />
         </Tab>
         <Tab key="documents" title="Documents">
-          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
-            <CardBody>
-              <AllergyFormModal />
-              <PatientAllergyDocsClient
-                items={selectedPatientAllergiesDocs}
-                columns={selectedPatientAllergiesDocsTableColumns}
-              />
-            </CardBody>
-          </Card>
+          <PatientAllergyDocs />
         </Tab>
       </Tabs>
     </>
