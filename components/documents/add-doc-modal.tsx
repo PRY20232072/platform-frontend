@@ -9,20 +9,33 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Plus } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-toastify";
 
-const AddDocModal = () => {
+type AddDocModalProps = {
+  registerType: string;
+};
+
+const AddDocModal = ({ registerType }: AddDocModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [isUploading, setIsUploading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
     accept: {
       "application/pdf": [".pdf"],
       "image/*": [".png", ".jpeg", ".jpg"],
       "application/msword": [".doc"],
+      "application/msexcel": [".xls"],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         [".docx"],
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+        ".xlsx",
+      ],
     },
   });
+  const params = useParams();
 
   const files = acceptedFiles.map((file: any) => (
     <li key={file.path}>
@@ -31,19 +44,56 @@ const AddDocModal = () => {
   ));
 
   const handleUpload = async (onClose: any) => {
-    console.log(acceptedFiles);
-
+    setIsUploading(true);
     // upload file
     const file = acceptedFiles[0];
     const processedFile = await processFile(file);
-    console.log(processedFile);
     const formData = new FormData();
     formData.append("file", processedFile, file.name);
+    const createdDate = new Date().toISOString();
+    const fileName = file.name;
+    const registerId = (params.allergyIntoleranceId ||
+      params.familyRecordId) as string;
+    const type = file.type;
 
-    const response = await filesService.uploadFile(formData);
+    const response: any = (
+      await filesService.uploadFile(
+        createdDate,
+        fileName,
+        type,
+        registerId,
+        registerType,
+        formData
+      )
+    ).data;
 
-    console.log(response);
+    const message =
+      response.data && response.data instanceof Array
+        ? response.data[0]
+        : response.data;
+    if (response.error) {
+      toast.error(message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+    } else {
+      toast.success(message, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+    }
 
+    setIsUploading(false);
     onClose();
   };
 
@@ -52,7 +102,6 @@ const AddDocModal = () => {
       const fileReader = new FileReader();
       fileReader.onload = () => {
         const arrayBuffer = fileReader.result as ArrayBuffer;
-        console.log(arrayBuffer);
         const blob = new Blob([arrayBuffer], { type: file.type });
         resolve(blob);
       };
@@ -99,11 +148,13 @@ const AddDocModal = () => {
                 </aside>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
-                </Button>
+                {!isUploading && (
+                  <Button color="danger" variant="flat" onPress={onClose}>
+                    Cancel
+                  </Button>
+                )}
                 <Button color="primary" onPress={() => handleUpload(onClose)}>
-                  Upload
+                  {isUploading ? "Uploading..." : "Upload"}
                 </Button>
               </ModalFooter>
             </form>

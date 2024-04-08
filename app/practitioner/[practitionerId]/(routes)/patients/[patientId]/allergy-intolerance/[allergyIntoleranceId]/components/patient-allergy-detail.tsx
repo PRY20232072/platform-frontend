@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -14,9 +14,19 @@ import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import notificationsService from "@/services/notificationsService";
 
-export default function PatientAllergyDetail() {
-  const [allergy, setAllergy] = useState<any>({});
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+type PatientAllergyDetailProps = {
+  allergy: any;
+  setAllergy: any;
+  isEditing: boolean;
+  setIsEditing: any;
+};
+
+export default function PatientAllergyDetail({
+  allergy,
+  setAllergy,
+  isEditing,
+  setIsEditing,
+}: PatientAllergyDetailProps) {
   const { response: allergyResponse, fetchData: getAllergy } = useApi();
   const { response: updateAllergyResponse, fetchData: updateAllergy } =
     useApi();

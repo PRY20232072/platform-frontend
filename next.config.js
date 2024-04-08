@@ -9,7 +9,12 @@ const nextConfig = {
     TENANT_NAME: process.env.AZURE_AD_B2C_TENANT_NAME,
     AUTH_URL: process.env.NEXTAUTH_URL,
     BASE_URL: process.env.BASE_URL,
-  }
+  },
+  //https://github.com/konvajs/konva/issues/1458#issuecomment-1356122802
+  webpack: (config) => {
+    config.externals = [...config.externals, { canvas: "canvas" }];  // required to make Konva & react-konva work
+    return config;
+  },
 }
 
 module.exports = nextConfig

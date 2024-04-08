@@ -10,8 +10,12 @@ import Loading from "@/components/loading";
 import FamilyRecordDetailFields from "@/components/family-records/family-record-detail-fields";
 import notificationsService from "@/services/notificationsService";
 
-export default function PatientFamilyRecordDetail() {
-  const [family_record, setFamilyRecord] = useState<any>({});
+type PatientFamilyRecordDetailProps = {
+  family_record: any;
+  setFamilyRecord: any;
+}
+
+export default function PatientFamilyRecordDetail({ family_record, setFamilyRecord }: PatientFamilyRecordDetailProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { response: familyRecordResponse, fetchData: getAllergy } = useApi();
   const {

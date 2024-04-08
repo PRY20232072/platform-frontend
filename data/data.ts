@@ -195,12 +195,11 @@ const selectedPatientAllergiesTableColumns = [
   { name: 'ACTION', uid: 'actions' },
 ];
 
-const selectedPatientAllergiesDocsTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'FORMAT', uid: 'format_doc', sortable: true },
-  { name: 'CREATED BY', uid: 'created_by', sortable: true },
+const documentsTableColumns = [
+  { name: 'NAME', uid: 'file_name', sortable: true },
+  { name: 'FORMAT', uid: 'file_type', sortable: true },
+  { name: 'CREATED BY', uid: 'practitioner_name', sortable: true },
   { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'ACCESS', uid: 'has_access', sortable: true },
   { name: 'ACTION', uid: 'actions' },
 ];
 
@@ -533,7 +532,7 @@ export {
   patients,
   selectedPatientAllergies,
   selectedPatientAllergiesDocs,
-  selectedPatientAllergiesDocsTableColumns,
+  documentsTableColumns,
   healthRecordsTableColumns,
   healthRecords,
   familyRecordTableColumns,

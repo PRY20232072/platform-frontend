@@ -9,8 +9,12 @@ import { Card, CardBody } from "@nextui-org/card";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function AllergyDetail() {
-  const [allergy, setAllergy] = useState<any>({});
+type AllergyDetailProps = {
+  allergy: any;
+  setAllergy: any;
+};
+
+export default function AllergyDetail({ allergy, setAllergy }: AllergyDetailProps) {
   const { response, fetchData } = useApi();
   const params = useParams();
 

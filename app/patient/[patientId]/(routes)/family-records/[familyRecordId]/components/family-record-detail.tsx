@@ -9,8 +9,12 @@ import { Card, CardBody } from "@nextui-org/card";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function FamilyRecordDetail() {
-  const [familyRecord, setFamilyRecord] = useState<any>({});
+type FamilyRecordDetailProps = {
+  familyRecord: any;
+  setFamilyRecord: any;
+};
+
+export default function FamilyRecordDetail({ familyRecord, setFamilyRecord }: FamilyRecordDetailProps) {
   const { response, fetchData } = useApi();
   const params = useParams();
 
