@@ -3,6 +3,7 @@ import { RegisterFile } from "@/types/registerFile";
 import DocViewer from "@cyntler/react-doc-viewer";
 import {
   Button,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -13,6 +14,36 @@ import {
 import { useEffect, useState } from "react";
 import CustomSuspense from "../custom-suspense";
 import Loading from "../loading";
+import {
+  TransformComponent,
+  TransformWrapper,
+} from "react-zoom-pan-pinch";
+import { Minus, Plus, Undo2 } from "lucide-react";
+
+const ImageViewer = ({ previewUrl }: { previewUrl: string }) => {
+  return (
+    <TransformWrapper>
+      {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+        <>
+          <div className="tools">
+            <Button color="primary" variant="flat" onClick={() => zoomIn()}>
+              <Plus size={24} />
+            </Button>
+            <Button color="primary" variant="flat" onClick={() => zoomOut()}>
+              <Minus size={24} />
+            </Button>
+            <Button color="primary" variant="flat" onClick={() => resetTransform()}>
+              <Undo2 size={24} />
+            </Button>
+          </div>
+          <TransformComponent>
+            <Image src={previewUrl} alt="test" />
+          </TransformComponent>
+        </>
+      )}
+    </TransformWrapper>
+  );
+};
 
 type DocumentPreviewModalProps = {
   document: RegisterFile;
@@ -65,15 +96,19 @@ const DocumentPreviewModal = ({ document }: DocumentPreviewModalProps) => {
               <ModalHeader className="font-bold">Document Preview</ModalHeader>
               <ModalBody className="h-2/4">
                 <CustomSuspense isLoading={isLoading} fallback={<Loading />}>
-                  <DocViewer
-                    documents={[
-                      {
-                        uri: previewUrl,
-                        fileType: fileType,
-                        fileName: document.file_name
-                      },
-                    ]}
-                  />
+                  {fileType === "application/pdf" ? (
+                    <DocViewer
+                      documents={[
+                        {
+                          uri: previewUrl,
+                          fileType: fileType,
+                          fileName: document.file_name,
+                        },
+                      ]}
+                    />
+                  ) : (
+                    <ImageViewer previewUrl={previewUrl} />
+                  )}
                 </CustomSuspense>
               </ModalBody>
               <ModalFooter>
