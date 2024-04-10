@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import {
   Button,
   Modal,
@@ -9,18 +9,18 @@ import {
   ModalBody,
   ModalFooter,
   Input,
-} from '@nextui-org/react';
+} from "@nextui-org/react";
 
-import { RadioOptions } from '@/components/ui/radio-options';
+import { RadioOptions } from "@/components/ui/radio-options";
 
-import { Plus } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { allergyCategories, allergyStatus, allergyTypes } from '@/data/data';
-import { useParams, useRouter } from 'next/navigation';
-import { v4 as uuidv4 } from 'uuid';
-import { useApi } from '@/hooks/useApi';
-import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import notificationsService from '@/services/notificationsService';
+import { Plus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { allergyCategories, allergyStatus, allergyTypes } from "@/data/data";
+import { useParams, useRouter } from "next/navigation";
+import { v4 as uuidv4, validate } from "uuid";
+import { useApi } from "@/hooks/useApi";
+import allergyIntoleranceService from "@/services/allergyIntoleranceService";
+import notificationsService from "@/services/notificationsService";
 
 type Allergy = {
   name: string;
@@ -31,30 +31,35 @@ type Allergy = {
   allergy_notes: string;
   patient_id: string;
   participant_id: string;
-}
+};
 
 interface AllergySelectedPractitionerProps {
   allergy: Allergy;
   allergyFormModalClose: () => void;
+  formIsValid: boolean;
 }
 
 const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   allergy,
-  allergyFormModalClose
+  allergyFormModalClose,
+  formIsValid,
 }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { response: createAllergyResponse, fetchData: createAllergy } = useApi();
+  const { response: createAllergyResponse, fetchData: createAllergy } =
+    useApi();
   const router = useRouter();
   const params = useParams();
 
   const handleCreate = () => {
-    allergy.recorded_date = new Date().toISOString().split('T')[0];
+    allergy.recorded_date = new Date().toISOString().split("T")[0];
     const allergy_id = uuidv4();
 
-    createAllergy(allergyIntoleranceService.createAllergy({
-      identifier: allergy_id,
-      payload: allergy
-    }));
+    createAllergy(
+      allergyIntoleranceService.createAllergy({
+        identifier: allergy_id,
+        payload: allergy,
+      })
+    );
 
     notificationsService.createNotifications({
       user_id: params.patientId,
@@ -67,11 +72,19 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
     router.refresh();
     onClose();
     allergyFormModalClose();
-  }
+  };
 
   return (
     <>
-      <Button onPress={onOpen} color="primary" variant="flat">
+      <Button
+        onPress={() => {
+          if (formIsValid) {
+            onOpen();
+          }
+        }}
+        color="primary"
+        variant="flat"
+      >
         Continue
       </Button>
       <Modal
@@ -109,19 +122,42 @@ export const AllergyFormModal = () => {
   const [allergy, setAllergy] = useState<Allergy>({} as Allergy);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = useParams();
+  const [errors, setErrors] = useState<any>({
+    name: "Name is required",
+    allergy_notes: "Note is required",
+  });
+  const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
     setAllergy({
-      name: '',
-      category: 'FOOD',
-      clinical_status: 'ACTIVE',
-      recorded_date: '',
-      type: 'DAIRY',
-      allergy_notes: '',
+      name: "",
+      category: "FOOD",
+      clinical_status: "ACTIVE",
+      recorded_date: "",
+      type: "DAIRY",
+      allergy_notes: "",
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
     });
   }, [params.patientId, params.practitionerId]);
+
+  const validateForm = () => {
+    let valid = true;
+    const errors = {} as any;
+
+    if (!allergy.name) {
+      errors.name = "Name is required";
+      valid = false;
+    }
+
+    if (!allergy.allergy_notes) {
+      errors.allergy_notes = "Note is required";
+      valid = false;
+    }
+
+    setErrors(errors);
+    setFormIsValid(valid);
+  };
 
   return (
     <div className="items-stretch justify-end gap-4 inline-flex mb-3">
@@ -146,18 +182,26 @@ export const AllergyFormModal = () => {
                 <Input
                   label="Name"
                   placeholder="Complete the name"
-                  classNames={{ label: 'text-md font-bold' }}
+                  classNames={{ label: "text-md font-bold" }}
                   value={allergy.name}
                   onChange={(e) => {
-                    setAllergy({ ...allergy, name: e.target.value })
+                    setAllergy({ ...allergy, name: e.target.value });
+                    if (errors.name) {
+                      setErrors({ ...errors, name: null });
+                    }
+                    validateForm();
                   }}
+                  isRequired
                 />
+                {errors.name && (
+                  <div className="text-red-500">{errors.name}</div>
+                )}
                 <RadioOptions
                   label="Type"
                   defaultValue={allergyTypes[0].value}
                   data={allergyTypes}
                   onChange={(e) => {
-                    setAllergy({ ...allergy, type: e.target.value })
+                    setAllergy({ ...allergy, type: e.target.value });
                   }}
                 />
                 <RadioOptions
@@ -165,7 +209,7 @@ export const AllergyFormModal = () => {
                   defaultValue={allergyCategories[0].value}
                   data={allergyCategories}
                   onChange={(e) => {
-                    setAllergy({ ...allergy, category: e.target.value })
+                    setAllergy({ ...allergy, category: e.target.value });
                   }}
                 />
                 <RadioOptions
@@ -173,24 +217,35 @@ export const AllergyFormModal = () => {
                   defaultValue={allergyStatus[0].value}
                   data={allergyStatus}
                   onChange={(e) => {
-                    setAllergy({ ...allergy, clinical_status: e.target.value })
+                    setAllergy({ ...allergy, clinical_status: e.target.value });
                   }}
                 />
                 <Textarea
-                  classNames={{ label: 'text-md font-bold' }}
+                  classNames={{ label: "text-md font-bold" }}
                   label="Note"
                   placeholder="Write the record note"
                   value={allergy.allergy_notes}
                   onChange={(e) => {
-                    setAllergy({ ...allergy, allergy_notes: e.target.value })
+                    setAllergy({ ...allergy, allergy_notes: e.target.value });
+                    if (errors.allergy_notes) {
+                      setErrors({ ...errors, allergy_notes: null });
+                    }
                   }}
+                  isRequired
                 />
+                {errors.allergy_notes && (
+                  <div className="text-red-500">{errors.allergy_notes}</div>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Cancel
                 </Button>
-                <ConfirmModal allergy={allergy} allergyFormModalClose={onClose} />
+                <ConfirmModal
+                  allergy={allergy}
+                  allergyFormModalClose={onClose}
+                  formIsValid={formIsValid}
+                />
               </ModalFooter>
             </form>
           )}

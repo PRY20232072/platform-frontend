@@ -40,11 +40,13 @@ type PatientFamilyRecord = {
 interface FamilyRecordSelectedPractitionerProps {
   familyRecord: PatientFamilyRecord;
   familyRecordFormModalClose: () => void;
+  formIsValid: boolean;
 }
 
 const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   familyRecord,
   familyRecordFormModalClose,
+  formIsValid,
 }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const {
@@ -80,7 +82,15 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
 
   return (
     <>
-      <Button onPress={onOpen} color="primary" variant="flat">
+      <Button
+        onPress={() => {
+          if (formIsValid) {
+            onOpen();
+          }
+        }}
+        color="primary"
+        variant="flat"
+      >
         Continue
       </Button>
       <Modal
@@ -120,7 +130,12 @@ export const FamilyRecordFormModal = () => {
   );
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = useParams();
-  const [file, setFile] = useState<File | null>(null);
+  const [errors, setErrors] = useState<any>({
+    name: "Name is required",
+    reason: "Reason is required",
+    notes: "Note is required",
+  });
+  const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
     setRecord({
@@ -137,6 +152,29 @@ export const FamilyRecordFormModal = () => {
       participant_id: params.practitionerId as string,
     });
   }, [params.patientId, params.practitionerId]);
+
+  const validateForm = () => {
+    let valid = true;
+    const errors: any = {};
+
+    if (!familyRecord.name) {
+      errors.name = "Name is required";
+      valid = false;
+    }
+
+    if (!familyRecord.reason) {
+      errors.reason = "Reason is required";
+      valid = false;
+    }
+
+    if (!familyRecord.notes) {
+      errors.notes = "Note is required";
+      valid = false;
+    }
+
+    setErrors(errors);
+    setFormIsValid(valid);
+  };
 
   return (
     <div className="items-stretch justify-end gap-4 inline-flex mb-3">
@@ -167,8 +205,16 @@ export const FamilyRecordFormModal = () => {
                   value={familyRecord.name}
                   onChange={(e) => {
                     setRecord({ ...familyRecord, name: e.target.value });
+                    if (errors.name) {
+                      setErrors({ ...errors, name: null });
+                    }
+                    validateForm();
                   }}
+                  isRequired
                 />
+                {errors.name && (
+                  <div className="text-red-500 text-sm">{errors.name}</div>
+                )}
 
                 {/* <Input
                   type="date"
@@ -194,8 +240,16 @@ export const FamilyRecordFormModal = () => {
                       ...familyRecord,
                       reason: e.target.value,
                     });
+                    if (errors.reason) {
+                      setErrors({ ...errors, reason: null });
+                    }
+                    validateForm();
                   }}
+                  isRequired
                 />
+                {errors.reason && (
+                  <div className="text-red-500 text-sm">{errors.reason}</div>
+                )}
 
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
@@ -207,8 +261,16 @@ export const FamilyRecordFormModal = () => {
                       ...familyRecord,
                       notes: e.target.value,
                     });
+                    if (errors.notes) {
+                      setErrors({ ...errors, notes: null });
+                    }
+                    validateForm();
                   }}
+                  isRequired
                 />
+                {errors.notes && (
+                  <div className="text-red-500 text-sm">{errors.notes}</div>
+                )}
                 {/* <RadioOptions
                   label="Gender"
                   defaultValue={genders[0].value}
@@ -240,6 +302,7 @@ export const FamilyRecordFormModal = () => {
                 <ConfirmModal
                   familyRecord={familyRecord}
                   familyRecordFormModalClose={onClose}
+                  formIsValid={formIsValid}
                 />
               </ModalFooter>
             </form>
