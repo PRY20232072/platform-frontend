@@ -69,7 +69,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
       type: "WRITE",
     });
 
-    router.refresh();
+    location.reload();
     onClose();
     allergyFormModalClose();
   };

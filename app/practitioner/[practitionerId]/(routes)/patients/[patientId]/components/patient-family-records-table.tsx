@@ -107,7 +107,7 @@ export const PatientFamilyRecordsTable = () => {
     await getFamilyRecordList(
       familyRecordService.getFamilyRecordByPatientId(params.patientId as string)
     );
-    router.refresh();
+    location.reload();
   };
 
   const renderCell = React.useCallback(

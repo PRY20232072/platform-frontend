@@ -54,7 +54,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
       })
     );
 
-    router.refresh();
+    location.reload();
     onClose();
     familyRecordFormModalClose();
   };

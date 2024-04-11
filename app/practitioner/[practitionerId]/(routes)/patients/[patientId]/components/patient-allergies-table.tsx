@@ -101,7 +101,7 @@ export const PatientAllergiesTable = () => {
         params.patientId as string
       )
     );
-    router.refresh();
+    location.reload();
   };
 
   const renderCell = React.useCallback(

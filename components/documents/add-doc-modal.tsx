@@ -93,6 +93,7 @@ const AddDocModal = ({ registerType }: AddDocModalProps) => {
       });
     }
 
+    location.reload();
     setIsUploading(false);
     onClose();
   };
