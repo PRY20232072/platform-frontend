@@ -201,7 +201,7 @@ export const PractitionersSearch = () => {
           <Input
             isClearable
             className="w-full sm:max-w-[26%]"
-            placeholder="Search by name..."
+            placeholder="Buscar por nombre..."
             startContent={<SearchIcon className="h-4 w-4" />}
             value={filterValue}
             onClear={() => onClear()}
@@ -210,7 +210,7 @@ export const PractitionersSearch = () => {
           <Input
             isClearable
             className="w-full sm:max-w-[26%]"
-            placeholder="Search by ID..."
+            placeholder="Buscar por ID..."
             startContent={<SearchIcon className="h-4 w-4" />}
             onClear={() => onClear()}
           />

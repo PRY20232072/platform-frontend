@@ -53,15 +53,15 @@ export default function CardFamilyRecords() {
     >
       <Card
         link={`patient/${session?.user?.id}/family-records`}
-        card_title="Family Records"
+        card_title="Historial Familiar"
         icon={
           <Users2
             color="white"
             className="w-5 h-[18px] left-[2px] top-[3px] absolute"
           />
         }
-        heading_one="Detail"
-        heading_two="Date"
+        heading_one="Detalle"
+        heading_two="Fecha de registro"
         cardData={familyRecordList}
       />
     </CustomSuspense>

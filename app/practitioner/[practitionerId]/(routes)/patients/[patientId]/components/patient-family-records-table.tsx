@@ -130,7 +130,7 @@ export const PatientFamilyRecordsTable = () => {
           );
         case "has_access":
           return selected_patient_family_record.has_access === "ACTIVE"
-            ? "YES"
+            ? "SI"
             : "NO";
         case "actions":
           return (
@@ -157,7 +157,7 @@ export const PatientFamilyRecordsTable = () => {
                     );
                   }}
                 >
-                  View more
+                  Ver más
                 </Button>
               ) : selected_patient_family_record.has_access === "PENDING" ? (
                 <Button
@@ -168,7 +168,7 @@ export const PatientFamilyRecordsTable = () => {
                   size="sm"
                   variant="flat"
                 >
-                  Pending
+                  Pendiente
                 </Button>
               ) : (
                 <Button
@@ -183,7 +183,7 @@ export const PatientFamilyRecordsTable = () => {
                     )
                   }
                 >
-                  Request Access
+                  Solicitar acceso
                 </Button>
               )}
             </div>
@@ -211,7 +211,7 @@ export const PatientFamilyRecordsTable = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={"No patient family record data available"}
+          emptyContent={"No se encontraron registros de historial familiar."}
           items={(familyRecordList || []) as FamilyRecord[]}
         >
           {(item) => (

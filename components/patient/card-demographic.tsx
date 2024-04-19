@@ -79,7 +79,7 @@ export const CardDemographic = () => {
           </div>
 
           <div className=" text-base font-bold  leading-normal">
-            Demographic information
+            Información demográfica
           </div>
 
           <div className="flex flex-grow flex-shrink flex-basis-0 h-8 justify-end items-center gap-2.5">
@@ -91,7 +91,7 @@ export const CardDemographic = () => {
               variant={"solid"}
             >
               <Link href={`patient/${session?.user?.id}/demographic`}>
-                See more
+                Ver más
               </Link>
             </Button>
           </div>
@@ -105,25 +105,25 @@ export const CardDemographic = () => {
                   label="ID"
                   value={session?.user?.id as string}
                 />
-                <DemographicInfo label="Gender" value={patient.gender} />
+                <DemographicInfo label="Género" value={patient.gender} />
                 <DemographicInfo
-                  label="Address"
+                  label="Dirección"
                   value={patient.address.address_line}
                 />
               </div>
 
               <div className="flex-1">
-                <DemographicInfo label="Full name" value={patient.name_id} />
-                <DemographicInfo label="Birthdate" value={patient.birthDate} />
+                <DemographicInfo label="Nombre completo" value={patient.name_id} />
+                <DemographicInfo label="Fecha de nacimiento" value={patient.birthDate} />
                 <DemographicInfo
-                  label="Phone Number"
+                  label="Número de teléfono"
                   value={patient.telephone}
                 />
               </div>
             </>
           ) : (
             <div className="flex text-center">
-              Update your demographic information.
+              Actualiza tu información demográfica
             </div>
           )}
         </CardBody>

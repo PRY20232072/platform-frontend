@@ -68,7 +68,7 @@ export default function PatientDemographicFields({
   return (
     <>
       <div className='mb-4 font-bold text-2xl tracking-[0] leading-[24px]'>
-        General information
+        Información general
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
         <div className='mb-4'>
@@ -76,18 +76,18 @@ export default function PatientDemographicFields({
             isRequired
             isReadOnly={!isEditing}
             type='text'
-            label='Full name'
+            label='Nombre completo'
             labelPlacement='outside'
-            placeholder='Complete full name'
+            placeholder='Jhon Doe Smith'
             value={patient.name_id}
             onChange={(e) => handleInputChange("name_id", e.target.value)}
           />
         </div>
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Gender'
+          label='Género'
           labelPlacement='outside'
-          placeholder='Select an option'
+          placeholder='Selecciona una opción'
           data={genders}
           inputValue={patient.gender}
           onInputChange={(value) => handleInputChange("gender", value)}
@@ -98,18 +98,18 @@ export default function PatientDemographicFields({
             isRequired
             isReadOnly={!isEditing}
             type='date'
-            label='Birthdate'
+            label='Fecha de nacimiento'
             labelPlacement='outside'
-            placeholder='Complete data'
+            placeholder='Selecciona una fecha'
             value={patient.birthDate}
             onChange={(e) => handleInputChange("birthDate", e.target.value)}
           />
         </div>
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Civil Status'
+          label='Estado civil'
           labelPlacement='outside'
-          placeholder='Select an option'
+          placeholder='Selecciona una opción'
           data={civilStatus}
           inputValue={patient.maritalStatus}
           onInputChange={(value) => handleInputChange("maritalStatus", value)}
@@ -123,26 +123,26 @@ export default function PatientDemographicFields({
             }
             isReadOnly={!isEditing}
             type='tel'
-            label='Phone number'
+            label='Número de teléfono'
             labelPlacement='outside'
-            placeholder='Complete phone number'
+            placeholder='Completa el número de teléfono'
             isInvalid={isInvalid}
             color={isInvalid ? "danger" : "default"}
             value={patient.telephone}
             onChange={(e) => handleInputChange("telephone", e.target.value)}
-            errorMessage={isInvalid && "Please enter a valid phone number"}
+            errorMessage={isInvalid && "Por favor, ingrese un número válido"}
           />
         </div>
       </div>
       <div className='my-4 font-bold  text-2xl tracking-[0] leading-[24px]'>
-        Address
+        Dirección de residencia
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4'>
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Department'
+          label='Departmento'
           labelPlacement='outside'
-          placeholder='Select a department'
+          placeholder='Selecciona un departamento'
           data={departments.map((department) => ({
             value: department.id,
             label: department.name,
@@ -155,9 +155,9 @@ export default function PatientDemographicFields({
 
         <CustomAutocomplete
           isDisabled={!isEditing || !patient.address.department}
-          label='Province'
+          label='Provincia'
           labelPlacement='outside'
-          placeholder='Select a province'
+          placeholder='Selecciona una provincia'
           data={provincesOptions.map((provinces) => ({
             value: provinces.id,
             label: provinces.name,
@@ -170,9 +170,9 @@ export default function PatientDemographicFields({
 
         <CustomAutocomplete
           isDisabled={!isEditing || !patient.address.province}
-          label='District'
+          label='Distrito'
           labelPlacement='outside'
-          placeholder='Select a district'
+          placeholder='Selecciona un distrito'
           data={districtsOptions.map((districts) => ({
             value: districts.id,
             label: districts.name,
@@ -185,9 +185,9 @@ export default function PatientDemographicFields({
 
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Type of address'
+          label='Tipo de dirección'
           labelPlacement='outside'
-          placeholder='Select an option'
+          placeholder='Selecciona un tipo de dirección'
           data={addressTypes}
           inputValue={patient.address.type_address}
           onInputChange={(value) =>
@@ -199,9 +199,9 @@ export default function PatientDemographicFields({
           isRequired
           isReadOnly={!isEditing}
           type='text'
-          label='Address line'
+          label='Dirección'
           labelPlacement='outside'
-          placeholder='Complete address line'
+          placeholder='Completa la dirección'
           value={patient.address.address_line}
           onChange={(e) =>
             handleInputChange("address.address_line", e.target.value)
@@ -212,9 +212,9 @@ export default function PatientDemographicFields({
           isRequired
           isReadOnly={!isEditing}
           type='text'
-          label='Postal code'
+          label='Código postal'
           labelPlacement='outside'
-          placeholder='Complete postal code'
+          placeholder='Completa el código postal'
           value={patient.address.postal_code}
           onChange={(e) =>
             handleInputChange("address.postal_code", e.target.value)

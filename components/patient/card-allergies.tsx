@@ -52,15 +52,15 @@ export default function CardAllergies() {
     >
       <Card
         link={`patient/${session?.user?.id}/allergy-intolerance`}
-        card_title="Allergies"
+        card_title="Alergias"
         icon={
           <TestTube2
             color="white"
             className="w-5 h-[18px] left-[2px] top-[3px] absolute"
           />
         }
-        heading_one="Detail"
-        heading_two="Date"
+        heading_one="Detalle"
+        heading_two="Fecha de registro"
         cardData={allergyList}
       />
     </CustomSuspense>

@@ -83,7 +83,7 @@ export const PatientsSearch = () => {
               variant="flat"
               onClick={() => router.push(`patients/${patient.patient_id}`)}
             >
-              See more
+              Ver más
             </Button>
           </div>
         );
@@ -156,7 +156,7 @@ export const PatientsSearch = () => {
             variant="faded"
             size="sm"
             className="w-full sm:max-w-[26%] ml-1 mb-2 mt-2"
-            placeholder="Search by name..."
+            placeholder="Buscar por nombre..."
             startContent={<SearchIcon className="h-4 w-4" />}
             value={filterValue}
             onClear={() => onClear()}
@@ -167,7 +167,7 @@ export const PatientsSearch = () => {
             variant="faded"
             size="sm"
             className="w-full sm:max-w-[26%] mb-2 mt-2"
-            placeholder="Search by ID..."
+            placeholder="Buscar por ID..."
             startContent={<SearchIcon className="h-4 w-4" />}
             onClear={() => onClear()}
           />
@@ -206,7 +206,7 @@ export const PatientsSearch = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No allergies data available'}
+          emptyContent={'No se encontraron pacientes.'}
           items={patientsList}
         >
           {(item) => (

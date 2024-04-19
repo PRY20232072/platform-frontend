@@ -1,222 +1,220 @@
 const civilStatus = [
-  { label: 'SINGLE', value: 'SINGLE' },
-  { label: 'MARRIED', value: 'MARRIED' },
-  { label: 'DIVORCED', value: 'DIVORCED' },
-  { label: 'WIDOWED', value: 'WIDOWED' },
-  { label: 'OTHER', value: 'OTHER' },
+  { label: "SOLTERO", value: "SINGLE" },
+  { label: "CASADO", value: "MARRIED" },
+  { label: "DIVORCIADO", value: "DIVORCED" },
+  { label: "VIUDO", value: "WIDOWED" },
+  { label: "OTRO", value: "OTHER" },
 ];
-
 const genders = [
-  { label: 'MALE', value: 'MALE' },
-  { label: 'FEMALE', value: 'FEMALE' },
-  { label: 'OTHER', value: 'OTHER' },
+  { label: "HOMBRE", value: "MALE" },
+  { label: "MUJER", value: "FEMALE" },
+  { label: "OTRO", value: "OTHER" },
 ];
 
 const addressTypes = [
-  { label: 'POSTAL', value: 'POSTAL' },
-  { label: 'PHYSICAL', value: 'PHYSICAL' },
-  { label: 'BOTH', value: 'BOTH' },
+  { label: "POSTAL", value: "POSTAL" },
+  { label: "FISICA", value: "PHYSICAL" },
+  { label: "AMBOS", value: "BOTH" },
 ];
 
 const allergyStatus = [
-  { label: 'ACTIVE', value: 'ACTIVE' },
-  { label: 'INNACTIVE', value: 'INNACTIVE' },
-  { label: 'RESOLVED', value: 'RESOLVED' },
+  { label: "ACTIVO", value: "ACTIVE" },
+  { label: "INACTIVO", value: "INNACTIVE" },
+  { label: "RESUELTO", value: "RESOLVED" },
 ];
 
 const allergyTypes = [
-  { label: 'DAIRY', value: 'DAIRY' },
-  { label: 'GLUTEN', value: 'GLUTEN' },
-  { label: 'CAFFEINE', value: 'CAFFEINE' },
-  { label: 'SALICYLATES', value: 'SALICYLATES' },
-  { label: 'AMINES', value: 'AMINES' },
-  { label: 'OTHER', value: 'OTHER' },
+  { label: "LÁCTEOS", value: "DAIRY" },
+  { label: "GLUTEN", value: "GLUTEN" },
+  { label: "CAFEÍNA", value: "CAFFEINE" },
+  { label: "SALICILATOS", value: "SALICYLATES" },
+  { label: "AMINAS", value: "AMINES" },
+  { label: "OTRO", value: "OTHER" },
 ];
 
 const allergyCategories = [
-  { label: 'FOOD', value: 'FOOD' },
-  { label: 'MEDICATION', value: 'MEDICATION' },
-  { label: 'ENVIRONMENT', value: 'ENVIRONMENT' },
-  { label: 'BIOLOGIC', value: 'BIOLOGIC' },
+  { label: "COMIDA", value: "FOOD" },
+  { label: "MEDICAMENTO", value: "MEDICATION" },
+  { label: "AMBIENTE", value: "ENVIRONMENT" },
+  { label: "BIOLÓGICO", value: "BIOLOGIC" },
 ];
 
 const familyRecordStatus = [
-  { label: 'PARTIAL', value: 'PARTIAL' },
-  { label: 'COMPLETE', value: 'COMPLETE' },
-  { label: 'UNKNOWN HEALTH', value: 'UNKNOWN' },
+  { label: "PARCIAL", value: "PARTIAL" },
+  { label: "COMPLETO", value: "COMPLETE" },
+  { label: "SALUD DESCONOCIDA", value: "UNKNOWN" },
 ];
 
 const allergyTableColumns = [
-  { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
-  { name: 'TYPE', uid: 'type', sortable: true },
-  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
-  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
-  { name: 'STATUS', uid: 'clinical_status', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "DETALLE", uid: "allergy_notes", sortable: true },
+  { name: "TIPO", uid: "type", sortable: true },
+  { name: "CREADO POR", uid: "participant_id", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "ESTADO", uid: "clinical_status", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const allergyDocTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'FORMAT', uid: 'format_doc', sortable: true },
-  { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "NOMBRE", uid: "name", sortable: true },
+  { name: "FORMATO", uid: "format_doc", sortable: true },
+  { name: "CREADO POR", uid: "created_by", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "created_date", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const allergyAccessTableColumns = [
-  { name: 'PRACTITIONER ID', uid: 'practitioner_id', sorteable: true },
-  { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
+  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const familyRecordAccessTableColumns = [
-  { name: 'PRACTITIONER ID', uid: 'practitioner_id', sorteable: true },
-  { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
+  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const familyRecordTableColumns = [
-  { name: 'DETAIL', uid: 'notes', sortable: true },
-  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
-  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
-  { name: 'STATUS', uid: 'clinical_status', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "DETALLE", uid: "notes", sortable: true },
+  { name: "CREADO POR", uid: "participant_id", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "ESTADO", uid: "clinical_status", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
-
 const practitionersTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'ID', uid: 'id', sortable: true },
-  { name: 'EMAIL', uid: 'email', sortable: true },
-  { name: 'PHONE NUMBER', uid: 'phone_number' },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "NOMBRE", uid: "name", sortable: true },
+  { name: "ID", uid: "id", sortable: true },
+  { name: "EMAIL", uid: "email", sortable: true },
+  { name: "NÚMERO DE TELÉFONO", uid: "phone_number" },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const patientsTableColumns = [
-  { name: 'NAME', uid: 'name_id', sortable: true },
-  { name: 'ID', uid: 'patient_id', sortable: true },
+  { name: "NOMBRE", uid: "name_id", sortable: true },
+  { name: "ID", uid: "patient_id", sortable: true },
   // { name: 'EMAIL', uid: 'email', sortable: true },
-  { name: 'PHONE NUMBER', uid: 'telephone' },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "NÚMERO DE TELÉFONO", uid: "telephone" },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const healthRecordsTableColumns = [
-  { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
-  // { name: 'PATIENT', uid: 'patient_name', sortable: true },
-  // { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: "PATIENT ID", uid: "patient_id", sortable: true },
-  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
-  { name: 'STATUS', uid: 'clinical_status', sortable: true },
-  { name: 'CATEGORY', uid: 'category', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "DETALLE", uid: "allergy_notes", sortable: true },
+  // { name: 'PACIENTE', uid: 'patient_name', sortable: true },
+  // { name: 'CREADO POR', uid: 'created_by', sortable: true },
+  { name: "ID DEL PACIENTE", uid: "patient_id", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "ESTADO", uid: "clinical_status", sortable: true },
+  { name: "CATEGORÍA", uid: "category", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const practitionerTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'ID', uid: 'practitioner_id', sortable: true },
-  { name: 'EMAIL', uid: 'email', sortable: true },
-  { name: 'PHONE NUMBER', uid: 'phone_number' },
+  { name: "NAME", uid: "name", sortable: true },
+  { name: "ID", uid: "practitioner_id", sortable: true },
+  { name: "EMAIL", uid: "email", sortable: true },
+  { name: "PHONE NUMBER", uid: "phone_number" },
 ];
 
 const accessRequestTableColumns = [
-  { name: 'PRACTITIONER ID', uid: 'practitioner_id', sorteable: true },
-  { name: 'PRACTITIONER NAME', uid: 'practitioner_name', sortable: true },
-  { name: 'REGISTER TYPE', uid: 'register_type' },
-  { name: 'REGISTER ID', uid: 'register_id' },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
+  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  { name: "TIPO DE REGISTRO", uid: "register_type" },
+  { name: "ID DE REGISTRO", uid: "register_id" },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const eventsTableColumns = [
-  { name: 'EVENT DESCRIPTION', uid: 'event_description', sortable: true },
-  { name: 'USER NAME', uid: 'user_name', sortable: true },
-  { name: 'ROLE', uid: 'role', sortable: true },
-  { name: 'EVENT', uid: 'event', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "DESCRIPCIÓN DEL EVENTO", uid: "event_description", sortable: true },
+  { name: "NOMBRE DE USUARIO", uid: "user_name", sortable: true },
+  { name: "ROL", uid: "role", sortable: true },
+  { name: "EVENTO", uid: "event", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const platformaPatientEventsTableColumns = [
   {
-    name: "REGISTER ID",
+    name: "ID DE REGISTRO",
     uid: "register_id",
     sortable: true,
   },
   {
-    name: "REGISTER TYPE",
+    name: "TIPO DE REGISTRO",
     uid: "register_type",
   },
   {
-    name: "PRACTITIONER NAME",
+    name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
     uid: "practitioner_name",
     sortable: true,
   },
   {
-    name: "EVENT",
+    name: "EVENTO",
     uid: "type",
   },
   {
-    name: "DATE",
+    name: "FECHA",
     uid: "created_at",
     sortable: true,
   },
   {
-    name: "ACTION",
+    name: "ACCIÓN",
     uid: "actions",
   },
 ];
 
 const platformaPractitionerEventsTableColumns = [
   {
-    name: "PATIENT NAME",
+    name: "NOMBRE DEL PACIENTE",
     uid: "patient_name",
     sortable: true,
   },
   {
-    name: "MESSAGE",
+    name: "MENSAJE",
     uid: "message",
   },
   {
-    name: "DATE",
+    name: "FECHA",
     uid: "created_at",
     sortable: true,
   },
   {
-    name: "ACTION",
+    name: "ACCIÓN",
     uid: "actions",
   },
 ];
 
 const selectedPatientAllergiesTableColumns = [
-  { name: 'DETAIL', uid: 'allergy_notes', sortable: true },
-  { name: 'TYPE', uid: 'type', sortable: true },
-  // { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
-  { name: 'STATUS', uid: 'clinical_status', sortable: true },
-  { name: 'ACCESS', uid: 'has_access', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "DETALLE", uid: "allergy_notes", sortable: true },
+  { name: "TIPO", uid: "type", sortable: true },
+  // { name: 'CREADO POR', uid: 'created_by', sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "ESTADO", uid: "clinical_status", sortable: true },
+  { name: "ACCESO", uid: "has_access", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const documentsTableColumns = [
-  { name: 'NAME', uid: 'file_name', sortable: true },
-  { name: 'FORMAT', uid: 'file_type', sortable: true },
-  { name: 'CREATED BY', uid: 'practitioner_name', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "NOMBRE", uid: "file_name", sortable: true },
+  { name: "FORMATO", uid: "file_type", sortable: true },
+  { name: "CREADO POR", uid: "practitioner_name", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "created_date", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const practitioners = [
   {
     id: 1,
-    name: 'Dr. Juan Perez',
-    practitioner_id: '81726354',
-    email: 'juanperez@gmail.com',
-    phone_number: '987654321',
+    name: "Dr. Juan Perez",
+    practitioner_id: "81726354",
+    email: "juanperez@gmail.com",
+    phone_number: "987654321",
   },
   {
     id: 2,
-    name: 'Dra. Maria Perez',
-    practitioner_id: '81726354',
-    email: 'mariaperez@gmail.com',
-    phone_number: '987654321',
+    name: "Dra. Maria Perez",
+    practitioner_id: "81726354",
+    email: "mariaperez@gmail.com",
+    phone_number: "987654321",
   },
 ];
 
@@ -231,10 +229,10 @@ const emptyPatient = {
     type_address: "",
     address_line: "",
     province: "",
-    district: "", 
-    department: "",  
+    district: "",
+    department: "",
     postal_code: "",
-  }
+  },
 };
 
 const emptyPractitioner = {
@@ -248,259 +246,257 @@ const emptyPractitioner = {
     type_address: "",
     address_line: "",
     province: "",
-    district: "", 
-    department: "",  
+    district: "",
+    department: "",
     postal_code: "",
-  }
+  },
 };
 
 const patients = [
   {
     id: 1,
-    name: 'Elon Musk',
-    patient_id: '81726354',
-    email: 'elonmusk@plataforma.com',
-    phone_number: '987654321',
+    name: "Elon Musk",
+    patient_id: "81726354",
+    email: "elonmusk@plataforma.com",
+    phone_number: "987654321",
   },
   {
     id: 2,
-    name: 'Elon Musk',
-    patient_id: '81726354',
-    email: 'elonmusk@plataforma.com',
-    phone_number: '987654321',
+    name: "Elon Musk",
+    patient_id: "81726354",
+    email: "elonmusk@plataforma.com",
+    phone_number: "987654321",
   },
 ];
 
 const patientAllergies = [
   {
     id: 1,
-    detail: 'Allergy reaction to peanuts',
-    type: 'Food',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    status: 'active',
+    detail: "Allergy reaction to peanuts",
+    type: "Food",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    status: "active",
   },
   {
     id: 2,
-    detail: 'Allergy reaction to medicine',
-    type: 'Medicine',
-    created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
-    status: 'active',
+    detail: "Allergy reaction to medicine",
+    type: "Medicine",
+    created_by: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
+    status: "active",
   },
   {
     id: 3,
-    detail: 'Allergy reaction to cats',
-    type: 'Animal',
-    created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
-    status: 'innactive',
+    detail: "Allergy reaction to cats",
+    type: "Animal",
+    created_by: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
+    status: "innactive",
   },
   {
     id: 4,
-    detail: 'Allergy reaction to cats',
-    type: 'Animal',
-    created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
-    status: 'resolve',
+    detail: "Allergy reaction to cats",
+    type: "Animal",
+    created_by: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
+    status: "resolve",
   },
 ];
 
 const patientAllergiesDocs = [
   {
     id: 1,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
   },
   {
     id: 2,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    created_by: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
   },
 ];
 
 const patientFamilyRecordDocs = [
   {
     id: 1,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    participant_id: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    participant_id: "Dr. Juan Perez",
+    created_date: "2023/11/01",
   },
   {
     id: 2,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    participant_id: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    participant_id: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
   },
 ];
 
-
 const patientFamilyRecordDocTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'FORMAT', uid: 'format_doc', sortable: true },
-  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "NOMBRE", uid: "name", sortable: true },
+  { name: "FORMATO", uid: "format_doc", sortable: true },
+  { name: "CREADO POR", uid: "participant_id", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "created_date", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
-
 
 const selectedPatientAllergiesDocs = [
   {
     id: 1,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    has_access: 'Yes',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    has_access: "Yes",
   },
   {
     id: 2,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
-    has_access: 'No',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    created_by: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
+    has_access: "No",
   },
   {
     id: 3,
-    name: 'Allergy examination report',
-    format_doc: 'PDF',
-    created_by: 'Dr. Ricardo Montalban',
-    created_date: '2023/11/01',
-    has_access: 'Pending',
+    name: "Allergy examination report",
+    format_doc: "PDF",
+    created_by: "Dr. Ricardo Montalban",
+    created_date: "2023/11/01",
+    has_access: "Pending",
   },
 ];
 
 const patientAllergiesAccess = [
   {
     id: 1,
-    practitioner_name: 'Dr. Juan Perez',
-    assigned_date: '2023/11/01',
-    expired_date: '2023/11/01',
+    practitioner_name: "Dr. Juan Perez",
+    assigned_date: "2023/11/01",
+    expired_date: "2023/11/01",
   },
   {
     id: 2,
-    practitioner_name: 'Dr. Ricardo Montalban',
-    assigned_date: '2023/11/01',
-    expired_date: '2023/11/01',
+    practitioner_name: "Dr. Ricardo Montalban",
+    assigned_date: "2023/11/01",
+    expired_date: "2023/11/01",
   },
 ];
 
 const practitionersAccessRequests = [
   {
     id: 1,
-    practitioner_name: 'Dr. Juan Perez',
-    request_date: '2023/11/01',
+    practitioner_name: "Dr. Juan Perez",
+    request_date: "2023/11/01",
   },
   {
     id: 2,
-    practitioner_name: 'Dr. Ricardo Montalban',
-    request_date: '2023/11/01',
+    practitioner_name: "Dr. Ricardo Montalban",
+    request_date: "2023/11/01",
   },
 ];
 
 const events = [
   {
     id: 1,
-    event_description: 'Patient created',
-    user_name: 'Dr. Juan Perez',
-    role: 'Doctor',
-    event: 'Create Record',
+    event_description: "Patient created",
+    user_name: "Dr. Juan Perez",
+    role: "Doctor",
+    event: "Create Record",
   },
   {
     id: 2,
-    event_description: 'New allergy added',
-    user_name: 'Dr. Juan Perez',
-    role: 'Doctor',
-    event: 'Create Record',
+    event_description: "New allergy added",
+    user_name: "Dr. Juan Perez",
+    role: "Doctor",
+    event: "Create Record",
   },
 ];
 
 const selectedPatientAllergies = [
   {
     id: 1,
-    detail: 'Allergy reaction',
-    type: 'Hives',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    status: 'active',
-    has_access: 'Yes',
+    detail: "Allergy reaction",
+    type: "Hives",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    status: "active",
+    has_access: "Yes",
   },
   {
     id: 2,
-    detail: 'Allergy reaction',
-    type: 'Hives',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    status: 'active',
-    has_access: 'No',
+    detail: "Allergy reaction",
+    type: "Hives",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    status: "active",
+    has_access: "No",
   },
   {
     id: 3,
-    detail: 'Allergy reaction',
-    type: 'Hives',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    status: 'active',
-    has_access: 'Pending',
+    detail: "Allergy reaction",
+    type: "Hives",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    status: "active",
+    has_access: "Pending",
   },
 ];
 
 const healthRecords = [
   {
     id: 1,
-    detail: 'Medical consultation',
-    patient_name: 'Jhon Doe',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    status: 'Partial',
-    category: 'Family History',
+    detail: "Medical consultation",
+    patient_name: "Jhon Doe",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    status: "Partial",
+    category: "Family History",
   },
   {
     id: 2,
-    detail: 'Allergy reaction',
-    patient_name: 'Jhon Doe',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    status: 'Active',
-    category: 'Allergy',
+    detail: "Allergy reaction",
+    patient_name: "Jhon Doe",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    status: "Active",
+    category: "Allergy",
   },
 ];
 
 const practitionerFamilyRecordsTableColumns = [
-  { name: 'DETAIL', uid: 'notes', sortable: true },
-  { name: 'CREATED BY', uid: 'participant_id', sortable: true },
-  { name: 'CREATED DATE', uid: 'recorded_date', sortable: true },
-  { name: 'STATUS', uid: 'clinical_status', sortable: true },
-  { name: 'ACCESS', uid: 'has_access', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "DETALLE", uid: "notes", sortable: true },
+  { name: "CREADO POR", uid: "participant_id", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "ESTADO", uid: "clinical_status", sortable: true },
+  { name: "ACCESO", uid: "has_access", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
 const selectedPatientFamilyRecordDocsTableColumns = [
-  { name: 'NAME', uid: 'name', sortable: true },
-  { name: 'FORMAT', uid: 'format_doc', sortable: true },
-  { name: 'CREATED BY', uid: 'created_by', sortable: true },
-  { name: 'CREATED DATE', uid: 'created_date', sortable: true },
-  { name: 'ACCESS', uid: 'has_access', sortable: true },
-  { name: 'ACTION', uid: 'actions' },
+  { name: "NOMBRE", uid: "name", sortable: true },
+  { name: "FORMATO", uid: "format_doc", sortable: true },
+  { name: "CREADO POR", uid: "created_by", sortable: true },
+  { name: "FECHA DE CREACIÓN", uid: "created_date", sortable: true },
+  { name: "ACCESO", uid: "has_access", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
 ];
 
-const selectedPatientFamilyRecordDocs= [
+const selectedPatientFamilyRecordDocs = [
   {
     id: 1,
-    name: 'The family record examination report',
-    format_doc: 'PDF',
-    created_by: 'Dr. Juan Perez',
-    created_date: '2023/11/01',
-    has_access: 'Yes',
+    name: "The family record examination report",
+    format_doc: "PDF",
+    created_by: "Dr. Juan Perez",
+    created_date: "2023/11/01",
+    has_access: "Yes",
   },
-]
+];
 
 export {
   civilStatus,
@@ -541,5 +537,5 @@ export {
   familyRecordStatus,
   practitionerFamilyRecordsTableColumns,
   selectedPatientFamilyRecordDocsTableColumns,
-  selectedPatientFamilyRecordDocs
+  selectedPatientFamilyRecordDocs,
 };

@@ -95,7 +95,7 @@ const FamilyRecordsTable: React.FC = () => {
                   router.push(`family-records/${familyRecord.familyHistory_id}`)
                 }
               >
-                See more
+                Ver más
               </Button>
             </div>
           );
@@ -122,7 +122,7 @@ const FamilyRecordsTable: React.FC = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No family records data available'}
+          emptyContent={'No se encontraron registros de historial familiar.'}
           items={items}
         >
           {(item) => (

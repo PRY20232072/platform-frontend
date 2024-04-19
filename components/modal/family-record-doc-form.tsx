@@ -62,7 +62,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   return (
     <>
       <Button onPress={onOpen} color="primary" variant="flat">
-        Continue
+        Continuar
       </Button>
       <Modal
         size="md"
@@ -74,17 +74,17 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Request Access
+                Solicitar acceso
               </ModalHeader>
               <ModalBody>
-                <div>Do you want to request access to family record?</div>
+                <div>¿Quieres solicitar acceso al registro familiar?</div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button color="primary" onClick={handleCreate}>
-                  Accept
+                  Aceptar
                 </Button>
               </ModalFooter>
             </>
@@ -126,7 +126,7 @@ export const FamilyRecordDocFormModal = () => {
         onPress={onOpen}
         className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
       >
-        Add New <Plus className="h-4 w-4" />
+        Añadir nuevo <Plus className="h-4 w-4" />
       </Button>
       <Modal
         placement="auto"
@@ -139,12 +139,12 @@ export const FamilyRecordDocFormModal = () => {
           {(onClose) => (
             <form>
               <ModalHeader className="flex flex-col gap-1 font-bold">
-                Family Record Document questionnaire
+                Cuestionario de documento de historial familiar
               </ModalHeader>
               <ModalBody>
                 <Input
-                  label="Name"
-                  placeholder="Complete the document's name"
+                  label="Nombre"
+                  placeholder="Completa el nombre del documento"
                   classNames={{ label: 'text-md font-bold' }}
                   value={familyRecordDoc.name}
                   onChange={(e) => {
@@ -157,7 +157,7 @@ export const FamilyRecordDocFormModal = () => {
                   size='lg'
                   radius="lg"
                   labelPlacement="outside"
-                  label="Choose a file to upload"
+                  label="Escoge un archivo"
                   classNames={{ label: 'text-sm font-bold', inputWrapper: 'border-dashed border-2 border-gray-400 ',input: 'opacity-0 absolute hover:cursor-pointer' }}
                   onChange={handleChange}
                   startContent={<><Upload /> <span className="text-sm text-gray-500 ml-2 ">{file?file.name:'Drag your file here. Max file size: 100MB'}</span></>}
@@ -165,7 +165,7 @@ export const FamilyRecordDocFormModal = () => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <ConfirmModal
                   familyRecordDoc={familyRecordDoc}

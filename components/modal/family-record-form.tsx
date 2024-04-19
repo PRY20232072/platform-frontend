@@ -59,7 +59,6 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   const handleCreate = () => {
     familyRecord.recorded_date = new Date().toISOString().split("T")[0];
     const familyHistory_id = uuidv4();
-
     createFamilyRecord(
       familyRecordService.createFamilyRecord({
         identifier: familyHistory_id,
@@ -91,7 +90,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
         color="primary"
         variant="flat"
       >
-        Continue
+        Continuar
       </Button>
       <Modal
         size="md"
@@ -103,17 +102,17 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Request Access
+                Solicitar acceso
               </ModalHeader>
               <ModalBody>
-                <div>Do you want to request access to family record?</div>
+                <div>¿Quieres solicitar acceso al registro familiar?</div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button color="primary" onClick={handleCreate}>
-                  Accept
+                  Aceptar
                 </Button>
               </ModalFooter>
             </>
@@ -131,9 +130,9 @@ export const FamilyRecordFormModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = useParams();
   const [errors, setErrors] = useState<any>({
-    name: "Name is required",
-    reason: "Reason is required",
-    notes: "Note is required",
+    name: "Se requiere el nombre",
+    reason: "Se requiere la razón",
+    notes: "Se requiere la nota",
   });
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -141,7 +140,7 @@ export const FamilyRecordFormModal = () => {
     setRecord({
       name: "",
       reason: "",
-      clinical_status: "PARTIAL",
+      clinical_status: "PARCIAL",
       onset_date: "",
       recorded_date: "",
       notes: "",
@@ -158,17 +157,17 @@ export const FamilyRecordFormModal = () => {
     const errors: any = {};
 
     if (!familyRecord.name) {
-      errors.name = "Name is required";
+      errors.name = "El nombre es requerido";
       valid = false;
     }
 
     if (!familyRecord.reason) {
-      errors.reason = "Reason is required";
+      errors.reason = "La razón es requerida";
       valid = false;
     }
 
     if (!familyRecord.notes) {
-      errors.notes = "Note is required";
+      errors.notes = "La nota es requerida";
       valid = false;
     }
 
@@ -182,7 +181,7 @@ export const FamilyRecordFormModal = () => {
         onPress={onOpen}
         className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
       >
-        Add New <Plus className="h-4 w-4" />
+        Agregar nuevo <Plus className="h-4 w-4" />
       </Button>
       <Modal
         placement="auto"
@@ -195,12 +194,12 @@ export const FamilyRecordFormModal = () => {
           {(onClose) => (
             <form>
               <ModalHeader className="flex flex-col gap-1 font-bold">
-                Family Record questionnaire
+                Cuestionario de registro de historial familiar
               </ModalHeader>
               <ModalBody>
                 <Input
-                  label="Name"
-                  placeholder="Complete the record's name"
+                  label="Nombre"
+                  placeholder="Escribe el nombre del registro"
                   classNames={{ label: "text-md font-bold" }}
                   value={familyRecord.name}
                   onChange={(e) => {
@@ -232,8 +231,8 @@ export const FamilyRecordFormModal = () => {
 
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label="Reason"
-                  placeholder="Write the family record reason"
+                  label="Razón"
+                  placeholder="Escribe la razón del registro"
                   value={familyRecord.reason}
                   onChange={(e) => {
                     setRecord({
@@ -253,8 +252,8 @@ export const FamilyRecordFormModal = () => {
 
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label="Note"
-                  placeholder="Write the record note"
+                  label="Nota"
+                  placeholder="Escribe una nota sobre el registro"
                   value={familyRecord.notes}
                   onChange={(e) => {
                     setRecord({
@@ -284,7 +283,7 @@ export const FamilyRecordFormModal = () => {
                 /> */}
 
                 <RadioOptions
-                  label="Status"
+                  label="Estado"
                   defaultValue={familyRecordStatus[0].value}
                   data={familyRecordStatus}
                   onChange={(e) => {
@@ -297,7 +296,7 @@ export const FamilyRecordFormModal = () => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <ConfirmModal
                   familyRecord={familyRecord}

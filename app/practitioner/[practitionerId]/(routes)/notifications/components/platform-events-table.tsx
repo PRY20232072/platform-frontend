@@ -108,7 +108,7 @@ const PlatformEventsTable = () => {
   return (
     <>
       <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
-        Platform Events
+        Eventos de la plataforma
       </div>
 
       <CustomSuspense
@@ -129,7 +129,7 @@ const PlatformEventsTable = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No platform events data available"}
+            emptyContent={"No hay eventos para mostrar."}
             items={events}
           >
             {(item) => (

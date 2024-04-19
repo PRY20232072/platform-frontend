@@ -58,7 +58,7 @@ const EventDetailModal = ({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Event Detail</ModalHeader>
+              <ModalHeader>Detalle del evento</ModalHeader>
               <ModalBody>
                 <CustomSuspense
                   isLoading={getNotificationResponse.isLoading}
@@ -68,28 +68,28 @@ const EventDetailModal = ({
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Patient ID"
+                      label="ID del paciente"
                       labelPlacement="outside"
                       value={event?.patient_id}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Patient Name"
+                      label="Nombre del paciente"
                       labelPlacement="outside"
                       value={event?.patient_name}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Message"
+                      label="Mensaje"
                       labelPlacement="outside"
                       value={event?.message}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Date"
+                      label="Fecha del evento"
                       labelPlacement="outside"
                       value={new Date(
                         event?.created_at as string
@@ -100,7 +100,7 @@ const EventDetailModal = ({
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onPress={onClose}>
-                  Close
+                  Cerrar
                 </Button>
               </ModalFooter>
             </>

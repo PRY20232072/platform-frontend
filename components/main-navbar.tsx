@@ -1,35 +1,35 @@
-'use client';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { useParams, usePathname } from 'next/navigation';
+"use client";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
 
 export function MainNavbar({
   className,
   userRole,
   userId,
   ...props
-}: React.HTMLAttributes<HTMLElement> & { userRole: string, userId: string }) {
+}: React.HTMLAttributes<HTMLElement> & { userRole: string; userId: string }) {
   const pathname = usePathname();
   const params = useParams();
   const patient_routes = [
     {
       href: `/`,
-      label: 'Overview',
+      label: "Información General",
       active: pathname === `/`,
     },
     {
       href: `/patient/${userId}/demographic`,
-      label: 'Demographic information',
+      label: "Información demográfica",
       active: pathname === `/patient/${userId}/demographic`,
     },
     {
       href: `/patient/${userId}/family-records`,
-      label: 'Family Records',
+      label: "Historial familiar",
       active: pathname === `/patient/${userId}/family-records`,
-    }, 
+    },
     {
       href: `/patient/${userId}/allergy-intolerance`,
-      label: 'Allergies',
+      label: "Alergias",
       active: pathname === `/patient/${userId}/allergy-intolerance`,
     },
   ];
@@ -37,26 +37,26 @@ export function MainNavbar({
   const practioners_routes = [
     {
       href: `/`,
-      label: 'Overview',
+      label: "Información General",
       active: pathname === `/`,
     },
     {
       href: `/practitioner/${userId}/patients`,
-      label: 'Patients',
+      label: "Pacientes",
       active: pathname === `/practitioner/${userId}/patients`,
     },
     {
       href: `/practitioner/${userId}/health-records`,
-      label: 'Health Records',
+      label: "Registros de Salud",
       active: pathname === `/practitioner/${userId}/health-records`,
     },
   ];
 
-  const routes = userRole === 'patient' ? patient_routes : practioners_routes;
+  const routes = userRole === "patient" ? patient_routes : practioners_routes;
 
   return (
     <nav
-      className={cn('flex items-center space-x-4 lg:space-x-6', className)}
+      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
       {routes.map((route) => (
@@ -64,8 +64,8 @@ export function MainNavbar({
           key={route.href}
           href={route.href}
           className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
-            route.active ? 'text-primary' : 'text-black dark:text-white'
+            "text-sm font-medium transition-colors hover:text-primary dark:hover:text-primary",
+            route.active ? "text-primary" : "text-black dark:text-white"
           )}
         >
           {route.label}

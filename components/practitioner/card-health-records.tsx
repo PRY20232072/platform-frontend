@@ -77,15 +77,15 @@ export default function CardHealthRecords() {
       >
         <Card
           link={`practitioner/${session?.user?.id}/health-records`}
-          card_title="Health Records"
+          card_title="Registros médicos"
           icon={
             <FileText
               color="white"
               className="w-4 h-5 left-[4px] top-[2px] absolute"
             />
           }
-          heading_one="Detail"
-          heading_two="Date"
+          heading_one="Detalle"
+          heading_two="Fecha de registro"
           cardData={healthRecordsList}
         />
       </CustomSuspense>

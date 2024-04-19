@@ -52,13 +52,13 @@ const EventsHistoryTable = () => {
       switch (columnKey) {
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
-                className="font-medium"
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium'
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onPress={() => {
                   setSelectedEventId(platform_event.id);
                   onOpen();
@@ -79,19 +79,19 @@ const EventsHistoryTable = () => {
 
   return (
     <>
-      <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
-        Events History
+      <div className='mb-4 font-bold text-2xl tracking-[0] leading-[24px]'>
+        Historial de eventos
       </div>
 
       <CustomSuspense
         isLoading={getNotificationsResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label="Platform events">
+        <Table aria-label='Platform events'>
           <TableHeader columns={platformaPractitionerEventsTableColumns}>
             {(column) => (
               <TableColumn
-                className="text-bold"
+                className='text-bold'
                 key={column.uid}
                 align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}
@@ -101,7 +101,7 @@ const EventsHistoryTable = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No platform events data available"}
+            emptyContent={"No hay eventos para mostrar."}
             items={events}
           >
             {(item) => (

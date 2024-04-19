@@ -108,7 +108,7 @@ export default function NavMenu({ userEmail }: NavMenuProps) {
                   )
                 }
               >
-                Profile
+                Perfil
               </DropdownItem>
 
               <DropdownItem
@@ -120,7 +120,7 @@ export default function NavMenu({ userEmail }: NavMenuProps) {
                   )
                 }
               >
-                Logout
+                Cerrar sesión
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

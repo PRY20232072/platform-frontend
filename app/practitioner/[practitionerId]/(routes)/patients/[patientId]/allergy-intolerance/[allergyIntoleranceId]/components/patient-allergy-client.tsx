@@ -15,7 +15,7 @@ export const PatientAllergyClient = () => {
         aria-label="Options"
         classNames={{ tabList: "bg-sky-100", tabContent: "text-black" }}
       >
-        <Tab key="details" title="Details">
+        <Tab key="details" title="Detalles">
           <PatientAllergyDetail
             allergy={allergy}
             setAllergy={setAllergy}
@@ -23,7 +23,7 @@ export const PatientAllergyClient = () => {
             setIsEditing={setIsEditing}
           />
         </Tab>
-        <Tab key="documents" title="Documents">
+        <Tab key="documents" title="Documentos">
           <PatientAllergyDocs allergy={allergy} setAllergy={setAllergy} />
         </Tab>
       </Tabs>

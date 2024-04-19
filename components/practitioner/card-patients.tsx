@@ -48,14 +48,14 @@ export default function CardPatients() {
     >
       <Card
         link={`practitioner/${session?.user?.id}/patients`}
-        card_title="Patients"
+        card_title="Pacientes"
         icon={
           <User
             color="white"
             className="w-5 h-[18px] left-[2px] top-[3px] absolute"
           />
         }
-        heading_one="Name"
+        heading_one="Nombre completo"
         heading_two="ID"
         cardData={patientsList}
       />

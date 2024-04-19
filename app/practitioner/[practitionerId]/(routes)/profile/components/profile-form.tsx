@@ -116,7 +116,7 @@ export default function PractitionerProfileForm() {
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (practitioner.telephone && !practitioner.telephone.match(/^9\d{8}$/)) {
-      toast.error("Invalid phone number", {
+      toast.error("Número de telefono inválido", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -145,7 +145,7 @@ export default function PractitionerProfileForm() {
     setIsEditing(!isEditing);
 
     //show toast
-    toast.info("Info updated", {
+    toast.info("Información actualizada", {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -165,7 +165,7 @@ export default function PractitionerProfileForm() {
         <div className='w-full max-w-4xl mx-auto'>
           <div className='mb-8'>
             <div className='mb-4 font-bold text-2xl tracking-[0] leading-[24px]'>
-              General information
+              Información general
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               <div className='mb-4'>
@@ -173,9 +173,9 @@ export default function PractitionerProfileForm() {
                   isRequired
                   isReadOnly={!isEditing}
                   type='text'
-                  label='Full name'
+                  label='Nombre completo'
                   labelPlacement='outside'
-                  placeholder='Complete full name'
+                  placeholder='Ingresa el nombre completo'
                   value={practitioner.name_id}
                   onChange={(e) => {
                     serPractitioner({
@@ -187,9 +187,9 @@ export default function PractitionerProfileForm() {
               </div>
               <CustomAutocomplete
                 isDisabled={!isEditing}
-                label='Gender'
+                label='Género'
                 labelPlacement='outside'
-                placeholder='Select an option'
+                placeholder='Escoge una opción'
                 data={genders}
                 inputValue={practitioner.gender}
                 onInputChange={(value) => {
@@ -202,9 +202,9 @@ export default function PractitionerProfileForm() {
                   isRequired
                   isReadOnly={!isEditing}
                   type='date'
-                  label='Birthdate'
+                  label='Fecha de cumpleaños'
                   labelPlacement='outside'
-                  placeholder='Complete date'
+                  placeholder='Ingresa la fecha de cumpleaños'
                   value={practitioner.birthDate}
                   onChange={(e) => {
                     serPractitioner({
@@ -216,9 +216,9 @@ export default function PractitionerProfileForm() {
               </div>
               <CustomAutocomplete
                 isDisabled={!isEditing}
-                label='Civil Status'
+                label='Estado civil'
                 labelPlacement='outside'
-                placeholder='Select an option'
+                placeholder='Escoge una opción'
                 data={civilStatus}
                 inputValue={practitioner.maritalStatus}
                 onInputChange={(value) => {
@@ -234,9 +234,9 @@ export default function PractitionerProfileForm() {
                   }
                   isReadOnly={!isEditing}
                   type='tel'
-                  label='Phone number'
+                  label='Número de teléfono	'
                   labelPlacement='outside'
-                  placeholder='Complete phone number'
+                  placeholder='Complete el número de teléfono'
                   isInvalid={isInvalid}
                   color={isInvalid ? "danger" : "default"}
                   value={practitioner.telephone}
@@ -247,7 +247,7 @@ export default function PractitionerProfileForm() {
                     });
                   }}
                   errorMessage={
-                    isInvalid && "Please enter a valid phone number"
+                    isInvalid && "Ingresa un número de teléfono válido"
                   }
                 />
               </div>
@@ -255,14 +255,14 @@ export default function PractitionerProfileForm() {
           </div>
           <div className='mb-8'>
             <div className='mb-4 font-bold  text-2xl tracking-[0] leading-[24px]'>
-              Address
+              Dirección de residencia
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               <CustomAutocomplete
                 isDisabled={!isEditing}
-                label='Department'
+                label='Departamento'
                 labelPlacement='outside'
-                placeholder='Select a department'
+                placeholder='Escoge un departamento'
                 data={departments.map((department) => ({
                   value: department.id,
                   label: department.name,
@@ -278,9 +278,9 @@ export default function PractitionerProfileForm() {
 
               <CustomAutocomplete
                 isDisabled={!isEditing || !practitioner.address.department}
-                label='Province'
+                label='Provincia'
                 labelPlacement='outside'
-                placeholder='Select a province'
+                placeholder='Escoge una provincia'
                 data={provincesOptions.map((provinces) => ({
                   value: provinces.id,
                   label: provinces.name,
@@ -296,9 +296,9 @@ export default function PractitionerProfileForm() {
 
               <CustomAutocomplete
                 isDisabled={!isEditing || !practitioner.address.province}
-                label='District'
+                label='Distrito'
                 labelPlacement='outside'
-                placeholder='Select a district'
+                placeholder='Escoge un distrito'
                 data={districtsOptions.map((districts) => ({
                   value: districts.id,
                   label: districts.name,
@@ -314,9 +314,9 @@ export default function PractitionerProfileForm() {
 
               <CustomAutocomplete
                 isDisabled={!isEditing}
-                label='Type of address'
+                label='Tipo de dirección'
                 labelPlacement='outside'
-                placeholder='Select an option'
+                placeholder='Escoge una opción'
                 data={addressTypes}
                 inputValue={practitioner.address.type_address}
                 onInputChange={(value) => {
@@ -332,9 +332,9 @@ export default function PractitionerProfileForm() {
                   isRequired
                   isReadOnly={!isEditing}
                   type='text'
-                  label='Address line'
+                  label='Dirección'
                   labelPlacement='outside'
-                  placeholder='Complete address line'
+                  placeholder='Complete la dirección'
                   value={practitioner.address.address_line}
                   onChange={(e) => {
                     serPractitioner({
@@ -353,9 +353,9 @@ export default function PractitionerProfileForm() {
                   isRequired
                   isReadOnly={!isEditing}
                   type='text'
-                  label='Postal code'
+                  label='Código Postal'
                   labelPlacement='outside'
-                  placeholder='Complete postal code'
+                  placeholder='Completa el código postal'
                   value={practitioner.address.postal_code}
                   onChange={(e) => {
                     serPractitioner({
@@ -380,13 +380,13 @@ export default function PractitionerProfileForm() {
                   setIsEditing(!isEditing);
                 }}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button
                 className='text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl'
                 type='submit'
               >
-                Save
+                Guardar
               </Button>
             </>
           ) : (
@@ -396,7 +396,7 @@ export default function PractitionerProfileForm() {
                 setIsEditing(!isEditing);
               }}
             >
-              Edit
+              Editar
             </Button>
           )}
         </div>

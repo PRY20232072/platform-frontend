@@ -93,7 +93,7 @@ const AllergyTable: React.FC = () => {
                   router.push(`allergy-intolerance/${allergy.allergy_id}`)
                 }
               >
-                See more
+                Ver más
               </Button>
             </div>
           );
@@ -119,7 +119,7 @@ const AllergyTable: React.FC = () => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={"No allergies data available"} items={items}>
+        <TableBody emptyContent={"No se encontró registros de alergias"} items={items}>
           {(item) => (
             <TableRow key={item.allergy_id}>
               {(columnKey) => (

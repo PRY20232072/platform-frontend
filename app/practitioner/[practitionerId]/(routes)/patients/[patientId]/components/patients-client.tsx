@@ -12,10 +12,10 @@ export default function PatientsClient() {
         aria-label="Options"
         classNames={{ tabList: "bg-sky-100", tabContent: "text-black" }}
       >
-        <Tab key="demographic_info" title="Demographic Information">
+        <Tab key="demographic_info" title="Información demográfica">
           <PatientDemographicInformation />
         </Tab>
-        <Tab key="familyRecords" title="Family Records">
+        <Tab key="familyRecords" title="Historial Familiar">
           <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
             <CardBody>
               <FamilyRecordFormModal />
@@ -23,7 +23,7 @@ export default function PatientsClient() {
             </CardBody>
           </Card>
         </Tab>
-        <Tab key="allergies" title="Allergies">
+        <Tab key="allergies" title="Alergias">
           <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
             <CardBody>
               <AllergyFormModal />

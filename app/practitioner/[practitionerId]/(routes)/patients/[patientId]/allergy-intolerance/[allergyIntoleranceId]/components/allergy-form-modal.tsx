@@ -53,6 +53,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   const handleCreate = () => {
     allergy.recorded_date = new Date().toISOString().split("T")[0];
     const allergy_id = uuidv4();
+    console.log(allergy);
 
     createAllergy(
       allergyIntoleranceService.createAllergy({
@@ -82,32 +83,32 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
             onOpen();
           }
         }}
-        color="primary"
-        variant="flat"
+        color='primary'
+        variant='flat'
       >
-        Continue
+        Continuar
       </Button>
       <Modal
-        backdrop="blur"
+        backdrop='blur'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="w-[700px] max-w-full"
+        className='w-[700px] max-w-full'
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Request Access
+              <ModalHeader className='flex flex-col gap-1'>
+                Solicitar acceso
               </ModalHeader>
               <ModalBody>
-                <div>Do you want to request access to allergy record?</div>
+                <div>¿Quieres solicitar acceso al registro de alergia?</div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
+                <Button color='danger' variant='flat' onPress={onClose}>
+                  Cancelar
                 </Button>
-                <Button color="primary" onClick={handleCreate}>
-                  Accept
+                <Button color='primary' onClick={handleCreate}>
+                  Aceptar
                 </Button>
               </ModalFooter>
             </>
@@ -123,18 +124,18 @@ export const AllergyFormModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = useParams();
   const [errors, setErrors] = useState<any>({
-    name: "Name is required",
-    allergy_notes: "Note is required",
+    name: "El nombre es requerido",
+    allergy_notes: "La nota es requerida",
   });
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
     setAllergy({
       name: "",
-      category: "FOOD",
-      clinical_status: "ACTIVE",
+      category: "COMIDA",
+      clinical_status: "ACTIVO",
       recorded_date: "",
-      type: "DAIRY",
+      type: "LÁCTEOS",
       allergy_notes: "",
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
@@ -146,12 +147,12 @@ export const AllergyFormModal = () => {
     const errors = {} as any;
 
     if (!allergy.name) {
-      errors.name = "Name is required";
+      errors.name = "El nombre es requerido";
       valid = false;
     }
 
     if (!allergy.allergy_notes) {
-      errors.allergy_notes = "Note is required";
+      errors.allergy_notes = "La nota es requerida";
       valid = false;
     }
 
@@ -160,28 +161,28 @@ export const AllergyFormModal = () => {
   };
 
   return (
-    <div className="items-stretch justify-end gap-4 inline-flex mb-3">
+    <div className='items-stretch justify-end gap-4 inline-flex mb-3'>
       <Button
         onPress={onOpen}
-        className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
+        className='text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex'
       >
-        Add New <Plus className="h-4 w-4" />
+        Añadir nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="w-[700px] max-w-full h-5/6 overflow-y-scroll"
+        className='w-[700px] max-w-full h-5/6 overflow-y-scroll'
       >
         <ModalContent>
           {(onClose) => (
             <form>
-              <ModalHeader className="flex flex-col gap-1 font-bold">
-                Allergy questionnaire
+              <ModalHeader className='flex flex-col gap-1 font-bold'>
+                Cuestionario de Alergias
               </ModalHeader>
               <ModalBody>
                 <Input
-                  label="Name"
-                  placeholder="Complete the name"
+                  label='Nombre'
+                  placeholder='Complete el nombre de la alergia'
                   classNames={{ label: "text-md font-bold" }}
                   value={allergy.name}
                   onChange={(e) => {
@@ -194,10 +195,10 @@ export const AllergyFormModal = () => {
                   isRequired
                 />
                 {errors.name && (
-                  <div className="text-red-500">{errors.name}</div>
+                  <div className='text-red-500'>{errors.name}</div>
                 )}
                 <RadioOptions
-                  label="Type"
+                  label='Tipo'
                   defaultValue={allergyTypes[0].value}
                   data={allergyTypes}
                   onChange={(e) => {
@@ -205,7 +206,7 @@ export const AllergyFormModal = () => {
                   }}
                 />
                 <RadioOptions
-                  label="Category"
+                  label='Categoría'
                   defaultValue={allergyCategories[0].value}
                   data={allergyCategories}
                   onChange={(e) => {
@@ -213,7 +214,7 @@ export const AllergyFormModal = () => {
                   }}
                 />
                 <RadioOptions
-                  label="Status"
+                  label='Estado'
                   defaultValue={allergyStatus[0].value}
                   data={allergyStatus}
                   onChange={(e) => {
@@ -222,8 +223,8 @@ export const AllergyFormModal = () => {
                 />
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label="Note"
-                  placeholder="Write the record note"
+                  label='Nota'
+                  placeholder='Complete la nota de la alergia'
                   value={allergy.allergy_notes}
                   onChange={(e) => {
                     setAllergy({ ...allergy, allergy_notes: e.target.value });
@@ -234,12 +235,12 @@ export const AllergyFormModal = () => {
                   isRequired
                 />
                 {errors.allergy_notes && (
-                  <div className="text-red-500">{errors.allergy_notes}</div>
+                  <div className='text-red-500'>{errors.allergy_notes}</div>
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
-                  Cancel
+                <Button color='danger' variant='flat' onPress={onClose}>
+                  Cancelar
                 </Button>
                 <ConfirmModal
                   allergy={allergy}

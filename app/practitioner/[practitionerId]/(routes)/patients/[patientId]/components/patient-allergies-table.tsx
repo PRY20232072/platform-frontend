@@ -147,7 +147,7 @@ export const PatientAllergiesTable = () => {
                     );
                   }}
                 >
-                  View more
+                  Ver más
                 </Button>
               ) : selected_patient_allergy.has_access === "PENDING" ? (
                 <Button
@@ -158,7 +158,7 @@ export const PatientAllergiesTable = () => {
                   size="sm"
                   variant="flat"
                 >
-                  Pending
+                  Pendiente
                 </Button>
               ) : (
                 <Button
@@ -171,7 +171,7 @@ export const PatientAllergiesTable = () => {
                     handleCreateConsent(selected_patient_allergy.allergy_id)
                   }
                 >
-                  Request Access
+                  Solicitar acceso
                 </Button>
               )}
             </div>

@@ -43,7 +43,7 @@ export const Card: React.FC<CardProps> = ({link, card_title, icon, heading_one, 
             size="sm"
             variant={'solid'}
           >
-            <Link href={link}>See more</Link>
+            <Link href={link}>Ver más</Link>
           </Button>
         </div>
       </CardHeader>

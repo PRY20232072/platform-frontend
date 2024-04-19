@@ -55,7 +55,7 @@ export default function PatientDemographicForm() {
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (patient.telephone && !patient.telephone.match(/^9\d{8}$/)) {
-      toast.error("Invalid phone number", {
+      toast.error("Número de telefono inválido", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -79,7 +79,7 @@ export default function PatientDemographicForm() {
     }
     setIsEditing(!isEditing);
 
-    toast.info("Info updated", {
+    toast.info("Información actualizada", {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -128,13 +128,13 @@ export default function PatientDemographicForm() {
                   setIsEditing(!isEditing);
                 }}
               >
-                Cancel
+                Cancelar
               </Button>
               <Button
                 className="text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl"
                 type="submit"
               >
-                Save
+                Guardar
               </Button>
             </>
           ) : (
@@ -144,7 +144,7 @@ export default function PatientDemographicForm() {
                 setIsEditing(!isEditing);
               }}
             >
-              Edit
+              Editar
             </Button>
           )}
         </div>

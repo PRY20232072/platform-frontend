@@ -139,7 +139,7 @@ const AccessRequestTable = () => {
   return (
     <>
       <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
-        Access Request
+        Solicitud de acceso
       </div>
 
       <CustomSuspense
@@ -160,7 +160,7 @@ const AccessRequestTable = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No practitioners request data available"}
+            emptyContent={"No hay solicitudes de acceso pendientes."}
             items={items}
           >
             {(item) => (

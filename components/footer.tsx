@@ -1,13 +1,13 @@
 import { Link } from '@nextui-org/link';
 
 const links = [
-  { href: '#', text: '© 2023 Plataforma' },
+  { href: '#', text: '© 2023-2024 Plataforma' },
   { href: '#', text: 'Política de privacidad' },
   { href: '#', text: 'Términos y condiciones' },
 ];
 
 const loggedInLinks = [
-  { href: '#', text: '© 2023 Plataforma. Todos los derechos reservados.' },
+  { href: '#', text: '© 2023-2024 Plataforma. Todos los derechos reservados.' },
  ];
 interface FooterProps {
   isLoggedIn: boolean;

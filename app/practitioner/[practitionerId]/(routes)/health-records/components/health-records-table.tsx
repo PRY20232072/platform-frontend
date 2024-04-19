@@ -71,7 +71,7 @@ export const HealthRecordsSearch = () => {
                 variant="flat"
                 onClick={() => router.push(`patients/${health_records.patient_id}`)}
               >
-                See more
+                Ver más
               </Button>
             </div>
           );
@@ -106,7 +106,7 @@ export const HealthRecordsSearch = () => {
             variant="faded"
             size="sm"
             className="w-full sm:max-w-[26%] ml-1 mb-2 mt-2"
-            placeholder="Search by name..."
+            placeholder="Buscar por detalle..."
             startContent={<SearchIcon className="h-4 w-4" />}
             value={filterValue}
             onClear={() => onClear()}
@@ -117,7 +117,7 @@ export const HealthRecordsSearch = () => {
             variant="faded"
             size="sm"
             className="w-full sm:max-w-[26%] mb-2 mt-2"
-            placeholder="Search by ID..."
+            placeholder="Buscar por ID..."
             startContent={<SearchIcon className="h-4 w-4" />}
             onClear={() => onClear()}
           />

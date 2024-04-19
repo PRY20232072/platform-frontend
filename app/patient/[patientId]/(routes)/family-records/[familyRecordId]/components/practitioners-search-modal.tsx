@@ -71,7 +71,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
         color="primary"
         variant="flat"
       >
-        Select
+        Seleccionar
       </Button>
       <Modal
         backdrop="blur"
@@ -83,10 +83,9 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Confirmation
+                Confirmación
                 <span className="text-default-400 text-small">
-                  Are you sure to provide access to your family medical records to the
-                  following health practitioner?
+                ¿Está seguro de brindar acceso a sus registros médicos familiares al siguiente profesional de la salud?
                 </span>
               </ModalHeader>
               <ModalBody>
@@ -109,7 +108,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
                       </TableColumn>
                     )}
                   </TableHeader>
-                  <TableBody emptyContent={'No practitioners access data available'}>
+                  <TableBody emptyContent={'No hay profesionales de la salud disponibles'}>
                     <TableRow key="1">
                       <TableCell>{practitioner.name}</TableCell>
                       <TableCell>{practitioner.id}</TableCell>
@@ -201,7 +200,7 @@ export const PractitionersSearch = () => {
           <Input
             isClearable
             className="w-full sm:max-w-[26%]"
-            placeholder="Search by name..."
+            placeholder="Buscar por nombre..."
             startContent={<SearchIcon className="h-4 w-4" />}
             value={filterValue}
             onClear={() => onClear()}
@@ -210,7 +209,7 @@ export const PractitionersSearch = () => {
           <Input
             isClearable
             className="w-full sm:max-w-[26%]"
-            placeholder="Search by ID..."
+            placeholder="Buscar por ID..."
             startContent={<SearchIcon className="h-4 w-4" />}
             onClear={() => onClear()}
           />
@@ -260,7 +259,7 @@ export const PractitionersSearch = () => {
                   )}
                 </TableHeader>
                 <TableBody
-                  emptyContent={'No practitioners available'}
+                  emptyContent={'No hay profesionales de la salud disponibles.'}
                   items={items}
                 >
                   {(item) => (

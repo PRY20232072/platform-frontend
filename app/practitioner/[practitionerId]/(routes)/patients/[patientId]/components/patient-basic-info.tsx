@@ -37,24 +37,23 @@ export default function PatientBasicInfo() {
       isLoading={patientResponse.isLoading}
       fallback={<Loading />}
     >
-      <div className="justify-between items-center  border-b border-gray-200 flex w-full max-w-[1100px] gap-5 mt-1 max-md:max-w-full max-md:flex-wrap">
-        <div className="flex grow basis-[0%] flex-col items-stretch my-auto max-md:max-w-full">
-          <div className="text-4xl font-bold leading-10 max-md:max-w-full">
-            Patient Details
-          </div>
-          <div className="justify-center text-neutral-400 text-2xl leading-10 max-md:max-w-full">
+     <div className='flex flex-wrap justify-between items-center border-b border-gray-200 w-full max-w-[1100px] mt-1 mx-auto md:flex-nowrap'>
+        <div className='flex flex-grow flex-col items-center p-4 text-center md:items-stretch md:text-left'>
+          <h2 className='text-4xl font-bold leading-10 mb-2'>Detalles del paciente</h2>
+          <p className='text-neutral-400 text-xl md:text-2xl leading-10'>
             {patient.name_id}
-          </div>
-          <div className="justify-center text-neutral-400 text-base leading-10 max-md:max-w-full">
+          </p>
+          <p className='text-neutral-400 text-base leading-10'>
             ID: {patient.patient_id}
-          </div>
+          </p>
         </div>
-        <div className="relative w-[116px] h-[115.5px]">
-          <div className="w-24 h-24 px-1.5 py-1.5 left-0 top-[15.50px] absolute bg-blue-600 rounded-2xl justify-center items-center inline-flex">
-            <User2
-              className="w-12 h-12 px-2.5 py-1 flex-col justify-start items-center gap-0.5 inline-flex"
-              color="white"
-            />
+        <div className='relative w-full max-w-[116px] h-[115.5px] md:block hidden'>
+          <div
+            className='w-full h-full flex justify-center items-center bg-blue-600 rounded-2xl'
+            style={{ padding: "6px" }}
+            aria-label='Pill'
+          >
+            <User2 className='w-12 h-12 text-white' color='white' />
           </div>
         </div>
       </div>

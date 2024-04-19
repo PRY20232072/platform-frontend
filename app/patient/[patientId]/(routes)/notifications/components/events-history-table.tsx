@@ -80,7 +80,7 @@ const EventsHistoryTable = () => {
   return (
     <>
       <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
-        Events History
+        Historial de eventos
       </div>
 
       <CustomSuspense
@@ -101,7 +101,7 @@ const EventsHistoryTable = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No platform events data available"}
+            emptyContent={"No hay eventos para mostrar."}
             items={events}
           >
             {(item) => (
