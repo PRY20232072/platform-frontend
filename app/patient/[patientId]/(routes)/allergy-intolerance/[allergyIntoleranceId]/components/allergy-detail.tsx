@@ -37,7 +37,7 @@ export default function AllergyDetail({ allergy, setAllergy }: AllergyDetailProp
       <Card>
         <CardBody className="items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
           <div className="text-2xl font-bold leading-6 max-md:max-w-full">
-            Allergy Record Information
+            Información del registro de alergia
           </div>
           <form className="mt-8 max-md:max-w-full">
             <AllergyDetailFields

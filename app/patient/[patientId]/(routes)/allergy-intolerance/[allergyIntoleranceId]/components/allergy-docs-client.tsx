@@ -72,7 +72,7 @@ const AllergyDocsClient: React.FC<AllergyDocsTableProps> = ({
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No allergies docs data available'}
+          emptyContent={'No se encontraron documentos adjuntos al registro'}
           items={items}
         >
           {(item) => (

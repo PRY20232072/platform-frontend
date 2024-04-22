@@ -16,6 +16,7 @@ import consentService from "@/services/consentService";
 import { useParams } from "next/navigation";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
+import { toast } from "react-toastify";
 
 type AllergiesAccess = {
   id: string;
@@ -81,6 +82,9 @@ const AllergyAccessClient = () => {
     await revokeConsent(
       consentService.revokeConsent(consent.register_id, consent.practitioner_id)
     );
+
+    location.reload();
+    toast.success("Acceso revocado correctamente.");
   };
 
   const renderCell = useCallback(
@@ -99,7 +103,7 @@ const AllergyAccessClient = () => {
                 variant="flat"
                 onClick={() => handleRevoke(allergy_access)}
               >
-                Remove
+                Eliminar
               </Button>
             </div>
           );
@@ -130,7 +134,7 @@ const AllergyAccessClient = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No allergies access data available"}
+            emptyContent={"No se encontraron accesos."}
             items={items}
           >
             {(item) => (
