@@ -211,7 +211,7 @@ export const PatientFamilyRecordsTable = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={"No se encontraron registros de historial familiar."}
+          emptyContent={"No se encontraron registros en el historial familiar."}
           items={(familyRecordList || []) as FamilyRecord[]}
         >
           {(item) => (

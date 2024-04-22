@@ -131,7 +131,7 @@ const FamilyRecordAccessClient = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No family record access data available"}
+            emptyContent={"No hay acessos al registro"}
             items={items}
           >
             {(item) => (

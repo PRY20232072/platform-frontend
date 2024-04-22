@@ -122,7 +122,7 @@ const FamilyRecordsTable: React.FC = () => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={'No se encontraron registros de historial familiar.'}
+          emptyContent={'No se encontraron registros en el historial familiar.'}
           items={items}
         >
           {(item) => (

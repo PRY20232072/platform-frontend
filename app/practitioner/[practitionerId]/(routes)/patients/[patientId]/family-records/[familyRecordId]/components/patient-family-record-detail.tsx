@@ -99,13 +99,13 @@ export default function PatientFamilyRecordDetail({ family_record, setFamilyReco
                       setIsEditing(!isEditing);
                     }}
                   >
-                    Cancel
+                    Cancelar
                   </Button>
                   <Button
                     className="text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl"
                     type="submit"
                   >
-                    Save
+                    Guardar
                   </Button>
                 </>
               ) : (
@@ -115,7 +115,7 @@ export default function PatientFamilyRecordDetail({ family_record, setFamilyReco
                     setIsEditing(!isEditing);
                   }}
                 >
-                  Edit
+                  Editar
                 </Button>
               )}
             </div>
