@@ -117,19 +117,19 @@ const AddDocModal = ({ registerType }: AddDocModalProps) => {
     <>
       <Button
         onPress={onOpen}
-        className="text-white bg-blue-600 px-4 rounded-xl items-center gap-3 w-min ml-auto mb-3"
+        className='text-white bg-blue-600 px-4 rounded-xl items-center gap-3 w-min ml-auto mb-3'
       >
-        Add New <Plus className="h-4 w-4" />
+        Agregar nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="w-[700px] max-w-full my-auto"
+        className='w-[700px] max-w-full my-auto'
       >
         <ModalContent>
           {(onClose) => (
             <form>
-              <ModalHeader className="font-bold">Add Document</ModalHeader>
+              <ModalHeader className='font-bold'>Agregar documento</ModalHeader>
               <ModalBody>
                 <div
                   {...getRootProps({
@@ -139,23 +139,23 @@ const AddDocModal = ({ registerType }: AddDocModalProps) => {
                 >
                   <input {...getInputProps()} />
                   <p>
-                    Drag &apos;n&apos; drop some files here, or click to select
-                    files
+                    Arrastre y suelte algunos archivos aquí o haga clic para
+                    seleccionar archivos
                   </p>
                 </div>
                 <aside>
-                  <h4>Files</h4>
+                  <h4>Archivos</h4>
                   <ul>{files}</ul>
                 </aside>
               </ModalBody>
               <ModalFooter>
                 {!isUploading && (
-                  <Button color="danger" variant="flat" onPress={onClose}>
-                    Cancel
+                  <Button color='danger' variant='flat' onPress={onClose}>
+                    Cancelar
                   </Button>
                 )}
-                <Button color="primary" onPress={() => handleUpload(onClose)}>
-                  {isUploading ? "Uploading..." : "Upload"}
+                <Button color='primary' onPress={() => handleUpload(onClose)}>
+                  {isUploading ? "Subiendo..." : "Subir"}
                 </Button>
               </ModalFooter>
             </form>

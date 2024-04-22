@@ -99,13 +99,12 @@ const patientsTableColumns = [
 ];
 
 const healthRecordsTableColumns = [
-  { name: "DETALLE", uid: "allergy_notes", sortable: true },
+  { name: "DETALLE", uid: "detail", sortable: true },
   // { name: 'PACIENTE', uid: 'patient_name', sortable: true },
   // { name: 'CREADO POR', uid: 'created_by', sortable: true },
-  { name: "ID DEL PACIENTE", uid: "patient_id", sortable: true },
+  { name: "ID DEL REGISTRO", uid: "id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
-  { name: "ESTADO", uid: "clinical_status", sortable: true },
-  { name: "CATEGORÍA", uid: "category", sortable: true },
+  { name: "TIPO DE REGISTRO", uid: "register_type", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
 

@@ -47,7 +47,7 @@ export function MainNavbar({
     },
     {
       href: `/practitioner/${userId}/health-records`,
-      label: "Registros de Salud",
+      label: "Registros Médicos",
       active: pathname === `/practitioner/${userId}/health-records`,
     },
   ];

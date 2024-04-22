@@ -106,7 +106,7 @@ const DocumentsTable = ({ items }: DocumentsTableProps) => {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={"No allergies docs data available"}
+          emptyContent={"No se adjuntaron documentos al registro."}
           items={items}
         >
           {(item) => (

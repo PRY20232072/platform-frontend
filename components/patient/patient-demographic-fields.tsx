@@ -33,7 +33,7 @@ export default function PatientDemographicFields({
   useEffect(() => {
     if (patient.address.department) {
       const selectedDepartment = departments.find(
-        (department) => department.name === patient.address.department
+        (department) => department.id === patient.address.department
       );
       if (selectedDepartment) {
         const provinces = provincesData.filter(
@@ -50,7 +50,7 @@ export default function PatientDemographicFields({
   useEffect(() => {
     if (patient.address.province) {
       const selectedProvince = provincesData.find(
-        (province) => province.name === patient.address.province
+        (province) => province.id === patient.address.province
       );
 
       if (selectedProvince) {
@@ -89,8 +89,8 @@ export default function PatientDemographicFields({
           labelPlacement='outside'
           placeholder='Selecciona una opción'
           data={genders}
-          inputValue={patient.gender}
-          onInputChange={(value) => handleInputChange("gender", value)}
+          selectedKey={patient.gender}
+          onSelectionChange={(value) => handleInputChange("gender", value)}
         />
 
         <div className='mb-4'>
@@ -111,8 +111,10 @@ export default function PatientDemographicFields({
           labelPlacement='outside'
           placeholder='Selecciona una opción'
           data={civilStatus}
-          inputValue={patient.maritalStatus}
-          onInputChange={(value) => handleInputChange("maritalStatus", value)}
+          selectedKey={patient.maritalStatus}
+          onSelectionChange={(value) =>
+            handleInputChange("maritalStatus", value)
+          }
         />
 
         <div className='flex-col items-start gap-[5px] relative !flex-1 !flex !grow'>
@@ -147,8 +149,8 @@ export default function PatientDemographicFields({
             value: department.id,
             label: department.name,
           }))}
-          inputValue={patient.address.department}
-          onInputChange={(value) =>
+          selectedKey={patient.address.department}
+          onSelectionChange={(value) =>
             handleInputChange("address.department", value)
           }
         />
@@ -162,8 +164,8 @@ export default function PatientDemographicFields({
             value: provinces.id,
             label: provinces.name,
           }))}
-          inputValue={patient.address.province}
-          onInputChange={(value) =>
+          selectedKey={patient.address.province}
+          onSelectionChange={(value) =>
             handleInputChange("address.province", value)
           }
         />
@@ -177,8 +179,8 @@ export default function PatientDemographicFields({
             value: districts.id,
             label: districts.name,
           }))}
-          inputValue={patient.address.district}
-          onInputChange={(value) =>
+          selectedKey={patient.address.district}
+          onSelectionChange={(value) =>
             handleInputChange("address.district", value)
           }
         />
@@ -189,8 +191,8 @@ export default function PatientDemographicFields({
           labelPlacement='outside'
           placeholder='Selecciona un tipo de dirección'
           data={addressTypes}
-          inputValue={patient.address.type_address}
-          onInputChange={(value) =>
+          selectedKey={patient.address.type_address}
+          onSelectionChange={(value) =>
             handleInputChange("address.type_address", value)
           }
         />

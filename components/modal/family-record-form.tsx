@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";
 import notificationsService from "@/services/notificationsService";
+import { toast } from "react-toastify";
 
 type PatientFamilyRecord = {
   name: string;
@@ -73,10 +74,10 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
       register_type: "FAMILY_HISTORY",
       type: "WRITE",
     });
-
     location.reload();
     onClose();
     familyRecordFormModalClose();
+    toast.success("Registro de historial familiar creado con éxito");
   };
 
   return (
@@ -87,31 +88,31 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
             onOpen();
           }
         }}
-        color="primary"
-        variant="flat"
+        color='primary'
+        variant='flat'
       >
         Continuar
       </Button>
       <Modal
-        size="md"
-        backdrop="blur"
+        size='md'
+        backdrop='blur'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Solicitar acceso
+              <ModalHeader className='flex flex-col gap-1'>
+                Confirmación
               </ModalHeader>
               <ModalBody>
-                <div>¿Quieres solicitar acceso al registro familiar?</div>
+                <div>¿Estas seguro de crear este registro?</div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button color='danger' variant='flat' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color="primary" onClick={handleCreate}>
+                <Button color='primary' onClick={handleCreate}>
                   Aceptar
                 </Button>
               </ModalFooter>
@@ -176,30 +177,30 @@ export const FamilyRecordFormModal = () => {
   };
 
   return (
-    <div className="items-stretch justify-end gap-4 inline-flex mb-3">
+    <div className='items-stretch justify-end gap-4 inline-flex mb-3'>
       <Button
         onPress={onOpen}
-        className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
+        className='text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex'
       >
-        Agregar nuevo <Plus className="h-4 w-4" />
+        Agregar nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
-        placement="auto"
-        backdrop="opaque"
-        scrollBehavior="outside"
+        placement='auto'
+        backdrop='opaque'
+        scrollBehavior='outside'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
         <ModalContent>
           {(onClose) => (
             <form>
-              <ModalHeader className="flex flex-col gap-1 font-bold">
+              <ModalHeader className='flex flex-col gap-1 font-bold'>
                 Cuestionario de registro de historial familiar
               </ModalHeader>
               <ModalBody>
                 <Input
-                  label="Nombre"
-                  placeholder="Escribe el nombre del registro"
+                  label='Nombre'
+                  placeholder='Escribe el nombre del registro'
                   classNames={{ label: "text-md font-bold" }}
                   value={familyRecord.name}
                   onChange={(e) => {
@@ -212,7 +213,7 @@ export const FamilyRecordFormModal = () => {
                   isRequired
                 />
                 {errors.name && (
-                  <div className="text-red-500 text-sm">{errors.name}</div>
+                  <div className='text-red-500 text-sm'>{errors.name}</div>
                 )}
 
                 {/* <Input
@@ -231,8 +232,8 @@ export const FamilyRecordFormModal = () => {
 
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label="Razón"
-                  placeholder="Escribe la razón del registro"
+                  label='Razón'
+                  placeholder='Escribe la razón del registro'
                   value={familyRecord.reason}
                   onChange={(e) => {
                     setRecord({
@@ -247,13 +248,13 @@ export const FamilyRecordFormModal = () => {
                   isRequired
                 />
                 {errors.reason && (
-                  <div className="text-red-500 text-sm">{errors.reason}</div>
+                  <div className='text-red-500 text-sm'>{errors.reason}</div>
                 )}
 
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label="Nota"
-                  placeholder="Escribe una nota sobre el registro"
+                  label='Nota'
+                  placeholder='Escribe una nota sobre el registro'
                   value={familyRecord.notes}
                   onChange={(e) => {
                     setRecord({
@@ -268,7 +269,7 @@ export const FamilyRecordFormModal = () => {
                   isRequired
                 />
                 {errors.notes && (
-                  <div className="text-red-500 text-sm">{errors.notes}</div>
+                  <div className='text-red-500 text-sm'>{errors.notes}</div>
                 )}
                 {/* <RadioOptions
                   label="Gender"
@@ -283,19 +284,17 @@ export const FamilyRecordFormModal = () => {
                 /> */}
 
                 <RadioOptions
-                  label="Estado"
+                  label='Estado'
                   defaultValue={familyRecordStatus[0].value}
                   data={familyRecordStatus}
-                  onChange={(e) => {
-                    setRecord({
-                      ...familyRecord,
-                      clinical_status: e.target.value,
-                    });
+                  value={familyRecord.clinical_status}
+                  onValueChange={(value) => {
+                    setRecord({ ...familyRecord, clinical_status: value });
                   }}
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button color='danger' variant='flat' onPress={onClose}>
                   Cancelar
                 </Button>
                 <ConfirmModal
