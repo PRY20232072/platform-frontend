@@ -17,6 +17,7 @@ import { useApi } from "@/hooks/useApi";
 import { useSession } from "next-auth/react";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
+import { toast } from "react-toastify";
 
 type HealthRecordAccess = {
   id: string;
@@ -25,6 +26,12 @@ type HealthRecordAccess = {
   register_type: string;
   register_id: string;
 };
+
+const registerTypeMap : Record<string, string> = {
+  "ALLERGY": "ALERGIA",
+  "FAMILY_HISTORY": "FAMILIAR",
+}
+
 
 const AccessRequestTable = () => {
   const { data: session } = useSession();
@@ -90,12 +97,35 @@ const AccessRequestTable = () => {
         consent.practitioner_id
       )
     );
+
+    toast.info("Solicitud de acceso aprovada", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+
+    location.reload();
   };
 
   const handleRevoke = async (consent: HealthRecordAccess) => {
     await revokeConsent(
       consentService.revokeConsent(consent.register_id, consent.practitioner_id)
     );
+    toast.info("Solicitud de acceso rechazada", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "colored",
+    });
+
+    location.reload();
   };
 
   const renderCell = useCallback(
@@ -104,28 +134,30 @@ const AccessRequestTable = () => {
         practitioner_request[columnKey as keyof HealthRecordAccess];
 
       switch (columnKey) {
+        case "register_type":
+          return registerTypeMap[cellValue]
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
-                className="font-medium"
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium'
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => handleApprove(practitioner_request)}
               >
-                Approve
+                Aceptar
               </Button>
               <Button
-                className="font-medium"
-                color="danger"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium'
+                color='danger'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => handleRevoke(practitioner_request)}
               >
-                Reject
+                Rechazar
               </Button>
             </div>
           );
@@ -138,7 +170,7 @@ const AccessRequestTable = () => {
 
   return (
     <>
-      <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
+      <div className='mb-4 font-bold text-2xl tracking-[0] leading-[24px]'>
         Solicitud de acceso
       </div>
 
@@ -146,11 +178,11 @@ const AccessRequestTable = () => {
         isLoading={getPendingConsentListResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label="Practitioners request collection table">
+        <Table aria-label='Practitioners request collection table'>
           <TableHeader columns={accessRequestTableColumns}>
             {(column) => (
               <TableColumn
-                className="text-bold"
+                className='text-bold'
                 key={column.uid}
                 align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}

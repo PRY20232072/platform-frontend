@@ -86,7 +86,7 @@ export default function PatientAllergyDetail({
       <Card>
         <CardBody className="items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
           <div className="text-2xl font-bold leading-6 max-md:max-w-full">
-            Allergy Record Information
+            Información del registro de alergia
           </div>
           <form className="mt-8 max-md:max-w-full" onSubmit={handleEdit}>
             <AllergyDetailFields
@@ -103,13 +103,13 @@ export default function PatientAllergyDetail({
                       setIsEditing(!isEditing);
                     }}
                   >
-                    Cancel
+                    Cancelar
                   </Button>
                   <Button
                     className="text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl"
                     type="submit"
                   >
-                    Save
+                    Guardar
                   </Button>
                 </>
               ) : (
@@ -119,7 +119,7 @@ export default function PatientAllergyDetail({
                     setIsEditing(!isEditing);
                   }}
                 >
-                  Edit
+                  Editar
                 </Button>
               )}
             </div>

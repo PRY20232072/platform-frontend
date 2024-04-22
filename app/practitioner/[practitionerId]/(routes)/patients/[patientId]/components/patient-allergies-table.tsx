@@ -12,6 +12,8 @@ import {
   Chip,
   ChipProps,
 } from "@nextui-org/react";
+import CustomSuspense from "@/components/custom-suspense";
+import Loading from "@/components/loading";
 
 import { selectedPatientAllergiesTableColumns } from "@/data/data";
 import { useParams, useRouter } from "next/navigation";
@@ -19,12 +21,29 @@ import { useApi } from "@/hooks/useApi";
 import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 import consentService from "@/services/consentService";
 import notificationsService from "@/services/notificationsService";
+import { toast } from "react-toastify";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVE: "success",
   ACTIVE: "danger",
   INNACTIVE: "warning",
 };
+
+const statusMap: Record<string, string> = {
+  RESOLVE: "RESUELTO",
+  ACTIVE: "ACTIVO",
+  INNACTIVE: "INACTIVO",
+};
+ 
+const alleryTypesMap: Record<string, string> = {
+  DAIRY: "LÁCTEOS",
+  GLUTEN: "GLUTEN",
+  CAFFEINE: "CAFEÍNA",
+  SALICYLATES: "SALICILATOS",
+  AMINES: "AMINAS",
+  OTHER: "OTRO",
+};
+
 
 type Allergy = {
   patient_id: string;
@@ -101,7 +120,7 @@ export const PatientAllergiesTable = () => {
         params.patientId as string
       )
     );
-    location.reload();
+    toast.success("Solicitud de acceso enviada correctamente");
   };
 
   const renderCell = React.useCallback(
@@ -109,30 +128,30 @@ export const PatientAllergiesTable = () => {
       const cellValue = selected_patient_allergy[columnKey as keyof Allergy];
 
       switch (columnKey) {
+        case "type":
+          return alleryTypesMap[cellValue];
         case "clinical_status":
           return (
             <Chip
               color={statusColorMap[selected_patient_allergy.clinical_status]}
-              size="sm"
-              variant="flat"
+              size='sm'
+              variant='flat'
             >
-              {cellValue}
+              {statusMap[cellValue]}
             </Chip>
           );
         case "has_access":
-          return selected_patient_allergy.has_access === "ACTIVE"
-            ? "YES"
-            : "NO";
+          return selected_patient_allergy.has_access === "ACTIVE" ? "SI" : "NO";
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               {selected_patient_allergy.has_access === "ACTIVE" ? (
                 <Button
-                  className="font-medium "
-                  color="primary"
-                  radius="sm"
-                  size="sm"
-                  variant="flat"
+                  className='font-medium '
+                  color='primary'
+                  radius='sm'
+                  size='sm'
+                  variant='flat'
                   onClick={() => {
                     notificationsService.createNotifications({
                       user_id: params.patientId,
@@ -152,21 +171,21 @@ export const PatientAllergiesTable = () => {
               ) : selected_patient_allergy.has_access === "PENDING" ? (
                 <Button
                   isDisabled
-                  className="font-medium "
-                  color="secondary"
-                  radius="sm"
-                  size="sm"
-                  variant="flat"
+                  className='font-medium '
+                  color='secondary'
+                  radius='sm'
+                  size='sm'
+                  variant='flat'
                 >
                   Pendiente
                 </Button>
               ) : (
                 <Button
-                  className="font-medium "
-                  color="warning"
-                  radius="sm"
-                  size="sm"
-                  variant="flat"
+                  className='font-medium '
+                  color='warning'
+                  radius='sm'
+                  size='sm'
+                  variant='flat'
                   onClick={() =>
                     handleCreateConsent(selected_patient_allergy.allergy_id)
                   }
@@ -185,32 +204,37 @@ export const PatientAllergiesTable = () => {
 
   return (
     <>
-      <Table aria-label="Patient allergy collection table">
-        <TableHeader columns={selectedPatientAllergiesTableColumns}>
-          {(column) => (
-            <TableColumn
-              className="text-bold"
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent={"No patient allergies data available"}
-          items={(allergyList || []) as Allergy[]}
-        >
-          {(item) => (
-            <TableRow key={item.allergy_id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <CustomSuspense
+        isLoading={getAllergyListResponse.isLoading}
+        fallback={<Loading />}
+      >
+        <Table aria-label='Patient allergy collection table'>
+          <TableHeader columns={selectedPatientAllergiesTableColumns}>
+            {(column) => (
+              <TableColumn
+                className='text-bold'
+                key={column.uid}
+                align={column.uid === "actions" ? "center" : "start"}
+                allowsSorting={column.sortable}
+              >
+                {column.name}
+              </TableColumn>
+            )}
+          </TableHeader>
+          <TableBody
+            emptyContent={"No hay registros de alergias disponibles."}
+            items={(allergyList || []) as Allergy[]}
+          >
+            {(item) => (
+              <TableRow key={item.allergy_id}>
+                {(columnKey) => (
+                  <TableCell>{renderCell(item, columnKey)}</TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </CustomSuspense>
     </>
   );
 };

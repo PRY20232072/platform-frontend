@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Input,
@@ -9,67 +9,122 @@ import {
   TableColumn,
   TableRow,
   TableCell,
-} from '@nextui-org/react';
-import { useParams, useRouter } from 'next/navigation';
-import { SearchIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { healthRecordsTableColumns } from '@/data/data';
-import { useApi } from '@/hooks/useApi';
-import allergyIntoleranceService from '@/services/allergyIntoleranceService';
-import CustomSuspense from '@/components/custom-suspense';
-import TableSkeleton from '@/components/ui/skeletons/table-skeleton';
-
-type Allergy = {
-  patient_id: string;
-  participant_id: string;
-  type: string;
-  category: string;
-  criticality: string;
-  severity: string;
-  clinical_status: string;
-  verification_status: string;
-  onset_date: string;
-  recorded_date: string;
-  last_occurrence: string;
-  allergy_notes: string;
-  allergy_id: string;
-  has_access: string;
-}
+} from "@nextui-org/react";
+import { useParams, useRouter } from "next/navigation";
+import { SearchIcon } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { healthRecordsTableColumns } from "@/data/data";
+import { useApi } from "@/hooks/useApi";
+import allergyIntoleranceService from "@/services/allergyIntoleranceService";
+import CustomSuspense from "@/components/custom-suspense";
+import TableSkeleton from "@/components/ui/skeletons/table-skeleton";
+import familyRecordService from "@/services/familyRecordService";
+import consentService from "@/services/consentService";
 
 export const HealthRecordsSearch = () => {
-  const [filterValue, setFilterValue] = React.useState('');
+  const [filterValue, setFilterValue] = React.useState("");
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);
   const router = useRouter();
-  const [allergyList, setAllergyList] = useState<Allergy[]>([]);
-  const { response: getAllergyListResponse, fetchData: getAllergyList } = useApi();
+  const [allergyList, setAllergyList] = useState<any>([]);
+  const [healthRecordsList, setHealthRecordsList] = useState<any>([]);
+  const { response: allergyRecordsResponse, fetchData: getAllergyRecords } =
+    useApi();
+  const [familyRecordList, setFamilyRecordList] = useState<any>([]);
+  const { response: familyRecordsResponse, fetchData: getFamilyRecord } =
+    useApi();
   const params = useParams();
 
   useEffect(() => {
-    getAllergyList(allergyIntoleranceService.getAllergyList());
-  }, [params.patientId]);
+    const fetchData = async () => {
+      await getAllergyRecords(allergyIntoleranceService.getAllergyList());
+      await getFamilyRecord(familyRecordService.getFamilyRecordList());
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
-    if (getAllergyListResponse.isSuccess) {
-      setAllergyList(getAllergyListResponse.data);
+    if (allergyRecordsResponse.isSuccess) {
+      parseAllergyList(allergyRecordsResponse.data);
     }
-  }, [getAllergyListResponse.isSuccess]);
+  }, [allergyRecordsResponse.isSuccess]);
+
+  useEffect(() => {
+    if (familyRecordsResponse.isSuccess) {
+      parseFamilyRecordList(familyRecordsResponse.data);
+    }
+  }, [familyRecordsResponse.isSuccess]);
+
+  const parseAllergyList = async (allergyList: any) => {
+    const parsedAllergyList = await Promise.all(
+      allergyList.map(async (allergy: any) => {
+        try {
+          const response =
+            await consentService.getByRegisteryIdAndPractitionerId(
+              allergy.allergy_id,
+              params.practitionerId as string
+            );
+          const consent = response.data.data;
+          allergy.has_access = consent.state;
+          return {
+            id: allergy.allergy_id,
+            recorded_date: allergy.recorded_date,
+            detail: allergy.allergy_notes,
+            register_type: "ALERGIA",
+          };
+        } catch (error) {
+          return null;
+        }
+      })
+    );
+    setAllergyList(parsedAllergyList);
+    setHealthRecordsList(parsedAllergyList.concat(familyRecordList));
+  };
+
+  const parseFamilyRecordList = async (_familyRecordList: any) => {
+    const parsedFamilyRecordList = await Promise.all(
+      _familyRecordList.map(async (familyRecord: any) => {
+        try {
+          const response =
+            await consentService.getByRegisteryIdAndPractitionerId(
+              familyRecord.familyHistory_id,
+              params.practitionerId as string
+            );
+          const consent = response.data.data;
+          familyRecord.has_access = consent.state;
+          return {
+            id: familyRecord.familyHistory_id,
+            recorded_date: familyRecord.recorded_date,
+            detail: familyRecord.notes,
+            register_type: "FAMILIAR",
+          };
+        } catch (error) {
+          return null;
+        }
+      })
+    );
+    setFamilyRecordList(parsedFamilyRecordList);
+    setHealthRecordsList(allergyList.concat(parsedFamilyRecordList));
+  };
 
   const renderCell = React.useCallback(
-    (health_records: Allergy, columnKey: React.Key) => {
-      const cellValue = health_records[columnKey as keyof Allergy];
+    (health_records: any, columnKey: React.Key) => {
+      const cellValue = health_records[columnKey as keyof any];
 
       switch (columnKey) {
-        case 'actions':
+        case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
-                className={' text-sm font-medium '}
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
-                onClick={() => router.push(`patients/${health_records.patient_id}`)}
+                className={" text-sm font-medium "}
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
+                onClick={() =>
+                  router.push(`health-records/${health_records.id}`)
+                }
               >
                 Ver más
               </Button>
@@ -88,37 +143,37 @@ export const HealthRecordsSearch = () => {
       setFilterValue(value);
       setPage(1);
     } else {
-      setFilterValue('');
+      setFilterValue("");
     }
   }, []);
 
   const onClear = React.useCallback(() => {
-    setFilterValue('');
+    setFilterValue("");
     setPage(1);
   }, []);
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="bg-blue-100 flex flex-col gap-4">
-        <div className="flex gap-3 items-end">
+      <div className='bg-blue-100 flex flex-col gap-4'>
+        <div className='flex gap-3 items-end'>
           <Input
             isClearable
-            variant="faded"
-            size="sm"
-            className="w-full sm:max-w-[26%] ml-1 mb-2 mt-2"
-            placeholder="Buscar por detalle..."
-            startContent={<SearchIcon className="h-4 w-4" />}
+            variant='faded'
+            size='sm'
+            className='w-full sm:max-w-[26%] ml-1 mb-2 mt-2'
+            placeholder='Buscar por detalle...'
+            startContent={<SearchIcon className='h-4 w-4' />}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
           <Input
             isClearable
-            variant="faded"
-            size="sm"
-            className="w-full sm:max-w-[26%] mb-2 mt-2"
-            placeholder="Buscar por ID..."
-            startContent={<SearchIcon className="h-4 w-4" />}
+            variant='faded'
+            size='sm'
+            className='w-full sm:max-w-[26%] mb-2 mt-2'
+            placeholder='Buscar por ID...'
+            startContent={<SearchIcon className='h-4 w-4' />}
             onClear={() => onClear()}
           />
         </div>
@@ -127,22 +182,27 @@ export const HealthRecordsSearch = () => {
   }, [filterValue, onSearchChange, hasSearchFilter]);
 
   return (
-    <div className="w-full items-stretch justify-end gap-4 inline-flex mb-3">
-      <CustomSuspense isLoading={getAllergyListResponse.isLoading} fallback={<TableSkeleton />}>
+    <div className='w-full items-stretch justify-end gap-4 inline-flex mb-3'>
+      <CustomSuspense
+        isLoading={
+          allergyRecordsResponse.isLoading || familyRecordsResponse.isLoading
+        }
+        fallback={<TableSkeleton />}
+      >
         <Table
-          color="primary"
-          aria-label="Health Records table"
-          selectionBehavior="toggle"
+          color='primary'
+          aria-label='Health Records table'
+          selectionBehavior='toggle'
           isHeaderSticky
-          selectionMode="single"
+          selectionMode='single'
           topContent={topContent}
         >
           <TableHeader columns={healthRecordsTableColumns}>
             {(column) => (
               <TableColumn
-                className="text-bold"
+                className='text-bold'
                 key={column.uid}
-                align={column.uid === 'actions' ? 'center' : 'start'}
+                align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}
               >
                 {column.name}
@@ -150,11 +210,11 @@ export const HealthRecordsSearch = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={'No allergies docs data available'}
-            items={(allergyList || [] as Allergy[])}
+            emptyContent={"No se encontraron registros médicos."}
+            items={healthRecordsList}
           >
-            {(item) => (
-              <TableRow key={item.allergy_id}>
+            {(item: any) => (
+              <TableRow key={item.id}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}

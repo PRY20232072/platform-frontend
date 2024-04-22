@@ -43,7 +43,7 @@ const EventDetailModal = ({
 
   useEffect(() => {
     if (getNotificationResponse.isSuccess) {
-      console.log("Event datail modal", getNotificationResponse.data);
+      // console.log("Event datail modal", getNotificationResponse.data);
       setEvent(getNotificationResponse.data);
     }
   }, [getNotificationResponse]);

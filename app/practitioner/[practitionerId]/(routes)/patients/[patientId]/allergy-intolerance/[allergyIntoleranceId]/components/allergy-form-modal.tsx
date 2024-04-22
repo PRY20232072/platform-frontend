@@ -21,6 +21,7 @@ import { v4 as uuidv4, validate } from "uuid";
 import { useApi } from "@/hooks/useApi";
 import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 import notificationsService from "@/services/notificationsService";
+import { toast } from "react-toastify";
 
 type Allergy = {
   name: string;
@@ -53,7 +54,6 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
   const handleCreate = () => {
     allergy.recorded_date = new Date().toISOString().split("T")[0];
     const allergy_id = uuidv4();
-    console.log(allergy);
 
     createAllergy(
       allergyIntoleranceService.createAllergy({
@@ -69,10 +69,11 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
       register_type: "ALLERGY",
       type: "WRITE",
     });
-
     location.reload();
     onClose();
     allergyFormModalClose();
+    toast.success("Registro de alergia creado con éxito");
+
   };
 
   return (
@@ -98,10 +99,10 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
           {(onClose) => (
             <>
               <ModalHeader className='flex flex-col gap-1'>
-                Solicitar acceso
+              Confirmación
               </ModalHeader>
               <ModalBody>
-                <div>¿Quieres solicitar acceso al registro de alergia?</div>
+                <div>¿Estas seguro de crear este registro?</div>
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='flat' onPress={onClose}>
@@ -132,10 +133,10 @@ export const AllergyFormModal = () => {
   useEffect(() => {
     setAllergy({
       name: "",
-      category: "COMIDA",
-      clinical_status: "ACTIVO",
+      category: "FOOD",
+      clinical_status: "ACTIVE",
       recorded_date: "",
-      type: "LÁCTEOS",
+      type: "DAIRY",
       allergy_notes: "",
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
@@ -201,24 +202,27 @@ export const AllergyFormModal = () => {
                   label='Tipo'
                   defaultValue={allergyTypes[0].value}
                   data={allergyTypes}
-                  onChange={(e) => {
-                    setAllergy({ ...allergy, type: e.target.value });
+                  value={allergy.type}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, type: value });
                   }}
                 />
                 <RadioOptions
                   label='Categoría'
                   defaultValue={allergyCategories[0].value}
                   data={allergyCategories}
-                  onChange={(e) => {
-                    setAllergy({ ...allergy, category: e.target.value });
+                  value={allergy.category}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, category: value });
                   }}
                 />
                 <RadioOptions
                   label='Estado'
                   defaultValue={allergyStatus[0].value}
                   data={allergyStatus}
-                  onChange={(e) => {
-                    setAllergy({ ...allergy, clinical_status: e.target.value });
+                  value={allergy.clinical_status}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, clinical_status: value });
                   }}
                 />
                 <Textarea

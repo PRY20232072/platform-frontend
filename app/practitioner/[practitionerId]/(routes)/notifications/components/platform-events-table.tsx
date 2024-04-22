@@ -70,29 +70,29 @@ const PlatformEventsTable = () => {
       switch (columnKey) {
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
-                className="font-medium"
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium'
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onPress={() => {
                   setSelectedEventId(platform_event.id);
                   onOpen();
                 }}
               >
-                View details
+                Ver detalles
               </Button>
               <Button
-                className="font-medium"
-                color="danger"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium'
+                color='danger'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => handleMarkAsRead(platform_event.id)}
               >
-                Mark as read
+                Marcar como leída
               </Button>
             </div>
           );
@@ -107,7 +107,7 @@ const PlatformEventsTable = () => {
 
   return (
     <>
-      <div className="mb-4 font-bold text-2xl tracking-[0] leading-[24px]">
+      <div className='mb-4 font-bold text-2xl tracking-[0] leading-[24px]'>
         Eventos de la plataforma
       </div>
 
@@ -115,11 +115,11 @@ const PlatformEventsTable = () => {
         isLoading={getNotificationsResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label="Platform events">
+        <Table aria-label='Platform events'>
           <TableHeader columns={platformaPractitionerEventsTableColumns}>
             {(column) => (
               <TableColumn
-                className="text-bold"
+                className='text-bold'
                 key={column.uid}
                 align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}

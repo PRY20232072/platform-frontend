@@ -82,7 +82,7 @@ const PlatformEventsTable = () => {
                   onOpen();
                 }}
               >
-                View details
+                Ver detalles
               </Button>
               <Button
                 className="font-medium"
@@ -92,7 +92,7 @@ const PlatformEventsTable = () => {
                 variant="flat"
                 onClick={() => handleMarkAsRead(platform_event.id)}
               >
-                Mark as read
+                Marcar como leída
               </Button>
             </div>
           );

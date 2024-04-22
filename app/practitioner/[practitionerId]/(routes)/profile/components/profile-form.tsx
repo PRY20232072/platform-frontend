@@ -22,14 +22,14 @@ import districsData from "@/data/districts.json";
 export default function PractitionerProfileForm() {
   const [isInvalid, setIsInvalid] = useState(false);
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
-  const [practitioner, serPractitioner] = useState(emptyPractitioner);
+  const [practitioner, setPractitioner] = useState(emptyPractitioner);
   const [provincesOptions, setProvincesOptions] = useState<
     { id: string; name: string; department_id: string }[]
   >([]);
   const [districtsOptions, setDistrictsOptions] = useState<
     { id: string; name: string; province_id: string }[]
   >([]);
-
+ 
   useEffect(() => {
     setIsInvalid(
       practitioner.telephone ? !validatePhone(practitioner.telephone) : false
@@ -39,7 +39,7 @@ export default function PractitionerProfileForm() {
   useEffect(() => {
     if (practitioner.address.department) {
       const selectedDepartment = departments.find(
-        (department) => department.name === practitioner.address.department
+        (department) => department.id === practitioner.address.department
       );
       if (selectedDepartment) {
         const provinces = provincesData.filter(
@@ -56,7 +56,7 @@ export default function PractitionerProfileForm() {
   useEffect(() => {
     if (practitioner.address.province) {
       const selectedProvince = provincesData.find(
-        (province) => province.name === practitioner.address.province
+        (province) => province.id === practitioner.address.province
       );
 
       if (selectedProvince) {
@@ -98,7 +98,7 @@ export default function PractitionerProfileForm() {
 
   useEffect(() => {
     if (getPractitionerByIdResponse.isSuccess) {
-      serPractitioner(getPractitionerByIdResponse.data);
+      setPractitioner(getPractitionerByIdResponse.data);
       setIsRegisterPractitioner(true);
     } else {
       setIsRegisterPractitioner(false);
@@ -178,7 +178,7 @@ export default function PractitionerProfileForm() {
                   placeholder='Ingresa el nombre completo'
                   value={practitioner.name_id}
                   onChange={(e) => {
-                    serPractitioner({
+                    setPractitioner({
                       ...practitioner,
                       name_id: e.target.value,
                     });
@@ -191,9 +191,9 @@ export default function PractitionerProfileForm() {
                 labelPlacement='outside'
                 placeholder='Escoge una opción'
                 data={genders}
-                inputValue={practitioner.gender}
-                onInputChange={(value) => {
-                  serPractitioner({ ...practitioner, gender: value });
+                selectedKey={practitioner.gender}
+                onSelectionChange={(value) => {
+                  setPractitioner({ ...practitioner, gender: value });
                 }}
               />
 
@@ -207,22 +207,23 @@ export default function PractitionerProfileForm() {
                   placeholder='Ingresa la fecha de cumpleaños'
                   value={practitioner.birthDate}
                   onChange={(e) => {
-                    serPractitioner({
+                    setPractitioner({
                       ...practitioner,
                       birthDate: e.target.value,
                     });
                   }}
                 />
               </div>
+
               <CustomAutocomplete
                 isDisabled={!isEditing}
                 label='Estado civil'
                 labelPlacement='outside'
                 placeholder='Escoge una opción'
                 data={civilStatus}
-                inputValue={practitioner.maritalStatus}
-                onInputChange={(value) => {
-                  serPractitioner({ ...practitioner, maritalStatus: value });
+                selectedKey={practitioner.maritalStatus}
+                onSelectionChange={(value) => {
+                  setPractitioner({ ...practitioner, maritalStatus: value });
                 }}
               />
 
@@ -241,7 +242,7 @@ export default function PractitionerProfileForm() {
                   color={isInvalid ? "danger" : "default"}
                   value={practitioner.telephone}
                   onChange={(e) => {
-                    serPractitioner({
+                    setPractitioner({
                       ...practitioner,
                       telephone: e.target.value,
                     });
@@ -262,20 +263,19 @@ export default function PractitionerProfileForm() {
                 isDisabled={!isEditing}
                 label='Departamento'
                 labelPlacement='outside'
-                placeholder='Escoge un departamento'
+                placeholder='Selecciona un departamento'
                 data={departments.map((department) => ({
                   value: department.id,
                   label: department.name,
                 }))}
-                inputValue={practitioner.address.department}
-                onInputChange={(value) => {
-                  serPractitioner({
+                selectedKey={practitioner.address.department}
+                onSelectionChange={(value) => {
+                  setPractitioner({
                     ...practitioner,
                     address: { ...practitioner.address, department: value },
                   });
                 }}
               />
-
               <CustomAutocomplete
                 isDisabled={!isEditing || !practitioner.address.department}
                 label='Provincia'
@@ -285,48 +285,45 @@ export default function PractitionerProfileForm() {
                   value: provinces.id,
                   label: provinces.name,
                 }))}
-                inputValue={practitioner.address.province}
-                onInputChange={(value) => {
-                  serPractitioner({
+                selectedKey={practitioner.address.province}
+                onSelectionChange={(value) => {
+                  setPractitioner({
                     ...practitioner,
                     address: { ...practitioner.address, province: value },
                   });
                 }}
               />
-
               <CustomAutocomplete
                 isDisabled={!isEditing || !practitioner.address.province}
                 label='Distrito'
                 labelPlacement='outside'
-                placeholder='Escoge un distrito'
+                placeholder='Escoge una distrito'
                 data={districtsOptions.map((districts) => ({
                   value: districts.id,
                   label: districts.name,
                 }))}
-                inputValue={practitioner.address.district}
-                onInputChange={(value) => {
-                  serPractitioner({
+                selectedKey={practitioner.address.district}
+                onSelectionChange={(value) => {
+                  setPractitioner({
                     ...practitioner,
                     address: { ...practitioner.address, district: value },
                   });
                 }}
               />
-
               <CustomAutocomplete
                 isDisabled={!isEditing}
                 label='Tipo de dirección'
                 labelPlacement='outside'
                 placeholder='Escoge una opción'
                 data={addressTypes}
-                inputValue={practitioner.address.type_address}
-                onInputChange={(value) => {
-                  serPractitioner({
+                selectedKey={practitioner.address.type_address}
+                onSelectionChange={(value) => {
+                  setPractitioner({
                     ...practitioner,
                     address: { ...practitioner.address, type_address: value },
                   });
                 }}
               />
-
               <div className='inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]'>
                 <Input
                   isRequired
@@ -337,7 +334,7 @@ export default function PractitionerProfileForm() {
                   placeholder='Complete la dirección'
                   value={practitioner.address.address_line}
                   onChange={(e) => {
-                    serPractitioner({
+                    setPractitioner({
                       ...practitioner,
                       address: {
                         ...practitioner.address,
@@ -358,7 +355,7 @@ export default function PractitionerProfileForm() {
                   placeholder='Completa el código postal'
                   value={practitioner.address.postal_code}
                   onChange={(e) => {
-                    serPractitioner({
+                    setPractitioner({
                       ...practitioner,
                       address: {
                         ...practitioner.address,
