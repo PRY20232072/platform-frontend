@@ -19,7 +19,7 @@ const addressTypes = [
 
 const allergyStatus = [
   { label: "ACTIVO", value: "ACTIVE" },
-  { label: "INACTIVO", value: "INNACTIVE" },
+  { label: "INACTIVO", value: "INACTIVE" },
   { label: "RESUELTO", value: "RESOLVED" },
 ];
 
@@ -291,7 +291,7 @@ const patientAllergies = [
     type: "Animal",
     created_by: "Dr. Ricardo Montalban",
     created_date: "2023/11/01",
-    status: "innactive",
+    status: "inactive",
   },
   {
     id: 4,

@@ -73,11 +73,12 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
       register_id: familyHistory_id,
       register_type: "FAMILY_HISTORY",
       type: "WRITE",
+    }).then((response) => {
+      location.reload();
+      onClose();
+      familyRecordFormModalClose();
+      toast.success("Registro de historial familiar creado con éxito");
     });
-    location.reload();
-    onClose();
-    familyRecordFormModalClose();
-    toast.success("Registro de historial familiar creado con éxito");
   };
 
   return (

@@ -26,13 +26,13 @@ import { toast } from "react-toastify";
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVE: "success",
   ACTIVE: "danger",
-  INNACTIVE: "warning",
+  INACTIVE: "warning",
 };
 
 const statusMap: Record<string, string> = {
   RESOLVE: "RESUELTO",
   ACTIVE: "ACTIVO",
-  INNACTIVE: "INACTIVO",
+  INACTIVE: "INACTIVO",
 };
  
 const alleryTypesMap: Record<string, string> = {

@@ -22,7 +22,7 @@ import TableSkeleton from "@/components/ui/skeletons/table-skeleton";
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVE: "success",
   ACTIVE: "danger",
-  INNACTIVE: "warning",
+  INACTIVE: "warning",
 };
 
 type PatientFamilyRecord = {

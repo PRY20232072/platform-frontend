@@ -23,7 +23,7 @@ import notificationsService from "@/services/notificationsService";
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVE: "success",
   ACTIVE: "danger",
-  INNACTIVE: "warning",
+  INACTIVE: "warning",
 };
 
 type FamilyRecord = {

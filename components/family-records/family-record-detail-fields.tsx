@@ -44,8 +44,10 @@ export default function FamilyRecordDetailFields({
           label="Status"
           labelPlacement="outside"
           data={familyRecordStatus}
-          inputValue={familyRecord.clinical_status}
-          onInputChange={(value) => handleInputChange("clinical_status", value)}
+          selectedKey={familyRecord.clinical_status}
+          onSelectionChange={(value) =>
+            handleInputChange("clinical_status", value)
+          }
         />
         <Textarea
           isReadOnly={!isEditing}

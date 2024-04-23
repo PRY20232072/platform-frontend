@@ -68,12 +68,12 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
       register_id: allergy_id,
       register_type: "ALLERGY",
       type: "WRITE",
+    }).then((response) => {
+      location.reload();
+      onClose();
+      allergyFormModalClose();
+      toast.success("Registro de alergia creado con éxito");
     });
-    location.reload();
-    onClose();
-    allergyFormModalClose();
-    toast.success("Registro de alergia creado con éxito");
-
   };
 
   return (
