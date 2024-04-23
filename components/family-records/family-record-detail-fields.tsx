@@ -70,7 +70,7 @@ export default function FamilyRecordDetailFields({
           onChange={(e) => handleInputChange("recorded_date", e.target.value)}
         />
       </div>
-      <div className="text-2xl font-bold leading-6 max-md:max-w-full">
+      {/* <div className="text-2xl font-bold leading-6 max-md:max-w-full">
         Relative Information
       </div>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8">
@@ -101,7 +101,7 @@ export default function FamilyRecordDetailFields({
           value={familyRecord.birthdate}
           onChange={(e) => handleInputChange("birthdate", e.target.value)}
         />
-      </div>
+      </div> */}
     </>
   );
 };
