@@ -210,7 +210,7 @@ export const HealthRecordsSearch = () => {
             )}
           </TableHeader>
           <TableBody
-            emptyContent={"No se encontraron registros médicos."}
+            emptyContent={"No cuenta con acceso a registros médicos."}
             items={healthRecordsList}
           >
             {(item: any) => (

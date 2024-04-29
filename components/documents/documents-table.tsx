@@ -45,7 +45,7 @@ const DocumentsTable = ({ items }: DocumentsTableProps) => {
                   handleDownload(allergy_docs.hash, allergy_docs.file_name)
                 }
               >
-                Download
+                Descargar
               </Button>
             </div>
           );

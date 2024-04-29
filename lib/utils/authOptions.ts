@@ -12,7 +12,48 @@ if (
   console.error("Azure AD B2C fail！");
   process.exit();
 }
+async function refreshAccessToken(token: any) {
+  console.log("passed here", token);
+  try {
+    const url =
+      `https://${process.env.AZURE_AD_B2C_TENANT_NAME}.b2clogin.com/${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/${process.env.AZURE_AD_B2C_PRIMARY_USER_FLOW}/oauth2/v2.0/token`;
+      
 
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: process.env.AZURE_AD_B2C_CLIENT_ID || "",
+        scope: `https://${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/api-pry2372/tasks.read https://${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/api-pry2372/tasks.write offline_access openid`,
+        refresh_token: token.refreshToken,
+        grant_type: "refresh_token",
+        
+      })
+    });
+
+    const refreshedTokens = await response.json();
+    console.log("Response", refreshedTokens);
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+    };
+  } catch (error) {
+    console.log("Error", error);
+
+    return {
+      ...token,
+      error: "RefreshAccessTokenError",
+    };
+  }
+}
 export const authOptions: NextAuthOptions = {
   providers: [
     AzureADB2CProvider({
@@ -29,7 +70,7 @@ export const authOptions: NextAuthOptions = {
       checks: ["pkce"],
 
       profile(profile: AzureB2CProfile) {
-        console.log("THE PROFILE", profile);
+       
         return {
           ...profile,
           id: profile.sub.toString(),
@@ -66,16 +107,22 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user, account, profile }) {
       // IMPORTANT: Persist the access_token to the token right after sign in
+      
       if (account) {
-        token.graphAccessToken = account.access_token;
         token.accessToken = account.access_token;
         token.idToken = profile?.sub;
         token.email = user.email;
         token.extension_PhoneNumber = user.extension_PhoneNumber;
         token.extension_UserRole = user.extension_UserRole;
+        token.accessTokenExpires = account?.expires_at;
+        token.refreshToken = account?.refresh_token;
       }
-
-      return token;
+     
+      if (Date.now() < (token.accessTokenExpires ?? 0)*1000) {
+        console.log("token active", token);
+        return token;
+      }
+      return await refreshAccessToken(token);
     },
     async session({ session, token, user }) {
       if (session?.user) {
@@ -89,5 +136,8 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  theme: { buttonText: "Iniciar sesión con Azure Active Directory B2C",logo: "https://vercel.pub/favicon.ico"},
+  theme: {
+    buttonText: "Iniciar sesión con Azure Active Directory B2C",
+    logo: "https://vercel.pub/favicon.ico",
+  },
 };

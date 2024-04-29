@@ -13,18 +13,16 @@ import {
   ChipProps,
 } from "@nextui-org/react";
 
-import { practitionerFamilyRecordsTableColumns } from "@/data/data";
+import {
+  familyRecordStatusMap,
+  familyStatusColorMap,
+  practitionerFamilyRecordsTableColumns,
+} from "@/data/data";
 import { useParams, useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";
 import consentService from "@/services/consentService";
 import notificationsService from "@/services/notificationsService";
-
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  RESOLVE: "success",
-  ACTIVE: "danger",
-  INACTIVE: "warning",
-};
 
 type FamilyRecord = {
   patient_id: string;
@@ -120,12 +118,14 @@ export const PatientFamilyRecordsTable = () => {
           return (
             <Chip
               color={
-                statusColorMap[selected_patient_family_record.clinical_status]
+                familyStatusColorMap[
+                  selected_patient_family_record.clinical_status
+                ]
               }
-              size="sm"
-              variant="flat"
+              size='sm'
+              variant='flat'
             >
-              {cellValue}
+              {familyRecordStatusMap[cellValue]}
             </Chip>
           );
         case "has_access":
@@ -134,14 +134,14 @@ export const PatientFamilyRecordsTable = () => {
             : "NO";
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               {selected_patient_family_record.has_access === "ACTIVE" ? (
                 <Button
-                  className="font-medium "
-                  color="primary"
-                  radius="sm"
-                  size="sm"
-                  variant="flat"
+                  className='font-medium '
+                  color='primary'
+                  radius='sm'
+                  size='sm'
+                  variant='flat'
                   onClick={() => {
                     notificationsService.createNotifications({
                       user_id: params.patientId,
@@ -162,21 +162,21 @@ export const PatientFamilyRecordsTable = () => {
               ) : selected_patient_family_record.has_access === "PENDING" ? (
                 <Button
                   isDisabled
-                  className="font-medium "
-                  color="secondary"
-                  radius="sm"
-                  size="sm"
-                  variant="flat"
+                  className='font-medium '
+                  color='secondary'
+                  radius='sm'
+                  size='sm'
+                  variant='flat'
                 >
                   Pendiente
                 </Button>
               ) : (
                 <Button
-                  className="font-medium "
-                  color="warning"
-                  radius="sm"
-                  size="sm"
-                  variant="flat"
+                  className='font-medium '
+                  color='warning'
+                  radius='sm'
+                  size='sm'
+                  variant='flat'
                   onClick={() =>
                     handleCreateConsent(
                       selected_patient_family_record.familyHistory_id
@@ -197,11 +197,11 @@ export const PatientFamilyRecordsTable = () => {
 
   return (
     <>
-      <Table aria-label="Patient family record collection table">
+      <Table aria-label='Patient family record collection table'>
         <TableHeader columns={practitionerFamilyRecordsTableColumns}>
           {(column) => (
             <TableColumn
-              className="text-bold"
+              className='text-bold'
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}

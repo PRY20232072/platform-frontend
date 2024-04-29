@@ -87,7 +87,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
               <ModalHeader className='flex flex-col gap-1'>
                 Confirmación
                 <span className='text-default-400 text-small'>
-                  ¿Está seguro de brindar acceso a sus registros médicos al
+                  ¿Está seguro de brindar acceso a su registro al
                   siguiente profesional de la salud?
                 </span>
               </ModalHeader>

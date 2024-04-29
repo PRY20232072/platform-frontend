@@ -37,7 +37,7 @@ const FamilyRecordDocsClient: React.FC<FamilyRecordDocsTableProps> = ({
                 color="primary"
                 variant="flat"
               >
-                Preview
+                Previsualizar
               </Button>
               <Button
                 className=" text-sm font-medium"
@@ -46,7 +46,7 @@ const FamilyRecordDocsClient: React.FC<FamilyRecordDocsTableProps> = ({
                 color="success"
                 variant="flat"
               >
-                Download
+                Descargar
               </Button>
             </div>
           );

@@ -15,7 +15,7 @@ import { RadioOptions } from "@/components/ui/radio-options";
 
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { familyRecordStatus, genders } from "@/data/data";
+import { familyRecordStatus } from "@/data/data";
 
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
@@ -67,18 +67,20 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
       })
     );
 
-    notificationsService.createNotifications({
-      user_id: params.patientId,
-      practitioner_id: params.practitionerId,
-      register_id: familyHistory_id,
-      register_type: "FAMILY_HISTORY",
-      type: "WRITE",
-    }).then((response) => {
-      location.reload();
-      onClose();
-      familyRecordFormModalClose();
-      toast.success("Registro de historial familiar creado con éxito");
-    });
+    notificationsService
+      .createNotifications({
+        user_id: params.patientId,
+        practitioner_id: params.practitionerId,
+        register_id: familyHistory_id,
+        register_type: "FAMILY_HISTORY",
+        type: "WRITE",
+      })
+      .then((response) => {
+        location.reload();
+        onClose();
+        familyRecordFormModalClose();
+        toast.success("Registro de historial familiar creado con éxito");
+      });
   };
 
   return (
@@ -142,7 +144,7 @@ export const FamilyRecordFormModal = () => {
     setRecord({
       name: "",
       reason: "",
-      clinical_status: "PARCIAL",
+      clinical_status: "PARTIAL",
       onset_date: "",
       recorded_date: "",
       notes: "",
@@ -153,6 +155,10 @@ export const FamilyRecordFormModal = () => {
       participant_id: params.practitionerId as string,
     });
   }, [params.patientId, params.practitionerId]);
+
+  useEffect(() => {
+    validateForm();
+  }, [familyRecord]);
 
   const validateForm = () => {
     let valid = true;
@@ -209,7 +215,6 @@ export const FamilyRecordFormModal = () => {
                     if (errors.name) {
                       setErrors({ ...errors, name: null });
                     }
-                    validateForm();
                   }}
                   isRequired
                 />
@@ -244,7 +249,6 @@ export const FamilyRecordFormModal = () => {
                     if (errors.reason) {
                       setErrors({ ...errors, reason: null });
                     }
-                    validateForm();
                   }}
                   isRequired
                 />
@@ -265,7 +269,6 @@ export const FamilyRecordFormModal = () => {
                     if (errors.notes) {
                       setErrors({ ...errors, notes: null });
                     }
-                    validateForm();
                   }}
                   isRequired
                 />

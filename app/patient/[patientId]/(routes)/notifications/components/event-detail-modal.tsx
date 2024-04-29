@@ -2,6 +2,7 @@
 
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
+import { eventTypeMap, registerTypeMap } from "@/data/data";
 import { useApi } from "@/hooks/useApi";
 import notificationsService from "@/services/notificationsService";
 import { PlatformEvent } from "@/types/platformEvent";
@@ -59,7 +60,7 @@ const EventDetailModal = ({
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Event Detail</ModalHeader>
+              <ModalHeader>Detalle del evento</ModalHeader>
               <ModalBody>
                 <CustomSuspense
                   isLoading={getNotificationResponse.isLoading}
@@ -69,42 +70,42 @@ const EventDetailModal = ({
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Register ID"
+                      label="ID del registro"
                       labelPlacement="outside"
                       value={event?.register_id}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Register Type"
+                      label="Tipo de registro"
                       labelPlacement="outside"
-                      value={event?.register_type}
+                      value={registerTypeMap[event?.register_type as string] }
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Practitioner Id"
+                      label="ID del profesional de la salud"
                       labelPlacement="outside"
                       value={event?.practitioner_id}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Practitioner name"
+                      label="Nombre del profesional de la salud"
                       labelPlacement="outside"
                       value={event?.practitioner_name}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Event type"
+                      label="Tipo de Evento"
                       labelPlacement="outside"
-                      value={event?.type}
+                      value={eventTypeMap[event?.type as string]}
                     />
                     <Input
                       isReadOnly={true}
                       type="text"
-                      label="Date"
+                      label="Fecha"
                       labelPlacement="outside"
                       value={new Date(
                         event?.created_at as string
@@ -115,7 +116,7 @@ const EventDetailModal = ({
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onPress={onClose}>
-                  Close
+                  Cerrar
                 </Button>
               </ModalFooter>
             </>

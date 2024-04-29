@@ -24,13 +24,13 @@ import notificationsService from "@/services/notificationsService";
 import { toast } from "react-toastify";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
-  RESOLVE: "success",
+  RESOLVED: "success",
   ACTIVE: "danger",
   INACTIVE: "warning",
 };
 
 const statusMap: Record<string, string> = {
-  RESOLVE: "RESUELTO",
+  RESOLVED: "RESUELTO",
   ACTIVE: "ACTIVO",
   INACTIVE: "INACTIVO",
 };

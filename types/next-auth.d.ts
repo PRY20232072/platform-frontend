@@ -29,5 +29,7 @@ declare module 'next-auth/jwt' {
     idToken?: string;
     extension_PhoneNumber?: string;
     extension_UserRole?: string | undefined;
+    accessTokenExpires?: number;
+    refreshToken?: string;
   }
 }

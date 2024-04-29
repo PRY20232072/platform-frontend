@@ -17,7 +17,7 @@ export function ConfirmModal({ iSOpen }: { iSOpen: boolean }) {
         onPress={onOpen}
         className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
       >
-        <Plus className="h-4 w-4" /> Confirm action
+        <Plus className="h-4 w-4" /> Confirmar action
       </Button>
       <Modal
         isOpen={isOpen}
@@ -28,13 +28,13 @@ export function ConfirmModal({ iSOpen }: { iSOpen: boolean }) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Confirmation
+                Confirmación
               </ModalHeader>
               <Button
                 onPress={onClose}
                 className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
               >
-                <Plus className="h-4 w-4" /> Accept
+                <Plus className="h-4 w-4" /> Aceptar
               </Button>
             </>
           )}

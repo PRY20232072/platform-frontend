@@ -1,3 +1,15 @@
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+  Chip,
+  ChipProps,
+  Button,
+} from "@nextui-org/react";
+
 const civilStatus = [
   { label: "SOLTERO", value: "SINGLE" },
   { label: "CASADO", value: "MARRIED" },
@@ -109,10 +121,10 @@ const healthRecordsTableColumns = [
 ];
 
 const practitionerTableColumns = [
-  { name: "NAME", uid: "name", sortable: true },
+  { name: "NOMBRE", uid: "name", sortable: true },
   { name: "ID", uid: "practitioner_id", sortable: true },
   { name: "EMAIL", uid: "email", sortable: true },
-  { name: "PHONE NUMBER", uid: "phone_number" },
+  { name: "NÚMERO DE TELÉFONO", uid: "phone_number" },
 ];
 
 const accessRequestTableColumns = [
@@ -497,6 +509,50 @@ const selectedPatientFamilyRecordDocs = [
   },
 ];
 
+const registerTypeMap : Record<string, string> = {
+  "ALLERGY": "ALERGIA",
+  "FAMILY_HISTORY": "FAMILIAR",
+}
+
+const eventTypeMap : Record<string, string> = {
+  "READ": "LECTURA",
+  "WRITE": "ESCRITURA",
+}
+
+const statusColorMap: Record<string, ChipProps["color"]> = {
+  RESOLVED: "success",
+  ACTIVE: "danger",
+  INACTIVE: "warning",
+};
+
+const statusMap : Record<string, string> = {
+  RESOLVED: "RESUELTO",
+  ACTIVE: "ACTIVO",
+  INACTIVE: "INACTIVO",
+};
+
+const familyStatusColorMap: Record<string, ChipProps["color"]> = {
+  COMPLETE: "success",
+  PARTIAL: "warning",
+  UNKNOWN: "warning",
+};
+
+const allergyTypesMap : Record<string, string> = {
+  "DAIRY": "LÁCTEOS",
+  "GLUTEN": "GLUTEN",
+  "CAFFEINE": "CAFEÍNA",
+  "SALICYLATES": "SALICILATOS",
+  "AMINES": "AMINAS",
+  "OTHER": "OTRO",
+}
+
+const familyRecordStatusMap : Record<string, string> = {
+  "PARTIAL": "PARCIAL",
+  "COMPLETE": "COMPLETO",
+  "UNKNOWN": "SALUD DESCONOCIDA",
+}
+
+
 export {
   civilStatus,
   allergyStatus,
@@ -537,4 +593,5 @@ export {
   practitionerFamilyRecordsTableColumns,
   selectedPatientFamilyRecordDocsTableColumns,
   selectedPatientFamilyRecordDocs,
+  registerTypeMap, eventTypeMap, statusColorMap,statusMap,allergyTypesMap,familyRecordStatusMap,familyStatusColorMap
 };

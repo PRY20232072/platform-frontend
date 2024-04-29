@@ -100,7 +100,7 @@ const FamilyRecordAccessClient = () => {
                 variant="flat"
                 onClick={() => handleRevoke(family_record_access)}
               >
-                Remove
+                Eliminar
               </Button>
             </div>
           );

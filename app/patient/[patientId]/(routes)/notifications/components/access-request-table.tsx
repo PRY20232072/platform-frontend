@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import { toast } from "react-toastify";
-
+import { registerTypeMap } from "@/data/data";
 type HealthRecordAccess = {
   id: string;
   practitioner_name: string;
@@ -27,11 +27,11 @@ type HealthRecordAccess = {
   register_id: string;
 };
 
-const registerTypeMap : Record<string, string> = {
+/* const registerTypeMap : Record<string, string> = {
   "ALLERGY": "ALERGIA",
   "FAMILY_HISTORY": "FAMILIAR",
 }
-
+ */
 
 const AccessRequestTable = () => {
   const { data: session } = useSession();

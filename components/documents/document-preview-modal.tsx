@@ -83,7 +83,7 @@ const DocumentPreviewModal = ({ document }: DocumentPreviewModalProps) => {
         variant="flat"
         onPress={onOpen}
       >
-        Preview
+        Previsualizar
       </Button>
       <Modal
         isOpen={isOpen}
@@ -93,7 +93,7 @@ const DocumentPreviewModal = ({ document }: DocumentPreviewModalProps) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="font-bold">Document Preview</ModalHeader>
+              <ModalHeader className="font-bold">Vista previa del documento</ModalHeader>
               <ModalBody className="h-2/4">
                 <CustomSuspense isLoading={isLoading} fallback={<Loading />}>
                   {fileType === "application/pdf" ? (
@@ -113,7 +113,7 @@ const DocumentPreviewModal = ({ document }: DocumentPreviewModalProps) => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
-                  Close
+                  Cerrar
                 </Button>
               </ModalFooter>
             </>

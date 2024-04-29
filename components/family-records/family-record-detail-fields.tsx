@@ -16,14 +16,14 @@ export default function FamilyRecordDetailFields({
   return (
     <>
       <div className="mb-4 font-bold text-2xl leading-[24px]">
-        Family Record Information
+        Información del registro de historial familiar
       </div>
       <div className="mb-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8">
         <Input
           isReadOnly={!isEditing}
           className="mb-4"
           type="text"
-          label="Name"
+          label="Nombre"
           labelPlacement="outside"
           value={familyRecord.name}
           onChange={(e) => handleInputChange("name", e.target.value)}
@@ -33,7 +33,7 @@ export default function FamilyRecordDetailFields({
           isReadOnly={!isEditing}
           className="mb-4"
           type="text"
-          label="Reason"
+          label="Razón"
           labelPlacement="outside"
           value={familyRecord.reason}
           onChange={(e) => handleInputChange("reason", e.target.value)}
@@ -41,7 +41,7 @@ export default function FamilyRecordDetailFields({
 
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label="Status"
+          label="Estado clínico"
           labelPlacement="outside"
           data={familyRecordStatus}
           selectedKey={familyRecord.clinical_status}
@@ -54,7 +54,7 @@ export default function FamilyRecordDetailFields({
           disableAnimation
           disableAutosize
           classNames={{ input: "resize-y min-h-[40px]" }}
-          label="Note"
+          label="Nota"
           labelPlacement="outside"
           value={familyRecord.notes}
           onChange={(e) => handleInputChange("notes", e.target.value)}
@@ -63,7 +63,7 @@ export default function FamilyRecordDetailFields({
         <Input
           isReadOnly={!isEditing}
           type="date"
-          label="Recorded date"
+          label="Fecha"
           labelPlacement="outside"
           placeholder="MM-DD-YYYY"
           value={familyRecord.recorded_date}

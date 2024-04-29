@@ -20,7 +20,7 @@ export default function AllergyDetailFields({
           isReadOnly={!isEditing}
           className='mb-4'
           type='text'
-          label='Name'
+          label='Nombre'
           labelPlacement='outside'
           value={allergy.name}
           onChange={(e) => handleInputChange("name", e.target.value)}
@@ -28,7 +28,7 @@ export default function AllergyDetailFields({
 
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Category'
+          label='Categoría'
           labelPlacement='outside'
           data={allergyCategories}
           selectedKey={allergy.category}
@@ -38,7 +38,7 @@ export default function AllergyDetailFields({
       <div className='flex flex-col items-stretch w-[34%] ml-5 max-md:w-full max-md:ml-0'>
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Status'
+          label='Estado clínico'
           labelPlacement='outside'
           data={allergyStatus}
           selectedKey={allergy.clinical_status}
@@ -50,7 +50,7 @@ export default function AllergyDetailFields({
         <Input
           isReadOnly={!isEditing}
           type='date'
-          label='Recorded date'
+          label='Fecha de registro'
           labelPlacement='outside'
           value={allergy.recorded_date}
           onChange={(e) => handleInputChange("recorded_date", e.target.value)}
@@ -59,7 +59,7 @@ export default function AllergyDetailFields({
       <div className='flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0'>
         <CustomAutocomplete
           isDisabled={!isEditing}
-          label='Type'
+          label='Tipo'
           labelPlacement='outside'
           data={allergyTypes}
           selectedKey={allergy.type}
@@ -71,7 +71,7 @@ export default function AllergyDetailFields({
           disableAnimation
           disableAutosize
           classNames={{ input: "resize-y min-h-[40px]" }}
-          label='Note'
+          label='Nota'
           labelPlacement='outside'
           value={allergy.allergy_notes}
           onChange={(e) => handleInputChange("allergy_notes", e.target.value)}

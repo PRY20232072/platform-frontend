@@ -11,7 +11,7 @@ import {
   ChipProps,
   Button,
 } from "@nextui-org/react";
-import { familyRecordTableColumns as columns } from "@/data/data";
+import { familyRecordTableColumns as columns, familyRecordStatusMap, familyStatusColorMap } from "@/data/data";
 import { useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import { useSession } from "next-auth/react";
@@ -19,12 +19,7 @@ import familyRecordService from "@/services/familyRecordService";
 import CustomSuspense from "@/components/custom-suspense";
 import TableSkeleton from "@/components/ui/skeletons/table-skeleton";
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  RESOLVE: "success",
-  ACTIVE: "danger",
-  INACTIVE: "warning",
-};
-
+ 
 type PatientFamilyRecord = {
   name: string;
   patient_id: string;
@@ -75,11 +70,11 @@ const FamilyRecordsTable: React.FC = () => {
         case "clinical_status":
           return (
             <Chip
-              color={statusColorMap[familyRecord.clinical_status]}
+              color={familyStatusColorMap[familyRecord.clinical_status]}
               size="sm"
               variant="flat"
             >
-              {cellValue}
+              {familyRecordStatusMap[cellValue]}
             </Chip>
           );
         case "actions":

@@ -143,6 +143,10 @@ export const AllergyFormModal = () => {
     });
   }, [params.patientId, params.practitionerId]);
 
+  useEffect(() => {
+    validateForm();
+  }, [allergy]);
+ 
   const validateForm = () => {
     let valid = true;
     const errors = {} as any;
@@ -191,7 +195,7 @@ export const AllergyFormModal = () => {
                     if (errors.name) {
                       setErrors({ ...errors, name: null });
                     }
-                    validateForm();
+                  
                   }}
                   isRequired
                 />

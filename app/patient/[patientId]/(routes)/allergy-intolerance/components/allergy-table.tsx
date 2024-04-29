@@ -8,22 +8,20 @@ import {
   TableRow,
   TableCell,
   Chip,
-  ChipProps,
   Button,
 } from "@nextui-org/react";
-import { allergyTableColumns as columns } from "@/data/data";
+import {
+  allergyTypesMap,
+  allergyTableColumns as columns,
+  statusColorMap,
+  statusMap,
+} from "@/data/data";
 import { useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import { useSession } from "next-auth/react";
 import allergyIntoleranceService from "@/services/allergyIntoleranceService";
 import CustomSuspense from "@/components/custom-suspense";
 import TableSkeleton from "@/components/ui/skeletons/table-skeleton";
-
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  RESOLVE: "success",
-  ACTIVE: "danger",
-  INACTIVE: "warning",
-};
 
 type Allergy = {
   patient_id: string;
@@ -70,24 +68,27 @@ const AllergyTable: React.FC = () => {
       const cellValue = allergy[columnKey as keyof Allergy];
 
       switch (columnKey) {
+        case "type":
+          return allergyTypesMap[cellValue];
+
         case "clinical_status":
           return (
             <Chip
               color={statusColorMap[allergy.clinical_status]}
-              size="sm"
-              variant="flat"
+              size='sm'
+              variant='flat'
             >
-              {cellValue}
+              {statusMap[cellValue]}
             </Chip>
           );
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
                 className={"text-sm font-medium "}
-                color="primary"
-                radius="sm"
-                size="sm"
+                color='primary'
+                radius='sm'
+                size='sm'
                 variant={"solid"}
                 onClick={() =>
                   router.push(`allergy-intolerance/${allergy.allergy_id}`)
@@ -106,11 +107,11 @@ const AllergyTable: React.FC = () => {
 
   return (
     <CustomSuspense isLoading={response.isLoading} fallback={<TableSkeleton />}>
-      <Table aria-label="Allergies collection table">
+      <Table aria-label='Allergies collection table'>
         <TableHeader columns={columns}>
           {(column) => (
             <TableColumn
-              className="text-bold"
+              className='text-bold'
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}
@@ -119,7 +120,10 @@ const AllergyTable: React.FC = () => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={"No se encontró registros de alergias"} items={items}>
+        <TableBody
+          emptyContent={"No se encontró registros de alergias"}
+          items={items}
+        >
           {(item) => (
             <TableRow key={item.allergy_id}>
               {(columnKey) => (

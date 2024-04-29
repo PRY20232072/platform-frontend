@@ -82,7 +82,7 @@ const AddDocModal = ({ registerType }: AddDocModalProps) => {
         theme: "colored",
       });
     } else {
-      toast.success(message, {
+      toast.success('Archivo subido correctamente', {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,

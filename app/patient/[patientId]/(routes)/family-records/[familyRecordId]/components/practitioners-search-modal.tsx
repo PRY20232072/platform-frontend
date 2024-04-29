@@ -87,8 +87,8 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
               <ModalHeader className='flex flex-col gap-1'>
                 Confirmación
                 <span className='text-default-400 text-small'>
-                  ¿Está seguro de brindar acceso a sus registros médicos
-                  familiares al siguiente profesional de la salud?
+                  ¿Está seguro de brindar acceso a su registro al siguiente
+                  profesional de la salud?
                 </span>
               </ModalHeader>
               <ModalBody>
@@ -127,10 +127,10 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='flat' onPress={onClose}>
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button color='primary' onPress={handleCreateConsent}>
-                  Accept
+                  Aceptar
                 </Button>
               </ModalFooter>
             </>
