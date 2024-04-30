@@ -58,6 +58,7 @@ const familyRecordStatus = [
 ];
 
 const allergyTableColumns = [
+  { name: "ID", uid: "allergy_id", sortable: true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
   { name: "CREADO POR", uid: "participant_id", sortable: true },
@@ -87,6 +88,7 @@ const familyRecordAccessTableColumns = [
 ];
 
 const familyRecordTableColumns = [
+  { name: "ID", uid: "familyHistory_id", sortable: true },
   { name: "DETALLE", uid: "notes", sortable: true },
   { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
@@ -195,6 +197,7 @@ const platformaPractitionerEventsTableColumns = [
 ];
 
 const selectedPatientAllergiesTableColumns = [
+  { name: "ID", uid: "allergy_id", sortable : true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
   // { name: 'CREADO POR', uid: 'created_by', sortable: true },
@@ -481,6 +484,7 @@ const healthRecords = [
 ];
 
 const practitionerFamilyRecordsTableColumns = [
+  { name: "ID", uid: "familyHistory_id", sortable: true },
   { name: "DETALLE", uid: "notes", sortable: true },
   { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
