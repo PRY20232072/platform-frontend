@@ -37,7 +37,7 @@ const AllergyDocsClient: React.FC<AllergyDocsTableProps> = ({
                 color="primary"
                 variant="flat"
               >
-                Preview
+                Previsualizar
               </Button>
               <Button
                 className=" text-sm font-medium"
@@ -46,7 +46,7 @@ const AllergyDocsClient: React.FC<AllergyDocsTableProps> = ({
                 color="success"
                 variant="flat"
               >
-                Download
+                Descargar
               </Button>
             </div>
           );

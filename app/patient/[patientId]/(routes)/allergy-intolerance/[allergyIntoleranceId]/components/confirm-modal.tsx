@@ -17,7 +17,7 @@ export function ConfirmModal({ iSOpen }: { iSOpen: boolean }) {
         onPress={onOpen}
         className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
       >
-        <Plus className="h-4 w-4" /> Confirmar action
+        <Plus className="h-4 w-4" /> Confirmar acción
       </Button>
       <Modal
         isOpen={isOpen}
