@@ -10,7 +10,7 @@ import CustomSuspense from "../custom-suspense";
 import CardSkeleton from "../ui/skeletons/card-skeleton";
 import familyRecordService from "@/services/familyRecordService";
 
-export default function CardHealthRecords() {
+export default function CardHealthRecords({ className }: { className?: string }) {
   const [healthRecordsList, setHealthRecordsList] = useState<any>([]);
   const [allergyList, setAllergyList] = useState<any>([]);
   const { response: allergyRecordsResponse, fetchData: getAllergyRecords } =
@@ -87,6 +87,7 @@ export default function CardHealthRecords() {
           heading_one="Detalle"
           heading_two="Fecha de registro"
           cardData={healthRecordsList}
+          className={className}
         />
       </CustomSuspense>
     </>

@@ -17,6 +17,7 @@ interface CardProps {
   heading_one: string;
   heading_two: string;
   cardData: { col1: string; col2: string }[];
+  className?: string;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -26,9 +27,10 @@ export const Card: React.FC<CardProps> = ({
   heading_one,
   heading_two,
   cardData,
+  className
 }) => {
   return (
-    <CardNextUI className='!flex-1 !max-w-[535px] !min-w-[355px] !w-[unset] !grow'>
+    <CardNextUI className={'!flex-1 !max-w-[535px] !min-w-[355px] !w-[unset] !grow ' + (className || '')}>
       <CardHeader className='self-stretch p-5 border-b border-zinc-300 justify-start items-center gap-2.5 inline-flex'>
         <div className='w-14 h-14 relative'>
           <div className='w-14 h-14 left-0 top-0 absolute bg-blue-600 rounded-xl' />

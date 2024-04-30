@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import CustomSuspense from '../custom-suspense';
 import CardSkeleton from '../ui/skeletons/card-skeleton';
 
-export default function CardPatients() {
+export default function CardPatients({ className }: { className?: string }) {
   const { response: patientsResponse, fetchData: getPatients } = useApi();
   const [patientsList, setPatientsList] = useState<any>([]);
   const { data: session } = useSession();
@@ -58,6 +58,7 @@ export default function CardPatients() {
         heading_one="Nombre completo"
         heading_two="ID"
         cardData={patientsList}
+        className={className}
       />
     </CustomSuspense>
   );
