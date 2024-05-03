@@ -94,7 +94,7 @@ export default function NavMenu({ userEmail }: NavMenuProps) {
             </DropdownTrigger>
             <DropdownMenu aria-label='Profile Actions' variant='flat'>
               <DropdownItem key='email' className='h-14 gap-2'>
-                <p className='font-semibold'>Signed in as</p>
+                <p className='font-semibold'>Iniciaste sesión como</p>
                 <p className='font-semibold'>{uemail}</p>
               </DropdownItem>
               <DropdownItem
