@@ -43,7 +43,7 @@ export default async function RootLayout({
             fontSans.variable
           )}
         >
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
             <div className="relative flex flex-col h-screen">
               <Navbar isLoggedIn={session}/>
               <main className="container mx-auto px-4 sm:px-6 md:px-8 lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl flex-grow">
