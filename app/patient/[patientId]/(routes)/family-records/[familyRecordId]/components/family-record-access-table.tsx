@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 
 import { familyRecordAccessTableColumns } from "@/data/data";
-import { useApi } from "@/hooks/useApi";
+import { IResponse, useApi } from "@/hooks/useApi";
 import consentService from "@/services/consentService";
 import { useParams } from "next/navigation";
 import CustomSuspense from "@/components/custom-suspense";
@@ -24,65 +24,17 @@ type FamilyRecordAccess = {
   register_id: string;
 };
 
-const FamilyRecordAccessClient = () => {
-  const [items, setItems] = useState<FamilyRecordAccess[]>([]);
-  const {
-    response: getActiveConsentListResponse,
-    fetchData: getActiveConsentList,
-  } = useApi();
-  const { response: revokeConsentResponse, fetchData: revokeConsent } =
-    useApi();
-  const params = useParams();
+interface FamilyRecordAccessTableProps {
+  items: FamilyRecordAccess[];
+  handleRevoke: (family_record_access: FamilyRecordAccess) => void;
+  getActiveConsentListResponse: IResponse;
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (params.patientId) {
-        await getActiveConsentList(
-          consentService.getActiveConsentListByPatientId(
-            params.patientId as string
-          )
-        );
-      }
-    };
-
-    fetchData();
-  }, [params.patientId]);
-
-  useEffect(() => {
-    if (
-      !getActiveConsentListResponse.isLoading &&
-      getActiveConsentListResponse.isSuccess &&
-      params.familyRecordId
-    ) {
-      let activeConsentList =
-        getActiveConsentListResponse.data as FamilyRecordAccess[];
-      activeConsentList = activeConsentList.filter(
-        (consent) => consent.register_id === params.familyRecordId
-      );
-      setItems(activeConsentList);
-    }
-  }, [getActiveConsentListResponse, params.familyRecordId]);
-
-  useEffect(() => {
-    if (
-      !revokeConsentResponse.isLoading &&
-      revokeConsentResponse.isSuccess &&
-      params.patientId
-    ) {
-      getActiveConsentList(
-        consentService.getActiveConsentListByPatientId(
-          params.patientId as string
-        )
-      );
-    }
-  }, [revokeConsentResponse, params.patientId]);
-
-  const handleRevoke = async (consent: FamilyRecordAccess) => {
-    await revokeConsent(
-      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
-    );
-  };
-
+const FamilyRecordAccessTable = ({
+  items,
+  handleRevoke,
+  getActiveConsentListResponse,
+}: FamilyRecordAccessTableProps) => {
   const renderCell = useCallback(
     (family_record_access: FamilyRecordAccess, columnKey: React.Key) => {
       const cellValue =
@@ -130,10 +82,7 @@ const FamilyRecordAccessClient = () => {
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody
-            emptyContent={"No hay acessos al registro"}
-            items={items}
-          >
+          <TableBody emptyContent={"No hay acessos al registro"} items={items}>
             {(item) => (
               <TableRow key={item.id}>
                 {(columnKey) => (
@@ -148,4 +97,4 @@ const FamilyRecordAccessClient = () => {
   );
 };
 
-export { FamilyRecordAccessClient };
+export default FamilyRecordAccessTable;

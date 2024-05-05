@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { FamilyRecordAccessClient } from "./family-record-access-client";
-import { PractitionersSearch } from "./practitioners-search-modal";
+import { Tabs, Tab } from "@nextui-org/react";
 import FamilyRecordDetail from "./family-record-detail";
 import DocumentsTable from "@/components/documents/documents-table";
+import FamilyRecordAccess from "./family-record-access";
 
 export const FamilyRecordClient = () => {
   const [familyRecord, setFamilyRecord] = useState<any>({});
@@ -26,12 +25,7 @@ export const FamilyRecordClient = () => {
           <DocumentsTable items={familyRecord?.files || []} />
         </Tab>
         <Tab key="access" title="Accesos">
-          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
-            <CardBody>
-              <PractitionersSearch />
-              <FamilyRecordAccessClient />
-            </CardBody>
-          </Card>
+          <FamilyRecordAccess />
         </Tab>
       </Tabs>
     </>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AxiosResponse } from "axios";
 
-interface IResponse {
+export interface IResponse {
     data: any;
     isLoading: boolean;
     error: any;

@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Input,
   Button,
   Modal,
   ModalContent,
@@ -17,16 +16,15 @@ import {
   ModalFooter,
 } from "@nextui-org/react";
 
-import { Plus, SearchIcon } from "lucide-react";
-import React, { useCallback, useEffect, useState } from "react";
+import { Plus } from "lucide-react";
+import React, { useCallback } from "react";
 import {
   practitionersTableColumns,
   practitionerTableColumns,
 } from "@/data/data";
-import { useApi } from "@/hooks/useApi";
-import practitionerService from "@/services/practitionerService";
 import consentService from "@/services/consentService";
 import { useParams } from "next/navigation";
+import { AxiosResponse } from "axios";
 
 type Practitioner = {
   id: string;
@@ -35,20 +33,27 @@ type Practitioner = {
   phone_number: string;
 };
 
+interface PractitionerSearchProps {
+  practitioners: Practitioner[];
+  createConsent: (apiFunction: Promise<AxiosResponse<any, any>>) => Promise<void>;
+}
+
 interface FamilyRecordSelectedPractitionerProps {
   columns: typeof practitionerTableColumns;
   practitioner: Practitioner;
   urlParams: any;
   searchModalClose: () => void;
+  createConsent: (apiFunction: Promise<AxiosResponse<any, any>>) => Promise<void>;
 }
+
 const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   columns,
   practitioner,
   urlParams,
   searchModalClose,
+  createConsent
 }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const { fetchData: createConsent } = useApi();
 
   const handleCreateConsent = () => {
     createConsent(
@@ -66,43 +71,43 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   return (
     <>
       <Button
-        className='text-sm font-medium '
+        className="text-sm font-medium "
         onPress={onOpen}
-        radius='sm'
-        size='sm'
-        color='primary'
-        variant='flat'
+        radius="sm"
+        size="sm"
+        color="primary"
+        variant="flat"
       >
         Seleccionar
       </Button>
       <Modal
-        backdrop='blur'
+        backdrop="blur"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className='w-[700px] max-w-full'
+        className="w-[700px] max-w-full"
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className='flex flex-col gap-1'>
+              <ModalHeader className="flex flex-col gap-1">
                 Confirmación
-                <span className='text-default-400 text-small'>
+                <span className="text-default-400 text-small">
                   ¿Está seguro de brindar acceso a su registro al siguiente
                   profesional de la salud?
                 </span>
               </ModalHeader>
               <ModalBody>
                 <Table
-                  color='primary'
-                  aria-label='Selected Health practitioner table'
-                  selectionBehavior='toggle'
+                  color="primary"
+                  aria-label="Selected Health practitioner table"
+                  selectionBehavior="toggle"
                   isHeaderSticky
-                  selectionMode='single'
+                  selectionMode="single"
                 >
                   <TableHeader columns={columns}>
                     {(column) => (
                       <TableColumn
-                        className='text-bold'
+                        className="text-bold"
                         key={column.uid}
                         align={column.uid === "actions" ? "center" : "start"}
                         allowsSorting={column.sortable}
@@ -116,7 +121,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
                       "No hay profesionales de la salud disponibles"
                     }
                   >
-                    <TableRow key='1'>
+                    <TableRow key="1">
                       <TableCell>{practitioner.name}</TableCell>
                       <TableCell>{practitioner.id}</TableCell>
                       <TableCell>{practitioner.email}</TableCell>
@@ -126,10 +131,10 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
                 </Table>
               </ModalBody>
               <ModalFooter>
-                <Button color='danger' variant='flat' onPress={onClose}>
+                <Button color="danger" variant="flat" onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={handleCreateConsent}>
+                <Button color="primary" onPress={handleCreateConsent}>
                   Aceptar
                 </Button>
               </ModalFooter>
@@ -141,14 +146,9 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   );
 };
 
-export const PractitionersSearch = () => {
-  const [items, setItems] = useState<Practitioner[]>([]);
+export const PractitionersSearch = ({ practitioners, createConsent }: PractitionerSearchProps) => {
   const params = useParams();
-  const { response: practitioners, fetchData: setPractitioners } = useApi();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const [filterValue, setFilterValue] = React.useState("");
-  const [page, setPage] = React.useState(1);
-  const hasSearchFilter = Boolean(filterValue);
 
   const renderCell = useCallback(
     (practitioner: Practitioner, columnKey: React.Key) => {
@@ -157,12 +157,13 @@ export const PractitionersSearch = () => {
       switch (columnKey) {
         case "actions":
           return (
-            <div className='relative flex justify-start items-start gap-2'>
+            <div className="relative flex justify-start items-start gap-2">
               <ConfirmModal
                 columns={practitionerTableColumns}
                 practitioner={practitioner}
                 urlParams={params}
                 searchModalClose={onClose}
+                createConsent={createConsent}
               />
             </div>
           );
@@ -173,101 +174,37 @@ export const PractitionersSearch = () => {
     []
   );
 
-  useEffect(() => {
-    setPractitioners(practitionerService.getPractitionerList());
-  }, [params.familyRecordId]);
-
-  useEffect(() => {
-    if (practitioners.isSuccess) {
-      parsePractitioners(practitioners.data);
-    }
-  }, [practitioners.isSuccess]);
-
-  const parsePractitioners = (practitioners: any) => {
-    const parsedPractitioners = practitioners.map(
-      (practitioner: any) =>
-        ({
-          id: practitioner.practitioner_id,
-          name: practitioner.name_id,
-          email: practitioner.email,
-          phone_number: practitioner.telephone,
-        } as Practitioner)
-    );
-
-    setItems(parsedPractitioners);
-  };
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const onClear = React.useCallback(() => {
-    setFilterValue("");
-    setPage(1);
-  }, []);
-
-  const topContent = React.useMemo(() => {
-    return (
-      <div className='flex flex-col gap-4'>
-        <div className='flex gap-3 items-end'>
-          <Input
-            isClearable
-            className='w-full sm:max-w-[26%]'
-            placeholder='Buscar por nombre...'
-            startContent={<SearchIcon className='h-4 w-4' />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <Input
-            isClearable
-            className='w-full sm:max-w-[26%]'
-            placeholder='Buscar por ID...'
-            startContent={<SearchIcon className='h-4 w-4' />}
-            onClear={() => onClear()}
-          />
-        </div>
-      </div>
-    );
-  }, [filterValue, onSearchChange, hasSearchFilter]);
-
   return (
-    <div className='items-stretch justify-end   gap-4 inline-flex mb-3'>
+    <div className="items-stretch justify-end   gap-4 inline-flex mb-3">
       <Button
         onPress={onOpen}
-        className='text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex'
+        className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
       >
-        Agregar nuevo <Plus className='h-4 w-4' />
+        Agregar nuevo <Plus className="h-4 w-4" />
       </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className='w-[700px] max-w-full'
+        className="w-[700px] max-w-full"
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className='flex flex-col gap-1'>
+              <ModalHeader className="flex flex-col gap-1">
                 Buscar profesional de la salud
               </ModalHeader>
 
               <Table
-                color='primary'
-                aria-label='Health practitioner collection table'
-                selectionBehavior='toggle'
+                color="primary"
+                aria-label="Health practitioner collection table"
+                selectionBehavior="toggle"
                 isHeaderSticky
-                selectionMode='single'
-                topContent={topContent}
+                selectionMode="single"
               >
                 <TableHeader columns={practitionersTableColumns}>
                   {(column) => (
                     <TableColumn
-                      className='text-bold'
+                      className="text-bold"
                       key={column.uid}
                       align={column.uid === "actions" ? "center" : "start"}
                       allowsSorting={column.sortable}
@@ -278,7 +215,7 @@ export const PractitionersSearch = () => {
                 </TableHeader>
                 <TableBody
                   emptyContent={"No hay profesionales de la salud disponibles."}
-                  items={items}
+                  items={practitioners}
                 >
                   {(item) => (
                     <TableRow key={item.id}>
