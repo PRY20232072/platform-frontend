@@ -1,11 +1,11 @@
+import PractitionersSearch from "@/components/patient/practitioners-search-modal";
 import { Card, CardBody } from "@nextui-org/card";
+import AllergyAccessTable from "./allergy-access-table";
 import { useEffect, useState } from "react";
 import { useApi } from "@/hooks/useApi";
 import { useParams } from "next/navigation";
 import consentService from "@/services/consentService";
-import FamilyRecordAccessTable from "./family-record-access-table";
 import practitionerService from "@/services/practitionerService";
-import PractitionersSearch from "@/components/patient/practitioners-search-modal";
 
 type Practitioner = {
   id: string;
@@ -14,15 +14,15 @@ type Practitioner = {
   phone_number: string;
 };
 
-type FamilyRecordAccess = {
+type AllergiesAccess = {
   id: string;
   practitioner_name: string;
   practitioner_id: string;
   register_id: string;
 };
 
-function FamilyRecordAccess() {
-  const [items, setItems] = useState<FamilyRecordAccess[]>([]);
+function AllergyAccess() {
+  const [items, setItems] = useState<AllergiesAccess[]>([]);
   const [practitioners, setPractitioners] = useState<Practitioner[]>([]);
   const {
     response: getActiveConsentListResponse,
@@ -49,21 +49,21 @@ function FamilyRecordAccess() {
     fetchData();
   }, [params.patientId]);
 
-  // Filter active consents by family record id
+  // Filter active consents by allergy record id
   useEffect(() => {
     if (
       !getActiveConsentListResponse.isLoading &&
       getActiveConsentListResponse.isSuccess &&
-      params.familyRecordId
+      params.allergyIntoleranceId
     ) {
       let activeConsentList =
-        getActiveConsentListResponse.data as FamilyRecordAccess[];
+        getActiveConsentListResponse.data as AllergiesAccess[];
       activeConsentList = activeConsentList.filter(
-        (consent) => consent.register_id === params.familyRecordId
+        (consent) => consent.register_id === params.allergyIntoleranceId
       );
       setItems(activeConsentList);
     }
-  }, [getActiveConsentListResponse, params.familyRecordId]);
+  }, [getActiveConsentListResponse, params.allergyIntoleranceId]);
 
   //  Fetch practitioners if consent is revoked or created
   useEffect(() => {
@@ -82,7 +82,7 @@ function FamilyRecordAccess() {
     }
   }, [revokeConsentResponse, createConsentResponse, params.patientId]);
 
-  const handleRevoke = async (consent: FamilyRecordAccess) => {
+  const handleRevoke = async (consent: AllergiesAccess) => {
     await revokeConsent(
       consentService.revokeConsent(consent.register_id, consent.practitioner_id)
     );
@@ -90,10 +90,10 @@ function FamilyRecordAccess() {
 
   // Fetch practitioners
   useEffect(() => {
-    if (params.familyRecordId) {
+    if (params.allergyIntoleranceId) {
       getPractitioners(practitionerService.getPractitionerList());
     }
-  }, [params.familyRecordId]);
+  }, [params.allergyIntoleranceId]);
 
   // Parse practitioners response if successful
   useEffect(() => {
@@ -122,10 +122,10 @@ function FamilyRecordAccess() {
         <PractitionersSearch
           practitioners={practitioners}
           createConsent={createConsent}
-          registerId={params.familyRecordId as string}
-          registerType="FAMILY_HISTORY"
+          registerId={params.allergyIntoleranceId as string}
+          registerType="ALLERGY"
         />
-        <FamilyRecordAccessTable
+        <AllergyAccessTable
           items={items}
           handleRevoke={handleRevoke}
           getActiveConsentListResponse={getActiveConsentListResponse}
@@ -135,4 +135,4 @@ function FamilyRecordAccess() {
   );
 }
 
-export default FamilyRecordAccess;
+export default AllergyAccess;

@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { AllergyAccessClient } from "./allergy-access-client";
-import { PractitionersSearch } from "./practitioners-search-modal";
+import { Tabs, Tab } from "@nextui-org/react";
 import AllergyDetail from "./allergy-detail";
 import DocumentsTable from "@/components/documents/documents-table";
+import AllergyAccess from "./allergy-access";
 
 export const AllergyClient = () => {
   const [allergy, setAllergy] = useState<any>({});
@@ -23,12 +22,7 @@ export const AllergyClient = () => {
           <DocumentsTable items={allergy?.files || []} />
         </Tab>
         <Tab key="access" title="Accesos">
-          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
-            <CardBody>
-              <PractitionersSearch />
-              <AllergyAccessClient />
-            </CardBody>
-          </Card>
+          <AllergyAccess />
         </Tab>
       </Tabs>
     </>

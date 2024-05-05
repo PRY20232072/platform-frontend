@@ -23,7 +23,6 @@ import {
   practitionerTableColumns,
 } from "@/data/data";
 import consentService from "@/services/consentService";
-import { useParams } from "next/navigation";
 import { AxiosResponse } from "axios";
 
 type Practitioner = {
@@ -35,32 +34,40 @@ type Practitioner = {
 
 interface PractitionerSearchProps {
   practitioners: Practitioner[];
-  createConsent: (apiFunction: Promise<AxiosResponse<any, any>>) => Promise<void>;
+  registerId: string;
+  registerType: string;
+  createConsent: (
+    apiFunction: Promise<AxiosResponse<any, any>>
+  ) => Promise<void>;
 }
 
 interface FamilyRecordSelectedPractitionerProps {
   columns: typeof practitionerTableColumns;
   practitioner: Practitioner;
-  urlParams: any;
   searchModalClose: () => void;
-  createConsent: (apiFunction: Promise<AxiosResponse<any, any>>) => Promise<void>;
+  createConsent: (
+    apiFunction: Promise<AxiosResponse<any, any>>
+  ) => Promise<void>;
+  registerId: string;
+  registerType: string;
 }
 
 const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   columns,
   practitioner,
-  urlParams,
   searchModalClose,
-  createConsent
+  createConsent,
+  registerId,
+  registerType,
 }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleCreateConsent = () => {
     createConsent(
       consentService.createConsent({
-        register_id: urlParams.familyRecordId,
+        register_id: registerId,
         practitioner_id: practitioner.id,
-        register_type: "FAMILY_HISTORY",
+        register_type: registerType,
       })
     );
 
@@ -146,8 +153,12 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   );
 };
 
-export const PractitionersSearch = ({ practitioners, createConsent }: PractitionerSearchProps) => {
-  const params = useParams();
+const PractitionersSearch = ({
+  practitioners,
+  createConsent,
+  registerId,
+  registerType,
+}: PractitionerSearchProps) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const renderCell = useCallback(
@@ -161,9 +172,10 @@ export const PractitionersSearch = ({ practitioners, createConsent }: Practition
               <ConfirmModal
                 columns={practitionerTableColumns}
                 practitioner={practitioner}
-                urlParams={params}
                 searchModalClose={onClose}
                 createConsent={createConsent}
+                registerId={registerId}
+                registerType={registerType}
               />
             </div>
           );
@@ -233,3 +245,5 @@ export const PractitionersSearch = ({ practitioners, createConsent }: Practition
     </div>
   );
 };
+
+export default PractitionersSearch;

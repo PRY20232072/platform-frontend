@@ -10,33 +10,32 @@ import {
   Button,
 } from "@nextui-org/react";
 
-import { familyRecordAccessTableColumns } from "@/data/data";
+import { allergyAccessTableColumns } from "@/data/data";
 import { IResponse } from "@/hooks/useApi";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 
-type FamilyRecordAccess = {
+type AllergiesAccess = {
   id: string;
   practitioner_name: string;
   practitioner_id: string;
   register_id: string;
 };
 
-interface FamilyRecordAccessTableProps {
-  items: FamilyRecordAccess[];
-  handleRevoke: (family_record_access: FamilyRecordAccess) => void;
+interface AllergyRecordAccessTableProps {
+  items: AllergiesAccess[];
+  handleRevoke: (allergy_record_access: AllergiesAccess) => void;
   getActiveConsentListResponse: IResponse;
 }
 
-const FamilyRecordAccessTable = ({
+const AllergyAccessTable = ({
   items,
   handleRevoke,
   getActiveConsentListResponse,
-}: FamilyRecordAccessTableProps) => {
+}: AllergyRecordAccessTableProps) => {
   const renderCell = useCallback(
-    (family_record_access: FamilyRecordAccess, columnKey: React.Key) => {
-      const cellValue =
-        family_record_access[columnKey as keyof FamilyRecordAccess];
+    (allergy_access: AllergiesAccess, columnKey: React.Key) => {
+      const cellValue = allergy_access[columnKey as keyof AllergiesAccess];
 
       switch (columnKey) {
         case "actions":
@@ -48,7 +47,7 @@ const FamilyRecordAccessTable = ({
                 radius="sm"
                 size="sm"
                 variant="flat"
-                onClick={() => handleRevoke(family_record_access)}
+                onClick={() => handleRevoke(allergy_access)}
               >
                 Eliminar
               </Button>
@@ -67,8 +66,8 @@ const FamilyRecordAccessTable = ({
         isLoading={getActiveConsentListResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label="Family Record Access collection table">
-          <TableHeader columns={familyRecordAccessTableColumns}>
+        <Table aria-label="Allergies Access collection table">
+          <TableHeader columns={allergyAccessTableColumns}>
             {(column) => (
               <TableColumn
                 className="text-bold"
@@ -80,7 +79,7 @@ const FamilyRecordAccessTable = ({
               </TableColumn>
             )}
           </TableHeader>
-          <TableBody emptyContent={"No hay acessos al registro"} items={items}>
+          <TableBody emptyContent={"No se encontraron accesos."} items={items}>
             {(item) => (
               <TableRow key={item.id}>
                 {(columnKey) => (
@@ -95,4 +94,4 @@ const FamilyRecordAccessTable = ({
   );
 };
 
-export default FamilyRecordAccessTable;
+export default AllergyAccessTable;
