@@ -1,6 +1,10 @@
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
-import { platformaPatientEventsTableColumns } from "@/data/data";
+import {
+  eventTypeMap,
+  platformaPatientEventsTableColumns,
+  registerTypeMap,
+} from "@/data/data";
 import { useApi } from "@/hooks/useApi";
 import notificationsService from "@/services/notificationsService";
 import {
@@ -50,6 +54,10 @@ const EventsHistoryTable = () => {
     (platform_event: PlatformEvent, columnKey: React.Key) => {
       const cellValue = platform_event[columnKey as keyof PlatformEvent];
       switch (columnKey) {
+        case "register_type":
+          return registerTypeMap[cellValue];
+        case "type":
+          return eventTypeMap[cellValue];
         case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
