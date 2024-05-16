@@ -3,7 +3,7 @@ import { Divider, Skeleton } from "@nextui-org/react";
 
 export default function CardSkeleton() {
   return (
-    <Card className="!flex-1 !max-w-[535px] !min-w-[355px] !w-[unset] !grow">
+    <Card className="!flex-1 w-full !grow">
       <CardHeader className="self-stretch p-5 border-b border-zinc-300 justify-start items-center gap-2.5 inline-flex">
         <Skeleton className="w-14 h-14 relative" />
         <Skeleton className="w-3/5 rounded-lg">
