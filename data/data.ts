@@ -218,10 +218,8 @@ const selectedPatientAllergiesTableColumns = [
   { name: "ID", uid: "allergy_id", sortable: true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
-  // { name: 'CREADO POR', uid: 'created_by', sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
-  { name: "ACCESO", uid: "has_access", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
 

@@ -14,14 +14,11 @@ import {
 } from "@nextui-org/react";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
-
 import { selectedPatientAllergiesTableColumns } from "@/data/data";
 import { useParams, useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import allergyIntoleranceService from "@/services/allergyIntoleranceService";
-import consentService from "@/services/consentService";
 import notificationsService from "@/services/notificationsService";
-import { toast } from "react-toastify";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVED: "success",
@@ -34,7 +31,7 @@ const statusMap: Record<string, string> = {
   ACTIVE: "ACTIVO",
   INACTIVE: "INACTIVO",
 };
- 
+
 const alleryTypesMap: Record<string, string> = {
   DAIRY: "LÁCTEOS",
   GLUTEN: "GLUTEN",
@@ -43,7 +40,6 @@ const alleryTypesMap: Record<string, string> = {
   AMINES: "AMINAS",
   OTHER: "OTRO",
 };
-
 
 type Allergy = {
   patient_id: string;
@@ -66,8 +62,6 @@ export const PatientAllergiesTable = () => {
   const [allergyList, setAllergyList] = useState<Allergy[]>([]);
   const { response: getAllergyListResponse, fetchData: getAllergyList } =
     useApi();
-  const { response: createConsentResponse, fetchData: createConsent } =
-    useApi();
   const params = useParams();
   const router = useRouter();
 
@@ -81,47 +75,9 @@ export const PatientAllergiesTable = () => {
 
   useEffect(() => {
     if (getAllergyListResponse.isSuccess) {
-      parseAllergyList(getAllergyListResponse.data);
+      setAllergyList(getAllergyListResponse.data);
     }
   }, [getAllergyListResponse.isSuccess]);
-
-  const parseAllergyList = async (allergyList: any) => {
-    const parsedAllergyList = await Promise.all(
-      allergyList.map(async (allergy: any) => {
-        try {
-          const response =
-            await consentService.getByRegisteryIdAndPractitionerId(
-              allergy.allergy_id,
-              params.practitionerId as string
-            );
-          const consent = response.data.data;
-          allergy.has_access = consent.state;
-          return allergy;
-        } catch (error) {
-          allergy.has_access = "NO";
-          return allergy;
-        }
-      })
-    );
-    setAllergyList(parsedAllergyList);
-  };
-
-  const handleCreateConsent = async (allergyId: string) => {
-    await createConsent(
-      consentService.createConsent({
-        register_id: allergyId,
-        practitioner_id: params.practitionerId,
-        register_type: "ALLERGY",
-      })
-    );
-
-    await getAllergyList(
-      allergyIntoleranceService.getAllergyListByPatientId(
-        params.patientId as string
-      )
-    );
-    toast.success("Solicitud de acceso enviada correctamente");
-  };
 
   const renderCell = React.useCallback(
     (selected_patient_allergy: Allergy, columnKey: React.Key) => {
@@ -134,65 +90,37 @@ export const PatientAllergiesTable = () => {
           return (
             <Chip
               color={statusColorMap[selected_patient_allergy.clinical_status]}
-              size='sm'
-              variant='flat'
+              size="sm"
+              variant="flat"
             >
               {statusMap[cellValue]}
             </Chip>
           );
-        case "has_access":
-          return selected_patient_allergy.has_access === "ACTIVE" ? "SI" : "NO";
         case "actions":
           return (
-            <div className='relative flex justify-start items-start gap-2'>
-              {selected_patient_allergy.has_access === "ACTIVE" ? (
-                <Button
-                  className='font-medium '
-                  color='primary'
-                  radius='sm'
-                  size='sm'
-                  variant='flat'
-                  onClick={() => {
-                    notificationsService.createNotifications({
-                      user_id: params.patientId,
-                      practitioner_id: params.practitionerId,
-                      register_id: selected_patient_allergy.allergy_id,
-                      register_type: "ALLERGY",
-                      type: "READ",
-                    });
+            <div className="relative flex justify-start items-start gap-2">
+              <Button
+                className="font-medium "
+                color="primary"
+                radius="sm"
+                size="sm"
+                variant="flat"
+                onClick={() => {
+                  notificationsService.createNotifications({
+                    user_id: params.patientId,
+                    practitioner_id: params.practitionerId,
+                    register_id: selected_patient_allergy.allergy_id,
+                    register_type: "ALLERGY",
+                    type: "READ",
+                  });
 
-                    router.push(
-                      `${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`
-                    );
-                  }}
-                >
-                  Ver más
-                </Button>
-              ) : selected_patient_allergy.has_access === "PENDING" ? (
-                <Button
-                  isDisabled
-                  className='font-medium '
-                  color='secondary'
-                  radius='sm'
-                  size='sm'
-                  variant='flat'
-                >
-                  Pendiente
-                </Button>
-              ) : (
-                <Button
-                  className='font-medium '
-                  color='warning'
-                  radius='sm'
-                  size='sm'
-                  variant='flat'
-                  onClick={() =>
-                    handleCreateConsent(selected_patient_allergy.allergy_id)
-                  }
-                >
-                  Solicitar acceso
-                </Button>
-              )}
+                  router.push(
+                    `${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`
+                  );
+                }}
+              >
+                Ver más
+              </Button>
             </div>
           );
         default:
@@ -208,11 +136,11 @@ export const PatientAllergiesTable = () => {
         isLoading={getAllergyListResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label='Patient allergy collection table'>
+        <Table aria-label="Patient allergy collection table">
           <TableHeader columns={selectedPatientAllergiesTableColumns}>
             {(column) => (
               <TableColumn
-                className='text-bold'
+                className="text-bold"
                 key={column.uid}
                 align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}

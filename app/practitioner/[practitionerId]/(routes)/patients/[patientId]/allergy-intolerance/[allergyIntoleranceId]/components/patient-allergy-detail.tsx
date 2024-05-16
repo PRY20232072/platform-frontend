@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -14,43 +14,41 @@ import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import notificationsService from "@/services/notificationsService";
 
-type PatientAllergyDetailProps = {
-  allergy: any;
-  setAllergy: any;
-  isEditing: boolean;
-  setIsEditing: any;
-};
-
-export default function PatientAllergyDetail({
-  allergy,
-  setAllergy,
-  isEditing,
-  setIsEditing,
-}: PatientAllergyDetailProps) {
+export default function PatientAllergyDetail() {
+  const [allergy, setAllergy] = useState<any>({});
+  const [isEditing, setIsEditing] = useState(false);
   const { response: allergyResponse, fetchData: getAllergy } = useApi();
   const { response: updateAllergyResponse, fetchData: updateAllergy } =
     useApi();
   const params = useParams();
 
   useEffect(() => {
-    getAllergy(
-      allergyIntoleranceService.getAllergyById(
-        params.allergyIntoleranceId as string
-      )
-    );
+    const fetchData = async () => {
+      if (params.patientId && params.allergyIntoleranceId) {
+        await getAllergy(
+          allergyIntoleranceService.getAllergyByIdPatientId(
+            params.allergyIntoleranceId as string,
+            params.patientId as string
+          )
+        );
+      }
+    };
+
+    fetchData();
   }, [params.allergyIntoleranceId]);
 
   useEffect(() => {
     if (allergyResponse.isSuccess) {
-      setAllergy(allergyResponse.data[0]);
+      setAllergy(allergyResponse.data);
     }
   }, [allergyResponse.isSuccess]);
 
   useEffect(() => {
-    if (updateAllergyResponse.isSuccess) {
+    if (updateAllergyResponse.isSuccess && params.patientId && params.allergyIntoleranceId) {
       getAllergy(
-        allergyIntoleranceService.getAllergyById(
-          params.allergyIntoleranceId as string
+        allergyIntoleranceService.getAllergyByIdPatientId(
+          params.allergyIntoleranceId as string,
+          params.patientId as string
         )
       );
     }
@@ -85,15 +83,12 @@ export default function PatientAllergyDetail({
     <CustomSuspense isLoading={allergyResponse.isLoading} fallback={<Loading />}>
       <Card>
         <CardBody className="items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
-          <div className="text-2xl font-bold leading-6 max-md:max-w-full">
-            Información del registro de alergia
-          </div>
-          <form className="mt-8 max-md:max-w-full" onSubmit={handleEdit}>
-            <AllergyDetailFields
+          <form className="max-md:max-w-full" onSubmit={handleEdit}>
+            {allergy && (<AllergyDetailFields
               allergy={allergy}
               isEditing={isEditing}
               handleInputChange={handleInputChange}
-            />
+            />)}
             <div className="flex justify-center">
               {isEditing ? (
                 <>
