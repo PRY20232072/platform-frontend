@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function MainNavbar({
   className,
@@ -10,12 +10,16 @@ export function MainNavbar({
   ...props
 }: React.HTMLAttributes<HTMLElement> & { userRole: string; userId: string }) {
   const pathname = usePathname();
-  const params = useParams();
   const patient_routes = [
     {
       href: `/`,
       label: "Información General",
       active: pathname === `/`,
+    },
+    {
+      href: `/patient/${userId}/attention-history`,
+      label: "Historial de atenciones",
+      active: pathname === `/patient/${userId}/attention-history`,
     },
     {
       href: `/patient/${userId}/demographic`,
@@ -32,6 +36,16 @@ export function MainNavbar({
       label: "Alergias",
       active: pathname === `/patient/${userId}/allergy-intolerance`,
     },
+    {
+      href: `/patient/${userId}/documents`,
+      label: "Documentos",
+      active: pathname === `/patient/${userId}/documents`,
+    },
+    {
+      href: `/patient/${userId}/access`,
+      label: "Accesos",
+      active: pathname === `/patient/${userId}/access`,
+    }
   ];
 
   const practioners_routes = [
