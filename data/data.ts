@@ -129,7 +129,7 @@ const patientsTableColumns = [
   { name: "ID", uid: "patient_id", sortable: true },
   // { name: 'EMAIL', uid: 'email', sortable: true },
   { name: "NÚMERO DE TELÉFONO", uid: "telephone" },
-  { name: "ACCIÓN", uid: "actions" },
+  { name: "ACCESO", uid: "actions" },
 ];
 
 const healthRecordsTableColumns = [

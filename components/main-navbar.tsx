@@ -58,12 +58,7 @@ export function MainNavbar({
       href: `/practitioner/${userId}/patients`,
       label: "Pacientes",
       active: pathname === `/practitioner/${userId}/patients`,
-    },
-    {
-      href: `/practitioner/${userId}/health-records`,
-      label: "Registros Médicos",
-      active: pathname === `/practitioner/${userId}/health-records`,
-    },
+    }
   ];
 
   const routes = userRole === "patient" ? patient_routes : practioners_routes;
