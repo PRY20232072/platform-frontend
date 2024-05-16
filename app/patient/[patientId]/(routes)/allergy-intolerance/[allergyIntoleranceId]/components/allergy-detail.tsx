@@ -30,7 +30,7 @@ export default function AllergyDetail() {
     };
 
     fetchData();
-  }, [params.allergyIntoleranceI, params.patientId]);
+  }, [params.allergyIntoleranceId, params.patientId]);
 
   useEffect(() => {
     if (getAllergyByIdPatientIdResponse.isSuccess) {
