@@ -189,7 +189,7 @@ export const FamilyRecordFormModal = () => {
         onPress={onOpen}
         className='text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex'
       >
-        Agregar nuevo <Plus className='h-4 w-4' />
+        Añadir nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
         placement='auto'

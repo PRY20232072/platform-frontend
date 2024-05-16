@@ -271,7 +271,6 @@ const practitionerFamilyRecordsTableColumns = [
   { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
-  { name: "ACCESO", uid: "has_access", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
