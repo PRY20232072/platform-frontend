@@ -18,17 +18,8 @@ class AllergyIntoleranceService {
   getAllergyByIdPatientId = (
     id: string,
     patientId: string,
-    practitionerId: string | null
   ) => {
-    let params = {};
-
-    if (practitionerId) {
-      params = {
-        practitioner_id: practitionerId,
-      };
-    }
-
-    return http.get(`${allergyPath}/${id}/patient/${patientId}`, params);
+    return http.get(`${allergyPath}/${id}/patient/${patientId}`);
   };
 
   createAllergy = (data: any) => {

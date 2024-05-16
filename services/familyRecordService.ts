@@ -16,18 +16,9 @@ class FamilyRecordService {
 
   getFamilyRecordByIdPatientId = (
     id: string,
-    patientId: string,
-    practitionerId: string | null
+    patientId: string
   ) => {
-    let params = {};
-
-    if (practitionerId) {
-      params = {
-        practitioner_id: practitionerId,
-      };
-    }
-
-    return http.get(`${familyRecordPath}/${id}/patient/${patientId}`, params);
+    return http.get(`${familyRecordPath}/${id}/patient/${patientId}`);
   };
 
   createFamilyRecord = (data: any) => {

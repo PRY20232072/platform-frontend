@@ -3,14 +3,11 @@ import http from "./httpCommon";
 const consentPath = "/Consent";
 
 class ConsetService {
-  getByRegisterId = (id: string) => {
-    return http.get(`${consentPath}/register/${id}`);
-  };
-
   getByPractitionerId = (id: string) => {
     return http.get(`${consentPath}/practitioner/${id}`);
   };
 
+  // TODO: remove this method
   getByRegisteryIdAndPractitionerId = (
     registerId: string,
     practitionerId: string
