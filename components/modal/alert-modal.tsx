@@ -1,28 +1,14 @@
 "use client";
 import {
-  Input,
   Button,
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
-  useDisclosure,
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
   ModalFooter,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { Plus, SearchIcon } from "lucide-react";
 import React from "react";
-import {
-  practitionersTableColumns,
-  practitionerTableColumns,
-  practitioners,
-} from "@/data/data";
 
 interface AlertModalProps {
   isOpen: boolean;
