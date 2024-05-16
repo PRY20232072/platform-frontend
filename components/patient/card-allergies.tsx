@@ -62,6 +62,7 @@ export default function CardAllergies() {
         heading_one="Detalle"
         heading_two="Fecha de registro"
         cardData={allergyList}
+        className="w-full"
       />
     </CustomSuspense>
   );

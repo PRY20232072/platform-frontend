@@ -22,7 +22,7 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
   onSelectionChange,
 }) => {
   return (
-    <div className='mb-4'>
+    <div className='mb-4 w-full'>
       <Autocomplete
         isRequired
         isDisabled={isDisabled}

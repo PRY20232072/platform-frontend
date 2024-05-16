@@ -15,9 +15,6 @@ export default function FamilyRecordDetailFields({
 }: FamilyRecordDetailsProps) {
   return (
     <>
-      <div className="mb-4 font-bold text-2xl leading-[24px]">
-        Información del registro de historial familiar
-      </div>
       <div className="mb-8 grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8">
         <Input
           isReadOnly={!isEditing}

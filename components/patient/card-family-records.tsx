@@ -63,6 +63,7 @@ export default function CardFamilyRecords() {
         heading_one="Detalle"
         heading_two="Fecha de registro"
         cardData={familyRecordList}
+        className="w-full"
       />
     </CustomSuspense>
   );
