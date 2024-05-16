@@ -1,14 +1,4 @@
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-  Chip,
-  ChipProps,
-  Button,
-} from "@nextui-org/react";
+import { ChipProps } from "@nextui-org/react";
 
 const civilStatus = [
   { label: "SOLTERO", value: "SINGLE" },
@@ -57,6 +47,42 @@ const familyRecordStatus = [
   { label: "SALUD DESCONOCIDA", value: "UNKNOWN" },
 ];
 
+const attentionTableColumns = [
+  { name: "ID", uid: "attention_id", sortable: true },
+  { name: "FECHA DE REGISTRO", uid: "recorded_date", sortable: true },
+  { name: "TIPO DE ATENCIÓN", uid: "typeOfAttention", sortable: true },
+  { name: "NOMBRE DE LA CONSULTA", uid: "nameOfConsultation", sortable: true },
+  {
+    name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_name",
+    sortable: true,
+  },
+  { name: "ACCIÓN", uid: "actions" },
+];
+
+const typeOfService = [
+  { label: "NUEVO", value: "NEW" },
+  { label: "CONTINUADOR", value: "CONTINUATOR" },
+  { label: "REINGRESO", value: "REENTRY" },
+];
+
+const typeOfFacility = [
+  { label: "NUEVO", value: "NEW" },
+  { label: "CONTINUADOR", value: "CONTINUATOR" },
+  { label: "REINGRESO", value: "REENTRY" },
+]
+
+const typeOfAttention = [
+  { label: "PRESENCIAL", value: "IN_PERSON" },
+  { label: "TELEMEDICINA", value: "TELEMEDICINE" },
+];
+
+const typeOfConsultation = [
+  { label: "PRIMERA VEZ", value: "FIRST_TIME" },
+  { label: "CONTROL", value: "FOLLOW_UP" },
+  { label: "OTRO", value: "OTHER" },
+];
+
 const allergyTableColumns = [
   { name: "ID", uid: "allergy_id", sortable: true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
@@ -76,22 +102,46 @@ const allergyDocTableColumns = [
 ];
 
 const allergyAccessTableColumns = [
-  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
-  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  {
+    name: "ID DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_id",
+    sortable: true,
+  },
+  {
+    name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_name",
+    sortable: true,
+  },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
 const familyRecordAccessTableColumns = [
-  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
-  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  {
+    name: "ID DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_id",
+    sortable: true,
+  },
+  {
+    name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_name",
+    sortable: true,
+  },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
 const accessTableColumns = [
-  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
-  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  {
+    name: "ID DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_id",
+    sortable: true,
+  },
+  {
+    name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_name",
+    sortable: true,
+  },
   { name: "ACCIÓN", uid: "actions" },
-]
+];
 
 const familyRecordTableColumns = [
   { name: "ID", uid: "familyHistory_id", sortable: true },
@@ -136,8 +186,16 @@ const practitionerTableColumns = [
 ];
 
 const accessRequestTableColumns = [
-  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
-  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  {
+    name: "ID DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_id",
+    sortable: true,
+  },
+  {
+    name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
+    uid: "practitioner_name",
+    sortable: true,
+  },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
@@ -201,7 +259,7 @@ const platformaPractitionerEventsTableColumns = [
 ];
 
 const selectedPatientAllergiesTableColumns = [
-  { name: "ID", uid: "allergy_id", sortable : true },
+  { name: "ID", uid: "allergy_id", sortable: true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
   // { name: 'CREADO POR', uid: 'created_by', sortable: true },
@@ -517,15 +575,15 @@ const selectedPatientFamilyRecordDocs = [
   },
 ];
 
-const registerTypeMap : Record<string, string> = {
-  "ALLERGY": "ALERGIA",
-  "FAMILY_HISTORY": "FAMILIAR",
-}
+const registerTypeMap: Record<string, string> = {
+  ALLERGY: "ALERGIA",
+  FAMILY_HISTORY: "FAMILIAR",
+};
 
-const eventTypeMap : Record<string, string> = {
-  "READ": "LECTURA",
-  "WRITE": "ESCRITURA",
-}
+const eventTypeMap: Record<string, string> = {
+  READ: "LECTURA",
+  WRITE: "ESCRITURA",
+};
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   RESOLVED: "success",
@@ -533,7 +591,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
   INACTIVE: "warning",
 };
 
-const statusMap : Record<string, string> = {
+const statusMap: Record<string, string> = {
   RESOLVED: "RESUELTO",
   ACTIVE: "ACTIVO",
   INACTIVE: "INACTIVO",
@@ -545,21 +603,25 @@ const familyStatusColorMap: Record<string, ChipProps["color"]> = {
   UNKNOWN: "warning",
 };
 
-const allergyTypesMap : Record<string, string> = {
-  "DAIRY": "LÁCTEOS",
-  "GLUTEN": "GLUTEN",
-  "CAFFEINE": "CAFEÍNA",
-  "SALICYLATES": "SALICILATOS",
-  "AMINES": "AMINAS",
-  "OTHER": "OTRO",
-}
+const allergyTypesMap: Record<string, string> = {
+  DAIRY: "LÁCTEOS",
+  GLUTEN: "GLUTEN",
+  CAFFEINE: "CAFEÍNA",
+  SALICYLATES: "SALICILATOS",
+  AMINES: "AMINAS",
+  OTHER: "OTRO",
+};
 
-const familyRecordStatusMap : Record<string, string> = {
-  "PARTIAL": "PARCIAL",
-  "COMPLETE": "COMPLETO",
-  "UNKNOWN": "SALUD DESCONOCIDA",
-}
+const familyRecordStatusMap: Record<string, string> = {
+  PARTIAL: "PARCIAL",
+  COMPLETE: "COMPLETO",
+  UNKNOWN: "SALUD DESCONOCIDA",
+};
 
+const typeOfAttentionMap: Record<string, string> = {
+  IN_PERSON: "PRESENCIAL",
+  TELEMEDICINE: "TELEMEDICINA",
+};
 
 export {
   civilStatus,
@@ -568,6 +630,11 @@ export {
   addressTypes,
   allergyTypes,
   allergyCategories,
+  attentionTableColumns,
+  typeOfAttention,
+  typeOfConsultation,
+  typeOfService,
+  typeOfFacility,
   allergyTableColumns,
   allergyDocTableColumns,
   allergyAccessTableColumns,
@@ -602,5 +669,12 @@ export {
   practitionerFamilyRecordsTableColumns,
   selectedPatientFamilyRecordDocsTableColumns,
   selectedPatientFamilyRecordDocs,
-  registerTypeMap, eventTypeMap, statusColorMap,statusMap,allergyTypesMap,familyRecordStatusMap,familyStatusColorMap
+  registerTypeMap,
+  eventTypeMap,
+  statusColorMap,
+  statusMap,
+  allergyTypesMap,
+  familyRecordStatusMap,
+  familyStatusColorMap,
+  typeOfAttentionMap,
 };
