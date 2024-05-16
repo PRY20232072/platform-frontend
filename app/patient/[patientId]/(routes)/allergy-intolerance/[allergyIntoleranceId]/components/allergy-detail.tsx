@@ -9,37 +9,40 @@ import { Card, CardBody } from "@nextui-org/card";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type AllergyDetailProps = {
-  allergy: any;
-  setAllergy: any;
-};
-
-export default function AllergyDetail({ allergy, setAllergy }: AllergyDetailProps) {
-  const { response, fetchData } = useApi();
+export default function AllergyDetail() {
+  const [allergy, setAllergy] = useState<any>({});
+  const {
+    response: getAllergyByIdPatientIdResponse,
+    fetchData: getAllergyByIdPatientId,
+  } = useApi();
   const params = useParams();
 
   useEffect(() => {
-    fetchData(
-      allergyIntoleranceService.getAllergyById(
-        params.allergyIntoleranceId as string
-      )
-    );
-  }, [params.allergyIntoleranceId]);
+    const fetchData = async () => {
+      if (params.allergyIntoleranceId && params.patientId) {
+        await getAllergyByIdPatientId(
+          allergyIntoleranceService.getAllergyByIdPatientId(
+            params.allergyIntoleranceId as string,
+            params.patientId as string
+          )
+        );
+      }
+    };
+
+    fetchData();
+  }, [params.allergyIntoleranceI, params.patientId]);
 
   useEffect(() => {
-    if (response.isSuccess) {
-      setAllergy(response.data[0]);
+    if (getAllergyByIdPatientIdResponse.isSuccess) {
+      setAllergy(getAllergyByIdPatientIdResponse.data);
     }
-  }, [response.isSuccess]);
+  }, [getAllergyByIdPatientIdResponse.isSuccess]);
 
   return (
-    <CustomSuspense isLoading={response.isLoading} fallback={<Loading />}>
+    <CustomSuspense isLoading={getAllergyByIdPatientIdResponse.isLoading} fallback={<Loading />}>
       <Card>
-        <CardBody className="items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
-          <div className="text-2xl font-bold leading-6 max-md:max-w-full">
-            Información del registro de alergia
-          </div>
-          <form className="mt-8 max-md:max-w-full">
+        <CardBody className="items-stretch self-stretch shadow flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
+          <form className="max-md:max-w-full">
             <AllergyDetailFields
               allergy={allergy}
               isEditing={false}
