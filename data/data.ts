@@ -138,8 +138,6 @@ const practitionerTableColumns = [
 const accessRequestTableColumns = [
   { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
   { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
-  { name: "TIPO DE REGISTRO", uid: "register_type" },
-  { name: "ID DE REGISTRO", uid: "register_id" },
   { name: "ACCIÓN", uid: "actions" },
 ];
 

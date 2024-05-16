@@ -18,24 +18,18 @@ import { useSession } from "next-auth/react";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import { toast } from "react-toastify";
-import { registerTypeMap } from "@/data/data";
-type HealthRecordAccess = {
+
+type AccessRequest = {
   id: string;
+  patient_id: string;
   practitioner_name: string;
   practitioner_id: string;
-  register_type: string;
-  register_id: string;
+  state: string;
 };
-
-/* const registerTypeMap : Record<string, string> = {
-  "ALLERGY": "ALERGIA",
-  "FAMILY_HISTORY": "FAMILIAR",
-}
- */
 
 const AccessRequestTable = () => {
   const { data: session } = useSession();
-  const [items, setItems] = useState<HealthRecordAccess[]>([]);
+  const [items, setItems] = useState<AccessRequest[]>([]);
   const {
     response: getPendingConsentListResponse,
     fetchData: getPendingConsentList,
@@ -65,7 +59,7 @@ const AccessRequestTable = () => {
       getPendingConsentListResponse.isSuccess
     ) {
       const pendingConsentList =
-        getPendingConsentListResponse.data as HealthRecordAccess[];
+        getPendingConsentListResponse.data as AccessRequest[];
       setItems(pendingConsentList);
     }
   }, [getPendingConsentListResponse]);
@@ -90,10 +84,10 @@ const AccessRequestTable = () => {
     fetchData();
   }, [approveConsentResponse, revokeConsentResponse, session?.user?.id]);
 
-  const handleApprove = async (consent: HealthRecordAccess) => {
+  const handleApprove = async (consent: AccessRequest) => {
     await approveConsent(
       consentService.approveConsent(
-        consent.register_id,
+        consent.patient_id,
         consent.practitioner_id
       )
     );
@@ -111,9 +105,9 @@ const AccessRequestTable = () => {
     location.reload();
   };
 
-  const handleRevoke = async (consent: HealthRecordAccess) => {
+  const handleRevoke = async (consent: AccessRequest) => {
     await revokeConsent(
-      consentService.revokeConsent(consent.register_id, consent.practitioner_id)
+      consentService.revokeConsent(consent.patient_id, consent.practitioner_id)
     );
     toast.info("Solicitud de acceso rechazada", {
       position: "bottom-right",
@@ -129,13 +123,11 @@ const AccessRequestTable = () => {
   };
 
   const renderCell = useCallback(
-    (practitioner_request: HealthRecordAccess, columnKey: React.Key) => {
+    (practitioner_request: AccessRequest, columnKey: React.Key) => {
       const cellValue =
-        practitioner_request[columnKey as keyof HealthRecordAccess];
+        practitioner_request[columnKey as keyof AccessRequest];
 
       switch (columnKey) {
-        case "register_type":
-          return registerTypeMap[cellValue]
         case "actions":
           return (
             <div className='relative flex justify-start items-start gap-2'>
