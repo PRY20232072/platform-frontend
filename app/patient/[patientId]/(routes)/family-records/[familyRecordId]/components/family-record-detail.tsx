@@ -9,29 +9,40 @@ import { Card, CardBody } from "@nextui-org/card";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type FamilyRecordDetailProps = {
-  familyRecord: any;
-  setFamilyRecord: any;
-};
-
-export default function FamilyRecordDetail({ familyRecord, setFamilyRecord }: FamilyRecordDetailProps) {
-  const { response, fetchData } = useApi();
+export default function FamilyRecordDetail() {
+  const [familyRecord, setFamilyRecord] = useState<any>({});
+  const {
+    response: getFamilyRecordByIdPatientIdResponse,
+    fetchData: getFamilyRecordByIdPatientId,
+  } = useApi();
   const params = useParams();
 
   useEffect(() => {
-    fetchData(
-      familyRecordService.getFamilyRecordById(params.familyRecordId as string)
-    );
-  }, [params.familyRecordId]);
+    const fetchData = async () => {
+      if (params.familyRecordId && params.patientId) {
+        await getFamilyRecordByIdPatientId(
+          familyRecordService.getFamilyRecordByIdPatientId(
+            params.familyRecordId as string,
+            params.patientId as string
+          )
+        );
+      }
+    };
+
+    fetchData();
+  }, [params.familyRecordId, params.patientId]);
 
   useEffect(() => {
-    if (response.isSuccess) {
-      setFamilyRecord(response.data[0]);
+    if (getFamilyRecordByIdPatientIdResponse.isSuccess) {
+      setFamilyRecord(getFamilyRecordByIdPatientIdResponse.data);
     }
-  }, [response.isSuccess]);
+  }, [getFamilyRecordByIdPatientIdResponse.isSuccess]);
 
   return (
-    <CustomSuspense isLoading={response.isLoading} fallback={<Loading />}>
+    <CustomSuspense
+      isLoading={getFamilyRecordByIdPatientIdResponse.isLoading}
+      fallback={<Loading />}
+    >
       <Card>
         <CardBody className="items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
           <form className="max-md:max-w-full">

@@ -46,7 +46,7 @@ const FamilyRecordsTable: React.FC = () => {
     if (session?.user?.id) {
       fetchData(
         familyRecordService.getFamilyRecordByPatientId(
-          session?.user?.id as string
+          session?.user?.id as string,
         )
       );
     }
