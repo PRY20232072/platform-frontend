@@ -31,15 +31,15 @@ class ConsetService {
     });
   };
 
-  approveConsent = (registerId: string, practitionerId: string) => {
+  approveConsent = (patientId: string, practitionerId: string) => {
     return http.put(
-      `${consentPath}/register/${registerId}/practitioner/${practitionerId}`
+      `${consentPath}/patient/${patientId}/practitioner/${practitionerId}`
     );
   };
 
-  revokeConsent = (registerId: string, practitionerId: string) => {
+  revokeConsent = (patientId: string, practitionerId: string) => {
     return http.delete(
-      `${consentPath}/register/${registerId}/practitioner/${practitionerId}`
+      `${consentPath}/patient/${patientId}/practitioner/${practitionerId}`
     );
   };
 }
