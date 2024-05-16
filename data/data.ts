@@ -87,6 +87,12 @@ const familyRecordAccessTableColumns = [
   { name: "ACCIÓN", uid: "actions" },
 ];
 
+const accessTableColumns = [
+  { name: "ID DEL PROFESIONAL DE LA SALUD", uid: "practitioner_id", sortable: true },
+  { name: "NOMBRE DEL PROFESIONAL DE LA SALUD", uid: "practitioner_name", sortable: true },
+  { name: "ACCIÓN", uid: "actions" },
+]
+
 const familyRecordTableColumns = [
   { name: "ID", uid: "familyHistory_id", sortable: true },
   { name: "DETALLE", uid: "notes", sortable: true },
@@ -571,6 +577,7 @@ export {
   practitionerTableColumns,
   accessRequestTableColumns,
   familyRecordAccessTableColumns,
+  accessTableColumns,
   eventsTableColumns,
   patientsTableColumns,
   selectedPatientAllergiesTableColumns,
