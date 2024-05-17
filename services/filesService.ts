@@ -6,12 +6,11 @@ class FilesService {
     createdDate: string,
     fileName: string,
     type: string,
-    registerId: string,
-    registerType: string,
+    patient_id: string,
     data: any
   ) => {
     return http.post(
-      `${filesPath}/upload?created_date=${createdDate}&file_name=${fileName}&file_type=${type}&register_id=${registerId}&register_type=${registerType}`,
+      `${filesPath}/upload?created_date=${createdDate}&file_name=${fileName}&file_type=${type}&patient_id=${patient_id}`,
       data,
       {
         headers: {

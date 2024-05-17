@@ -34,13 +34,14 @@ const DocumentsPage = () => {
   }, [getPatientByIdResponse]);
 
   return (
-    <div>
-      <div className="w-full max-w-[920px] mx-auto mt-6">
-        <h1 className="text-4xl font-bold leading-10 mb-2">Documentos</h1>
-        <CustomSuspense isLoading={getPatientByIdResponse.isLoading} fallback={<Loading />} >
-          <DocumentsTable items={files} />
-        </CustomSuspense>
-      </div>
+    <div className="w-full max-w-[920px] mx-auto mt-6">
+      <h1 className="text-4xl font-bold leading-10 mb-2">Documentos</h1>
+      <CustomSuspense
+        isLoading={getPatientByIdResponse.isLoading}
+        fallback={<Loading />}
+      >
+        <DocumentsTable items={files} />
+      </CustomSuspense>
     </div>
   );
 };
