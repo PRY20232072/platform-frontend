@@ -14,11 +14,7 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 
-type AddDocModalProps = {
-  registerType: string;
-};
-
-const AddDocModal = ({ registerType }: AddDocModalProps) => {
+const AddDocModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [isUploading, setIsUploading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -61,8 +57,7 @@ const AddDocModal = ({ registerType }: AddDocModalProps) => {
         createdDate,
         fileName,
         type,
-        registerId,
-        registerType,
+        params.patientId as string,
         formData
       )
     ).data;
