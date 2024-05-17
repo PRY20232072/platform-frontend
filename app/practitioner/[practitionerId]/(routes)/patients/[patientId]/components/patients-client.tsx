@@ -4,6 +4,8 @@ import { AllergyFormModal } from "../allergy-intolerance/[allergyIntoleranceId]/
 import { FamilyRecordFormModal } from "@/components/modal/family-record-form";
 import { PatientFamilyRecordsTable } from "./patient-family-records-table";
 import PatientDemographicInformation from "./patient-demographic-information";
+import PatientDocuments from "./patient-documents";
+import PatientAttentionHistoryTable from "./patient-attention-history-table";
 
 export default function PatientsClient() {
   return (
@@ -14,6 +16,13 @@ export default function PatientsClient() {
       >
         <Tab key="demographic_info" title="Información demográfica">
           <PatientDemographicInformation />
+        </Tab>
+        <Tab key="attention_history" title="Historial de atenciones">
+          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
+            <CardBody>
+              <PatientAttentionHistoryTable />
+            </CardBody>
+          </Card>
         </Tab>
         <Tab key="familyRecords" title="Historial Familiar">
           <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
@@ -30,6 +39,9 @@ export default function PatientsClient() {
               <PatientAllergiesTable />
             </CardBody>
           </Card>
+        </Tab>
+        <Tab key="documents" title="Documentos">
+          <PatientDocuments />
         </Tab>
       </Tabs>
     </>
