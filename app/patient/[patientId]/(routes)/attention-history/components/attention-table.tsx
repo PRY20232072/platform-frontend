@@ -15,22 +15,6 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-type VitalSigns = {
-  temperature: number;
-  heartRate: number;
-  respiratoryRate: number;
-  bloodPressure: {
-    systolic: number;
-    diastolic: number;
-  };
-  oxygenSaturation: number;
-};
-
-type Diagnosis = {
-  code: string;
-  description: string;
-};
-
 type Attention = {
   attention_id: string;
   recorded_date: string;
@@ -38,21 +22,6 @@ type Attention = {
   nameOfConsultation: string;
   practitioner_name: string;
 };
-
-// type Attention = {
-//   patient_id: string;
-//   participant_id: string;
-//   recorded_date: string;
-//   typeOfAttention: string;
-//   typeOfService: string,
-//   typeOfFacility: string,
-//   nameOfConsultation: string,
-//   typeOfConsultation: string,
-//   reasonForConsultation: string,
-//   observations: string,
-//   diagnoses: Diagnosis[],
-//   vitalSigns: VitalSigns;
-// }
 
 const AttentionTable = () => {
   const [attentionList, setAttentionList] = useState<Attention[]>([]);

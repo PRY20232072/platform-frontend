@@ -8,39 +8,7 @@ import attentionService from "@/services/attentionService";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AttentionDetailFields from "@/components/attention/attention-detail-fields";
-
-type VitalSigns = {
-  temperature: number;
-  heartRate: number;
-  respiratoryRate: number;
-  bloodPressure: {
-    systolic: number;
-    diastolic: number;
-  };
-  oxygenSaturation: number;
-  weight: number;
-};
-
-type Diagnosis = {
-  code: string;
-  description: string;
-};
-
-type Attention = {
-  attention_id: string;
-  patient_id: string;
-  participant_id: string;
-  recorded_date: string;
-  typeOfAttention: string;
-  typeOfService: string;
-  typeOfFacility: string;
-  nameOfConsultation: string;
-  typeOfConsultation: string;
-  reasonForConsultation: string;
-  observations: string;
-  diagnoses: Diagnosis[];
-  vitalSigns: VitalSigns;
-};
+import { Attention } from "@/types/attention";
 
 const AttentionDetail = () => {
   const [attention, setAttention] = useState<Attention>({} as Attention);

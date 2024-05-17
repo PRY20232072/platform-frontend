@@ -1,50 +1,21 @@
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
-import {
-  typeOfAttention,
-  typeOfFacility,
-  typeOfService,
-} from "@/data/data";
+import { typeOfAttention, typeOfFacility, typeOfService } from "@/data/data";
+import { Attention } from "@/types/attention";
 import { Input } from "@nextui-org/input";
 import { useSession } from "next-auth/react";
-
-type VitalSigns = {
-  temperature: number;
-  heartRate: number;
-  respiratoryRate: number;
-  bloodPressure: {
-    systolic: number;
-    diastolic: number;
-  };
-  oxygenSaturation: number;
-  weight: number;
-};
-
-type Diagnosis = {
-  code: string;
-  description: string;
-};
-
-type Attention = {
-  attention_id: string;
-  patient_id: string;
-  participant_id: string;
-  recorded_date: string;
-  typeOfAttention: string;
-  typeOfService: string;
-  typeOfFacility: string;
-  nameOfConsultation: string;
-  typeOfConsultation: string;
-  reasonForConsultation: string;
-  observations: string;
-  diagnoses: Diagnosis[];
-  vitalSigns: VitalSigns;
-};
 
 interface AttentionDetailsProps {
   attention: Attention;
   isEditing: boolean;
   handleInputChange: (key: string, value: any) => void;
 }
+
+const periodMap: Record<string, string> = {
+  DAYS: "días",
+  WEEKS: "semanas",
+  MONTHS: "meses",
+  YEARS: "años",
+};
 
 export default function AttentionDetailFields({
   attention,
@@ -94,6 +65,29 @@ export default function AttentionDetailFields({
             <Input
               isReadOnly={true}
               type="text"
+              label="Peso"
+              labelPlacement="outside"
+              value={`${+attention.vitalSigns.weight} KG`}
+            />
+            <Input
+              isReadOnly={true}
+              type="text"
+              label="Talla"
+              labelPlacement="outside"
+              value={`${+attention.vitalSigns.size} cm`}
+            />
+            <Input
+              isReadOnly={true}
+              type="text"
+              label="Índice de masa corporal (IMC)"
+              labelPlacement="outside"
+              value={`${+attention.vitalSigns.imc}`}
+            />
+          </div>
+          <div className="flex gap-5">
+            <Input
+              isReadOnly={true}
+              type="text"
               label="Temperatura"
               labelPlacement="outside"
               value={`${+attention.vitalSigns.temperature} C°`}
@@ -109,28 +103,115 @@ export default function AttentionDetailFields({
               isReadOnly={true}
               type="text"
               label="Frecuencia respiratoria"
-              // labelPlacement="outside"
-              value={`${+attention.vitalSigns.respiratoryRate} SatO2`}
+              labelPlacement="outside"
+              value={`${+attention.vitalSigns.respiratoryRate} rpm`}
             />
           </div>
           <div className="flex gap-5">
             <Input
               isReadOnly={true}
               type="text"
-              label="Peso"
+              label="Saturación de oxígeno"
               labelPlacement="outside"
-              value={`${+attention.vitalSigns.weight} KG`}
+              value={`${+attention.vitalSigns.oxygenSaturation} SpO2%`}
             />
             <Input
               isReadOnly={true}
               type="text"
               label="Presión arterial"
               labelPlacement="outside"
-              value={`${+attention.vitalSigns.bloodPressure.systolic}/${
-                +attention.vitalSigns.bloodPressure.diastolic
-              } mmHg`}
+              value={`${+attention.vitalSigns.bloodPressure
+                .systolic}/${+attention.vitalSigns.bloodPressure
+                .diastolic} mmHg`}
             />
           </div>
+        </div>
+        <div className="flex flex-col gap-5">
+          <p className="w-full font-bold">Examen físico</p>
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Cabeza: "
+              labelPlacement="outside"
+              value={attention.physicalExam.head}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Ojos: "
+              labelPlacement="outside"
+              value={attention.physicalExam.eyes}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Nariz: "
+              labelPlacement="outside"
+              value={attention.physicalExam.nose}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Oídos: "
+              labelPlacement="outside"
+              value={attention.physicalExam.ears}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Garganta: "
+              labelPlacement="outside"
+              value={attention.physicalExam.throat}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Cuello: "
+              labelPlacement="outside"
+              value={attention.physicalExam.neck}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Tórax y pulmones: "
+              labelPlacement="outside"
+              value={attention.physicalExam.chestAndLungs}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Cardiovascular: "
+              labelPlacement="outside"
+              value={attention.physicalExam.cardiovascular}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Abdominal: "
+              labelPlacement="outside"
+              value={attention.physicalExam.abdominal}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Geriátrico y urinario: "
+              labelPlacement="outside"
+              value={attention.physicalExam.gereatricouniary}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Neurológico: "
+              labelPlacement="outside"
+              value={attention.physicalExam.neurological}
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
+              label="Extremidades: "
+              labelPlacement="outside"
+              value={attention.physicalExam.extremities}
+            />
         </div>
         <div className="flex flex-col gap-5">
           <p className="w-full font-bold">Tipo de paciente</p>
@@ -173,6 +254,17 @@ export default function AttentionDetailFields({
             <Input
               isReadOnly={!isEditing}
               type="text"
+              label="Tiempo de enfermedad"
+              labelPlacement="outside"
+              value={
+                attention.timeOfDisease.units +
+                " " +
+                periodMap[attention.timeOfDisease.period]
+              }
+            />
+            <Input
+              isReadOnly={!isEditing}
+              type="text"
               label="Enfermedad actual y motivo de la consulta"
               labelPlacement="outside"
               value={attention.reasonForConsultation}
@@ -204,12 +296,6 @@ export default function AttentionDetailFields({
                     label="Código"
                     labelPlacement="outside"
                     value={diagnosis.code}
-                    onChange={(e) =>
-                      handleInputChange(
-                        `diagnoses.${index}.code`,
-                        e.target.value
-                      )
-                    }
                   />
                   <Input
                     isReadOnly={!isEditing}
@@ -217,12 +303,13 @@ export default function AttentionDetailFields({
                     label="Descripción"
                     labelPlacement="outside"
                     value={diagnosis.description}
-                    onChange={(e) =>
-                      handleInputChange(
-                        `diagnoses.${index}.description`,
-                        e.target.value
-                      )
-                    }
+                  />
+                  <Input
+                    isReadOnly={!isEditing}
+                    type="text"
+                    label="Fecha de diagnóstico"
+                    labelPlacement="outside"
+                    value={diagnosis.date}
                   />
                 </div>
               ))}
