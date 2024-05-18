@@ -21,7 +21,21 @@ import districsData from "@/data/districts.json";
 
 export default function PractitionerProfileForm() {
   const [isInvalid, setIsInvalid] = useState(false);
+  const [isPCInvalid, setIsPCInvalid] = useState(false);
+  const [isInvalidBirthdate, setIsInvalidBirthdate] = useState(false);
+
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
+  const validatePostalCode = (postalCode: string) => postalCode.match(/^\d{5}$/);
+  const validateBirthdate = (birthdate: string) => {
+    const today = new Date();
+    const birthdateDate = new Date(birthdate);
+    let age = today.getFullYear() - birthdateDate.getFullYear();
+    const month = today.getMonth() - birthdateDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthdateDate.getDate())) {
+      age--;
+    }
+    return age >= 18;
+  };
   const [practitioner, setPractitioner] = useState(emptyPractitioner);
   const [provincesOptions, setProvincesOptions] = useState<
     { id: string; name: string; department_id: string }[]
@@ -29,11 +43,14 @@ export default function PractitionerProfileForm() {
   const [districtsOptions, setDistrictsOptions] = useState<
     { id: string; name: string; province_id: string }[]
   >([]);
- 
+
   useEffect(() => {
     setIsInvalid(
       practitioner.telephone ? !validatePhone(practitioner.telephone) : false
     );
+    setIsPCInvalid(practitioner.address.postal_code ? !validatePostalCode(practitioner.address.postal_code) : false);
+    setIsInvalidBirthdate(practitioner.birthDate ? !validateBirthdate(practitioner.birthDate) : false);
+ 
   }, [practitioner.telephone]);
 
   useEffect(() => {
@@ -144,7 +161,6 @@ export default function PractitionerProfileForm() {
     }
     setIsEditing(!isEditing);
 
-    //show toast
     toast.info("Información actualizada", {
       position: "bottom-right",
       autoClose: 5000,
@@ -183,6 +199,9 @@ export default function PractitionerProfileForm() {
                       name_id: e.target.value,
                     });
                   }}
+                  errorMessage={
+                    !practitioner.name_id ? "Ingrese su nombre completo" : ""
+                  }
                 />
               </div>
               <CustomAutocomplete
@@ -202,9 +221,9 @@ export default function PractitionerProfileForm() {
                   isRequired
                   isReadOnly={!isEditing}
                   type='date'
-                  label='Fecha de cumpleaños'
+                  label='Fecha de nacimiento'
                   labelPlacement='outside'
-                  placeholder='Ingresa la fecha de cumpleaños'
+                  placeholder='Selecciona una fecha'
                   value={practitioner.birthDate}
                   onChange={(e) => {
                     setPractitioner({
@@ -212,6 +231,13 @@ export default function PractitionerProfileForm() {
                       birthDate: e.target.value,
                     });
                   }}
+                  isInvalid={isInvalidBirthdate}
+                  max='2024-01-01'
+                  errorMessage={
+                    !practitioner.birthDate
+                      ? "Ingrese su fecha de nacimiento"
+                      : isInvalidBirthdate && "Debe ser mayor de 18 años"
+                  }
                 />
               </div>
 
@@ -247,9 +273,8 @@ export default function PractitionerProfileForm() {
                       telephone: e.target.value,
                     });
                   }}
-                  errorMessage={
-                    isInvalid && "Ingresa un número de teléfono válido"
-                  }
+                  errorMessage={!practitioner.telephone ? "Ingrese su número de teléfono": isInvalid  && "Por favor, ingrese un número válido"}
+                  maxLength={9}
                 />
               </div>
             </div>
@@ -342,6 +367,8 @@ export default function PractitionerProfileForm() {
                       },
                     });
                   }}
+                  errorMessage={!practitioner.address.address_line ? "Ingrese su dirección de residencia":""}
+
                 />
               </div>
 
@@ -363,6 +390,8 @@ export default function PractitionerProfileForm() {
                       },
                     });
                   }}
+                  errorMessage={!practitioner.address.postal_code ? "Ingrese su código postal": isPCInvalid  && "Por favor, ingrese un código postal válido!"}
+                  maxLength={5}
                 />
               </div>
             </div>
