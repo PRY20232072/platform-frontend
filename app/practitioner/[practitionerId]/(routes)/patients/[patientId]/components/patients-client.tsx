@@ -6,41 +6,43 @@ import { PatientFamilyRecordsTable } from "./patient-family-records-table";
 import PatientDemographicInformation from "./patient-demographic-information";
 import PatientDocuments from "./patient-documents";
 import PatientAttentionHistoryTable from "./patient-attention-history-table";
+import { EncounterFormModal } from "@/components/modal/encounter-form";
 
 export default function PatientsClient() {
   return (
     <>
       <Tabs
-        aria-label="Options"
+        aria-label='Options'
         classNames={{ tabList: "bg-sky-100", tabContent: "text-black" }}
       >
-        <Tab key="demographic_info" title="Información demográfica">
+        <Tab key='demographic_info' title='Información demográfica'>
           <PatientDemographicInformation />
         </Tab>
-        <Tab key="attention_history" title="Historial de atenciones">
-          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
+        <Tab key='attention_history' title='Historial de atenciones'>
+          <Card className='self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full'>
             <CardBody>
+              <EncounterFormModal />
               <PatientAttentionHistoryTable />
             </CardBody>
           </Card>
         </Tab>
-        <Tab key="familyRecords" title="Historial Familiar">
-          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
+        <Tab key='familyRecords' title='Historial Familiar'>
+          <Card className='self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full'>
             <CardBody>
               <FamilyRecordFormModal />
               <PatientFamilyRecordsTable />
             </CardBody>
           </Card>
         </Tab>
-        <Tab key="allergies" title="Alergias">
-          <Card className="self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full">
+        <Tab key='allergies' title='Alergias'>
+          <Card className='self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full'>
             <CardBody>
               <AllergyFormModal />
               <PatientAllergiesTable />
             </CardBody>
           </Card>
         </Tab>
-        <Tab key="documents" title="Documentos">
+        <Tab key='documents' title='Documentos'>
           <PatientDocuments />
         </Tab>
       </Tabs>
