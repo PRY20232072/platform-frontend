@@ -70,7 +70,7 @@ const typeOfFacility = [
   { label: "NUEVO", value: "NEW" },
   { label: "CONTINUADOR", value: "CONTINUATOR" },
   { label: "REINGRESO", value: "REENTRY" },
-]
+];
 
 const typeOfAttention = [
   { label: "PRESENCIAL", value: "IN_PERSON" },
@@ -81,6 +81,18 @@ const typeOfConsultation = [
   { label: "PRIMERA VEZ", value: "FIRST_TIME" },
   { label: "CONTROL", value: "FOLLOW_UP" },
   { label: "OTRO", value: "OTHER" },
+];
+
+const timeOfDiseasePeriod = [
+  { label: "DIAS", value: "DAYS" },
+  { label: "SEMANAS", value: "WEEKS" },
+  { label: "MESES", value: "MONTHS" },
+  { label: "AÑOS", value: "YEARS" },
+];
+
+const typeOfDiagnosis = [
+  { label: "HIPOTESIS", value: "HYPOTHESIS" },
+  { label: "CONFIRMADO", value: "CONFIRMED" },
 ];
 
 const allergyTableColumns = [
@@ -358,4 +370,6 @@ export {
   familyRecordStatusMap,
   familyStatusColorMap,
   typeOfAttentionMap,
+  timeOfDiseasePeriod,
+  typeOfDiagnosis,
 };
