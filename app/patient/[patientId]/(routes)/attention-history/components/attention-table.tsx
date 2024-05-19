@@ -19,7 +19,6 @@ type Attention = {
   attention_id: string;
   recorded_date: string;
   typeOfAttention: string;
-  nameOfConsultation: string;
   practitioner_name: string;
 };
 

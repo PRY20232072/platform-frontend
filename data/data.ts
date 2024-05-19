@@ -51,7 +51,6 @@ const attentionTableColumns = [
   { name: "ID", uid: "attention_id", sortable: true },
   { name: "FECHA DE REGISTRO", uid: "recorded_date", sortable: true },
   { name: "TIPO DE ATENCIÓN", uid: "typeOfAttention", sortable: true },
-  { name: "NOMBRE DE LA CONSULTA", uid: "nameOfConsultation", sortable: true },
   {
     name: "NOMBRE DEL PROFESIONAL DE LA SALUD",
     uid: "practitioner_name",

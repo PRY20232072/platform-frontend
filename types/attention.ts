@@ -16,6 +16,7 @@ export type Diagnosis = {
   code: string;
   description: string;
   date: string;
+  type: string;
 };
 
 export type timeOfDisease = {

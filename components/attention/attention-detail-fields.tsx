@@ -1,5 +1,10 @@
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
-import { typeOfAttention, typeOfFacility, typeOfService } from "@/data/data";
+import {
+  typeOfAttention,
+  typeOfFacility,
+  typeOfService,
+  typeOfDiagnosis,
+} from "@/data/data";
 import { Attention } from "@/types/attention";
 import { Input } from "@nextui-org/input";
 import { useSession } from "next-auth/react";
@@ -128,90 +133,90 @@ export default function AttentionDetailFields({
         </div>
         <div className="flex flex-col gap-5">
           <p className="w-full font-bold">Examen físico</p>
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Cabeza: "
-              labelPlacement="outside"
-              value={attention.physicalExam.head}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Ojos: "
-              labelPlacement="outside"
-              value={attention.physicalExam.eyes}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Nariz: "
-              labelPlacement="outside"
-              value={attention.physicalExam.nose}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Oídos: "
-              labelPlacement="outside"
-              value={attention.physicalExam.ears}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Garganta: "
-              labelPlacement="outside"
-              value={attention.physicalExam.throat}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Cuello: "
-              labelPlacement="outside"
-              value={attention.physicalExam.neck}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Tórax y pulmones: "
-              labelPlacement="outside"
-              value={attention.physicalExam.chestAndLungs}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Cardiovascular: "
-              labelPlacement="outside"
-              value={attention.physicalExam.cardiovascular}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Abdominal: "
-              labelPlacement="outside"
-              value={attention.physicalExam.abdominal}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Geriátrico y urinario: "
-              labelPlacement="outside"
-              value={attention.physicalExam.gereatricouniary}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Neurológico: "
-              labelPlacement="outside"
-              value={attention.physicalExam.neurological}
-            />
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Extremidades: "
-              labelPlacement="outside"
-              value={attention.physicalExam.extremities}
-            />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Cabeza: "
+            labelPlacement="outside"
+            value={attention.physicalExam.head}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Ojos: "
+            labelPlacement="outside"
+            value={attention.physicalExam.eyes}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Nariz: "
+            labelPlacement="outside"
+            value={attention.physicalExam.nose}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Oídos: "
+            labelPlacement="outside"
+            value={attention.physicalExam.ears}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Garganta: "
+            labelPlacement="outside"
+            value={attention.physicalExam.throat}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Cuello: "
+            labelPlacement="outside"
+            value={attention.physicalExam.neck}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Tórax y pulmones: "
+            labelPlacement="outside"
+            value={attention.physicalExam.chestAndLungs}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Cardiovascular: "
+            labelPlacement="outside"
+            value={attention.physicalExam.cardiovascular}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Abdominal: "
+            labelPlacement="outside"
+            value={attention.physicalExam.abdominal}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Geriátrico y urinario: "
+            labelPlacement="outside"
+            value={attention.physicalExam.gereatricouniary}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Neurológico: "
+            labelPlacement="outside"
+            value={attention.physicalExam.neurological}
+          />
+          <Input
+            isReadOnly={!isEditing}
+            type="text"
+            label="Extremidades: "
+            labelPlacement="outside"
+            value={attention.physicalExam.extremities}
+          />
         </div>
         <div className="flex flex-col gap-5">
           <p className="w-full font-bold">Tipo de paciente</p>
@@ -241,16 +246,6 @@ export default function AttentionDetailFields({
         <div className="flex flex-col gap-5">
           <p className="w-full font-bold">Consulta</p>
           <div className="flex flex-col gap-5">
-            <Input
-              isReadOnly={!isEditing}
-              type="text"
-              label="Nombre de la consulta"
-              labelPlacement="outside"
-              value={attention.nameOfConsultation}
-              onChange={(e) =>
-                handleInputChange("nameOfConsultation", e.target.value)
-              }
-            />
             <Input
               isReadOnly={!isEditing}
               type="text"
@@ -310,6 +305,13 @@ export default function AttentionDetailFields({
                     label="Fecha de diagnóstico"
                     labelPlacement="outside"
                     value={diagnosis.date}
+                  />
+                  <CustomAutocomplete
+                    isDisabled={true}
+                    label="Situación"
+                    labelPlacement="outside"
+                    data={typeOfDiagnosis}
+                    selectedKey={diagnosis.type}
                   />
                 </div>
               ))}
