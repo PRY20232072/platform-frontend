@@ -90,7 +90,7 @@ const timeOfDiseasePeriod = [
 ];
 
 const typeOfDiagnosis = [
-  { label: "HIPOTESIS", value: "HYPOTHESIS" },
+  { label: "HIPÓTESIS", value: "HYPOTHESIS" },
   { label: "CONFIRMADO", value: "CONFIRMED" },
 ];
 
