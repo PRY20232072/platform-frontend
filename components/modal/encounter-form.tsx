@@ -33,8 +33,10 @@ import familyRecordService from "@/services/familyRecordService";
 import notificationsService from "@/services/notificationsService";
 import { toast } from "react-toastify";
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
+import { CustomAutoCompleteLarge } from "@/components/ui/auto-complete-large";
+import { useDebounce } from "@/hooks/useDebounce";
 
-import cieCodes from "@/data/cie10.json";
+import cieCodes from "@/data/cie10Codes_ES.json";
 import attentionService from "@/services/attentionService";
 type Diagnosis = {
   id: number;
@@ -177,6 +179,22 @@ export const EncounterFormModal = () => {
   const [atention, setAtention] = useState<PatientAtention>(
     {} as PatientAtention
   );
+  const [inputValue, setInputValue] = useState("");
+  const [options, setOptions] = useState([] as any[]);
+  const debouncedInput = useDebounce(inputValue, 300);
+
+  /*  const cie10Data = Object.entries(cieCodes).map(([value, label]) => ({
+    value,
+    label,
+  })); */
+  /*   useEffect(() => {
+    const filteredOptions = Object.entries(cieCodes)
+      .filter(([key, value]) =>
+        value.toLowerCase().includes(debouncedInput.toLowerCase())
+      )
+      .map(([value, label]) => ({ value, label }));
+    setOptions(filteredOptions);
+  }, [debouncedInput]); */
 
   useEffect(() => {
     setAtention({
@@ -224,11 +242,7 @@ export const EncounterFormModal = () => {
     });
   }, [params.patientId, params.practitionerId]);
 
-  const cie10Data = Object.entries(cieCodes).map(([value, label]) => ({
-    value,
-    label,
-  }));
-  console.log(cie10Data);
+  //console.log(cie10Data);
   const addDiagnosis = () => {
     setDiagnoses([
       ...diagnoses,
@@ -255,6 +269,7 @@ export const EncounterFormModal = () => {
       d.id === id ? { ...d, [key]: value } : d
     );
     setDiagnoses(updatedDiagnoses);
+    setInputValue(value);
     setAtention({ ...atention, diagnoses: updatedDiagnoses });
   };
 
@@ -300,7 +315,8 @@ export const EncounterFormModal = () => {
     }
   }, [isOpen]);
   console.log(atention);
-
+  console.log("Input value", inputValue);
+  console.log("options", options);
   return (
     <div className='items-stretch justify-end gap-4 inline-flex mb-3'>
       <Button
@@ -310,7 +326,7 @@ export const EncounterFormModal = () => {
         Añadir nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
-        size='lg'
+        size='xl'
         placement='auto'
         backdrop='opaque'
         scrollBehavior='outside'
@@ -744,14 +760,14 @@ export const EncounterFormModal = () => {
                 <div className='font-bold mt-4'>Diagnóstico</div>
                 {diagnoses.map((diagnosis, index) => (
                   <div key={diagnosis.id} className='mb-4'>
-                    <CustomAutocomplete
+                    <CustomAutoCompleteLarge
                       labelPlacement='outside'
                       isDisabled={false}
                       label='Diagnóstico'
                       placeholder='Seleccione diagnóstico principal (CIE-10)'
-                      data={cie10Data.map((cie10) => ({
-                        value: cie10.value,
-                        label: cie10.value + "-" + cie10.label,
+                      data={(cieCodes as { code: string; description: string; }[]).map((cie10) => ({
+                        value: cie10.code,
+                        label: cie10.code + "-" + cie10.description,
                       }))}
                       selectedKey={diagnosis.code}
                       onSelectionChange={(value) =>

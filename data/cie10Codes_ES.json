@@ -1,0 +1,78 @@
+﻿[
+    {
+        "code": "A00.0",
+        "description": "Cólera debido a Vibrio cholerae 01, biotipo cholerae "
+    },
+    {
+        "code": "A00.1",
+        "description": "Cólera debido a Vibrio cholerae 01, biotipo El Tor"
+    },
+    {
+        "code": "A00.9",
+        "description": "Cólera, no especificado"
+    },
+    {
+        "code": "A01",
+        "description": "Fiebres tifoidea y paratifoidea"
+    },
+    {
+        "code": "A01.0",
+        "description": "Fiebre tifoidea"
+    },
+    {
+        "code": "A01.00",
+        "description": "Fiebre tifoidea, no especificada"
+    },
+    {
+        "code": "A01.01",
+        "description": "Meningitis tifoidea"
+    },
+    {
+        "code": "A01.02",
+        "description": "Fiebre tifoidea con afectación cardiaca"
+    },
+    {
+        "code": "Z98.891",
+        "description": "Historia de cicatriz uterina por cirugía previa"
+    },
+    {
+        "code": "Z99",
+        "description": "Dependencia a máquinas y dispositivos de apoyo, no clasificados bajo otro concepto"
+    },
+    {
+        "code": "Z99.0",
+        "description": "Dependencia de aspirador"
+    },
+    {
+        "code": "Z99.1",
+        "description": "Dependencia de respirador"
+    },
+    {
+        "code": "Z99.11",
+        "description": "Estado de dependencia de respirador [ventilador]"
+    },
+    {
+        "code": "Z99.12",
+        "description": "Contacto por dependencia de respirador [ventilador] durante falta de electricidad"
+    },
+    {
+        "code": "Z99.2",
+        "description": "Dependencia de diálisis renal"
+    },
+    {
+        "code": "Z99.3",
+        "description": "Dependencia a silla de ruedas"
+    },
+    {
+        "code": "Z99.8",
+        "description": "Dependencia de otras máquinas y dispositivos de apoyo"
+    },
+    {
+        "code": "Z99.81",
+        "description": "Dependencia de oxígeno suplementario"
+    },
+    {
+        "code": "Z99.89",
+        "description": "Dependencia de otras máquinas y dispositivos de apoyo"
+    }
+]

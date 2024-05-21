@@ -119,7 +119,7 @@ export const authOptions: NextAuthOptions = {
       }
      
       if (Date.now() < (token.accessTokenExpires ?? 0)*1000) {
-        console.log("token active", token);
+        //console.log("token active", token);
         return token;
       }
       return await refreshAccessToken(token);
