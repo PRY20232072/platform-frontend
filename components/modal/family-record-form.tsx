@@ -202,12 +202,12 @@ export const FamilyRecordFormModal = () => {
           {(onClose) => (
             <form>
               <ModalHeader className='flex flex-col gap-1 font-bold'>
-                Cuestionario de registro de historial familiar
+                Cuestionario de antecedente familiar
               </ModalHeader>
               <ModalBody>
                 <Input
                   label='Nombre'
-                  placeholder='Escribe el nombre del registro'
+                  placeholder='Escribe el nombre del '
                   classNames={{ label: "text-md font-bold" }}
                   value={familyRecord.name}
                   onChange={(e) => {

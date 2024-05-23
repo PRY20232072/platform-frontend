@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import departments from "@/data/departments.json";
 import provincesData from "@/data/provinces.json";
 import districsData from "@/data/districts.json";
- 
+
 interface PatientDemographicFieldsProps {
   patient: any;
   isEditing: boolean;
@@ -20,15 +20,21 @@ export default function PatientDemographicFields({
   const [isInvalid, setIsInvalid] = useState(false);
   const [isPCInvalid, setIsPCInvalid] = useState(false);
   const [isInvalidBirthdate, setIsInvalidBirthdate] = useState(false);
+  const [isInvalidDNI, setIsInvalidDNI] = useState(false);
 
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
-  const validatePostalCode = (postalCode: string) => postalCode.match(/^\d{5}$/);
+  const validateDNI = (dni: string) => dni.match(/^\d{8}$/);
+  const validatePostalCode = (postalCode: string) =>
+    postalCode.match(/^\d{5}$/);
   const validateBirthdate = (birthdate: string) => {
     const today = new Date();
     const birthdateDate = new Date(birthdate);
     let age = today.getFullYear() - birthdateDate.getFullYear();
     const month = today.getMonth() - birthdateDate.getMonth();
-    if (month < 0 || (month === 0 && today.getDate() < birthdateDate.getDate())) {
+    if (
+      month < 0 ||
+      (month === 0 && today.getDate() < birthdateDate.getDate())
+    ) {
       age--;
     }
     return age >= 18;
@@ -42,9 +48,16 @@ export default function PatientDemographicFields({
 
   useEffect(() => {
     setIsInvalid(patient.telephone ? !validatePhone(patient.telephone) : false);
-    setIsPCInvalid(patient.address.postal_code ? !validatePostalCode(patient.address.postal_code) : false);
-    setIsInvalidBirthdate(patient.birthDate ? !validateBirthdate(patient.birthDate) : false);
-  }, [patient.telephone, patient.address.postal_code, patient.birthDate]);
+    setIsInvalidDNI(patient.dni ? !validateDNI(patient.dni) : false);
+    setIsPCInvalid(
+      patient.address.postal_code
+        ? !validatePostalCode(patient.address.postal_code)
+        : false
+    );
+    setIsInvalidBirthdate(
+      patient.birthDate ? !validateBirthdate(patient.birthDate) : false
+    );
+  }, [patient.telephone,patient.dni, patient.address.postal_code, patient.birthDate]);
   useEffect(() => {
     if (patient.address.department) {
       const selectedDepartment = departments.find(
@@ -120,8 +133,12 @@ export default function PatientDemographicFields({
             value={patient.birthDate}
             onChange={(e) => handleInputChange("birthDate", e.target.value)}
             isInvalid={isInvalidBirthdate}
-            max="2024-01-01"
-            errorMessage={!patient.birthDate ? "Ingrese su fecha de nacimiento": isInvalidBirthdate && "Debe ser mayor de 18 años"}
+            max='2024-01-01'
+            errorMessage={
+              !patient.birthDate
+                ? "Ingrese su fecha de nacimiento"
+                : isInvalidBirthdate && "Debe ser mayor de 18 años"
+            }
           />
         </div>
         <CustomAutocomplete
@@ -136,25 +153,49 @@ export default function PatientDemographicFields({
           }
         />
 
-        <div className='flex-col items-start gap-[5px] relative !flex-1 !flex !grow'>
-          <Input
-            isRequired
-            startContent={
-              <span className='text-default-400 text-small'>+51</span>
-            }
-            isReadOnly={!isEditing}
-            type='tel'
-            label='Número de teléfono'
-            labelPlacement='outside'
-            placeholder='Completa el número de teléfono'
-            isInvalid={isInvalid}
-            color={isInvalid ? "danger" : "default"}
-            value={patient.telephone}
-            onChange={(e) => handleInputChange("telephone", e.target.value)}
-            errorMessage={!patient.telephone ? "Ingrese su número de teléfono": isInvalid  && "Por favor, ingrese un número válido"}
-            maxLength={9}
-          />
-        </div>
+        <Input
+          isRequired
+          type='text'
+          startContent={
+            <span className='text-default-400 text-small'>DNI</span>
+          }
+          isReadOnly={!isEditing}
+          label='Documento de identidad'
+          labelPlacement='outside'
+          placeholder='Ingresa tu número de documento'
+          isInvalid={isInvalidDNI}
+          color={isInvalidDNI ? "danger" : "default"}
+          value={patient.dni}
+          onChange={(e) => handleInputChange("dni", e.target.value)}
+          errorMessage={
+            !patient.dni
+              ? "Ingrese su número de documento"
+              : isInvalidDNI && "Por favor, ingrese un DNI válido"
+          }
+          maxLength={8}
+        />
+
+        <Input
+          isRequired
+          startContent={
+            <span className='text-default-400 text-small'>+51</span>
+          }
+          isReadOnly={!isEditing}
+          type='tel'
+          label='Número de teléfono'
+          labelPlacement='outside'
+          placeholder='Completa el número de teléfono'
+          isInvalid={isInvalid}
+          color={isInvalid ? "danger" : "default"}
+          value={patient.telephone}
+          onChange={(e) => handleInputChange("telephone", e.target.value)}
+          errorMessage={
+            !patient.telephone
+              ? "Ingrese su número de teléfono"
+              : isInvalid && "Por favor, ingrese un número válido"
+          }
+          maxLength={9}
+        />
       </div>
       <div className='my-4 font-bold  text-2xl tracking-[0] leading-[24px]'>
         Dirección de residencia
@@ -228,7 +269,11 @@ export default function PatientDemographicFields({
           onChange={(e) =>
             handleInputChange("address.address_line", e.target.value)
           }
-          errorMessage={!patient.address.address_line ? "Ingrese su dirección de residencia":""}
+          errorMessage={
+            !patient.address.address_line
+              ? "Ingrese su dirección de residencia"
+              : ""
+          }
         />
 
         <Input
@@ -243,7 +288,11 @@ export default function PatientDemographicFields({
           onChange={(e) =>
             handleInputChange("address.postal_code", e.target.value)
           }
-          errorMessage={!patient.address.postal_code ? "Ingrese su código postal": isPCInvalid  && "Por favor, ingrese un código postal válido!"}
+          errorMessage={
+            !patient.address.postal_code
+              ? "Ingrese su código postal"
+              : isPCInvalid && "Por favor, ingrese un código postal válido!"
+          }
           maxLength={5}
         />
       </div>

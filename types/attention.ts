@@ -19,6 +19,14 @@ export type Diagnosis = {
   type: string;
 };
 
+export type Treatment = {
+  description: string;
+};
+
+export type AuxiliaryExam = {
+  description: string;
+};
+
 export type timeOfDisease = {
   units: number;
   period: string;
@@ -52,6 +60,8 @@ export type Attention = {
   observations: string;
   timeOfDisease: timeOfDisease;
   diagnoses: Diagnosis[];
+  treatments: Treatment[];
+  auxiliaryExams: AuxiliaryExam[];
   physicalExam: physicalExam;
   vitalSigns: VitalSigns;
 };

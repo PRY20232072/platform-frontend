@@ -23,6 +23,7 @@ import {
   typeOfFacility,
   typeOfService,
   timeOfDiseasePeriod,
+  timeOfDiseasePeriodUnit,
   typeOfDiagnosis,
 } from "@/data/data";
 
@@ -42,8 +43,17 @@ type Diagnosis = {
   id: number;
   code: string;
   description: string;
-  date: string;
   type: string;
+};
+
+type Treatment = {
+  id: number;
+  description: string;
+};
+
+type AuxiliaryExam = {
+  id: number;
+  description: string;
 };
 type PatientAtention = {
   patient_id: string;
@@ -52,7 +62,6 @@ type PatientAtention = {
   typeOfAttention: string;
   typeOfService: string;
   typeOfFacility: string;
-  nameOfConsultation: string;
   reasonForConsultation: string;
   observations: string;
   timeOfDisease: {
@@ -60,6 +69,8 @@ type PatientAtention = {
     period: string;
   };
   diagnoses: Diagnosis[];
+  treatments: Treatment[];
+  auxiliaryExams: AuxiliaryExam[];
   physicalExam: {
     head: string;
     eyes: string;
@@ -108,20 +119,32 @@ const ConfirmModal: React.FC<AtentionProps> = ({
 
   const handleCreate = () => {
     const filteredDiagnoses = atention.diagnoses.map(({ id, ...rest }) => rest);
-    const payload = { ...atention, diagnoses: filteredDiagnoses };
+    const filteredTreatments = atention.treatments.map(
+      ({ id, ...rest }) => rest
+    );
+    const filteredAuxiliaryExams = atention.auxiliaryExams.map(
+      ({ id, ...rest }) => rest
+    );
+    const payload = {
+      ...atention,
+      diagnoses: filteredDiagnoses,
+      treatments: filteredTreatments,
+      auxiliaryExams: filteredAuxiliaryExams,
+    };
     atention.recorded_date = new Date().toISOString().split("T")[0];
     const attention_id = uuidv4();
+    console.log(payload)
     createAttention(
       attentionService.createAttention({
         identifier: attention_id,
         payload: payload,
       })
     );
-
-    location.reload();
+   
+    //location.reload();
     onClose();
     atentionFormModalClose();
-    toast.success("Registro de historial familiar creado con éxito");
+    toast.success("Atención creada con éxito");
   };
 
   return (
@@ -135,7 +158,7 @@ const ConfirmModal: React.FC<AtentionProps> = ({
         color='primary'
         variant='flat'
       >
-        Continuar
+        Guardar
       </Button>
       <Modal
         size='md'
@@ -174,7 +197,11 @@ export const EncounterFormModal = () => {
   const [currentDateTime, setCurrentDateTime] = useState("");
   const nhc = params.patientId.slice(0, 8);
   const [diagnoses, setDiagnoses] = useState([
-    { id: 1, code: "", type: "", description: "", date: "" },
+    { id: 1, code: "", type: "", description: "" },
+  ]);
+  const [treatments, setTreatments] = useState([{ id: 1, description: "" }]);
+  const [auxiliaryExams, setAuxiliaryExams] = useState([
+    { id: 1, description: "" },
   ]);
   const [atention, setAtention] = useState<PatientAtention>(
     {} as PatientAtention
@@ -202,14 +229,15 @@ export const EncounterFormModal = () => {
       typeOfAttention: "IN_PERSON",
       typeOfService: "NEW",
       typeOfFacility: "NEW",
-      nameOfConsultation: "",
       reasonForConsultation: "",
       observations: "",
       timeOfDisease: {
         units: 1,
-        period: "DAYS",
+        period: "DAY",
       },
       diagnoses: [],
+      treatments: [],
+      auxiliaryExams: [],
       physicalExam: {
         head: "",
         eyes: "",
@@ -242,7 +270,7 @@ export const EncounterFormModal = () => {
     });
   }, [params.patientId, params.practitionerId]);
 
-  //console.log(cie10Data);
+ 
   const addDiagnosis = () => {
     setDiagnoses([
       ...diagnoses,
@@ -251,7 +279,26 @@ export const EncounterFormModal = () => {
         code: "",
         type: "",
         description: "",
-        date: "",
+      },
+    ]);
+  };
+
+  const addTreatment = () => {
+    setTreatments([
+      ...treatments,
+      {
+        id: treatments.length + 1,
+        description: "",
+      },
+    ]);
+  };
+
+  const addAuxiliaryExam = () => {
+    setAuxiliaryExams([
+      ...auxiliaryExams,
+      {
+        id: auxiliaryExams.length + 1,
+        description: "",
       },
     ]);
   };
@@ -264,6 +311,22 @@ export const EncounterFormModal = () => {
     });
   };
 
+  const removeTreatment = (id: any) => {
+    setTreatments(treatments.filter((t) => t.id !== id));
+    setAtention({
+      ...atention,
+      treatments: treatments.filter((t) => t.id !== id),
+    });
+  };
+
+  const removeAuxiliaryExam = (id: any) => {
+    setAuxiliaryExams(auxiliaryExams.filter((a) => a.id !== id));
+    setAtention({
+      ...atention,
+      auxiliaryExams: auxiliaryExams.filter((a) => a.id !== id),
+    });
+  };
+
   const handleDiagnosisChange = (id: any, key: any, value: any) => {
     const updatedDiagnoses = diagnoses.map((d) =>
       d.id === id ? { ...d, [key]: value } : d
@@ -271,6 +334,22 @@ export const EncounterFormModal = () => {
     setDiagnoses(updatedDiagnoses);
     setInputValue(value);
     setAtention({ ...atention, diagnoses: updatedDiagnoses });
+  };
+
+  const handleTreatmentChange = (id: any, key: any, value: any) => {
+    const updatedTreatments = treatments.map((t) =>
+      t.id === id ? { ...t, [key]: value } : t
+    );
+    setTreatments(updatedTreatments);
+    setAtention({ ...atention, treatments: updatedTreatments });
+  };
+
+  const handleAuxiliaryExamChange = (id: any, key: any, value: any) => {
+    const updatedAuxiliaryExams = auxiliaryExams.map((a) =>
+      a.id === id ? { ...a, [key]: value } : a
+    );
+    setAuxiliaryExams(updatedAuxiliaryExams);
+    setAtention({ ...atention, auxiliaryExams: updatedAuxiliaryExams });
   };
 
   const calculateBMI = (weight: number, height: number) => {
@@ -314,9 +393,9 @@ export const EncounterFormModal = () => {
       setAtention((prev) => ({ ...prev, recorded_date: formattedDateTime }));
     }
   }, [isOpen]);
-  console.log(atention);
-  console.log("Input value", inputValue);
-  console.log("options", options);
+  console.log('Atention', atention);
+  
+ 
   return (
     <div className='items-stretch justify-end gap-4 inline-flex mb-3'>
       <Button
@@ -512,19 +591,6 @@ export const EncounterFormModal = () => {
                     </div>
                   </div>
                 </div>
-
-                <Input
-                  label='Nombre de la consulta'
-                  placeholder='Ingresa el nombre de la consulta'
-                  value={atention.nameOfConsultation}
-                  onChange={(e) =>
-                    setAtention({
-                      ...atention,
-                      nameOfConsultation: e.target.value,
-                    })
-                  }
-                  isRequired
-                />
                 <div className='mt-4 flex'>
                   <div className='flex flex-col mr-4'>
                     <Input
@@ -551,7 +617,11 @@ export const EncounterFormModal = () => {
                       label='Periodo'
                       labelPlacement='outside'
                       placeholder='Selecciona el periodo'
-                      data={timeOfDiseasePeriod}
+                      data={
+                        atention.timeOfDisease.units > 1
+                          ? timeOfDiseasePeriod
+                          : timeOfDiseasePeriodUnit
+                      }
                       selectedKey={atention.timeOfDisease.period}
                       onSelectionChange={(value) =>
                         setAtention({
@@ -673,8 +743,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label='Pecho y pulmones'
-                  placeholder='Ingresa el estado del pecho y pulmones'
+                  label='Torax y pulmones'
+                  placeholder='Ingresa el estado del torax y pulmones'
                   value={atention.physicalExam.chestAndLungs}
                   onChange={(e) =>
                     setAtention({
@@ -765,7 +835,9 @@ export const EncounterFormModal = () => {
                       isDisabled={false}
                       label='Diagnóstico'
                       placeholder='Seleccione diagnóstico principal (CIE-10)'
-                      data={(cieCodes as { code: string; description: string; }[]).map((cie10) => ({
+                      data={(
+                        cieCodes as { code: string; description: string }[]
+                      ).map((cie10) => ({
                         value: cie10.code,
                         label: cie10.code + "-" + cie10.description,
                       }))}
@@ -796,23 +868,10 @@ export const EncounterFormModal = () => {
                           e.target.value
                         )
                       }
-                      isRequired
-                    />
-                    <Input
-                      className='mt-2'
-                      type='date'
-                      label='Fecha de registro'
-                      value={diagnosis.date}
-                      onChange={(e) =>
-                        handleDiagnosisChange(
-                          diagnosis.id,
-                          "date",
-                          e.target.value
-                        )
-                      }
                     />
                     {index > 0 && (
                       <Button
+                        className='mt-2'
                         color='danger'
                         onClick={() => removeDiagnosis(diagnosis.id)}
                       >
@@ -824,6 +883,65 @@ export const EncounterFormModal = () => {
 
                 <Button color='primary' onClick={addDiagnosis}>
                   + Agregar nuevo diagnóstico
+                </Button>
+
+                <div className='font-bold mt-4'>Tratamientos</div>
+                {treatments.map((treatment, index) => (
+                  <div key={treatment.id} className='mb-4'>
+                    <Input
+                      label={`Tratamiento ${index + 1}`}
+                      labelPlacement='outside'
+                      placeholder='Escriba una descripción del tratamiento'
+                      value={treatment.description}
+                      onChange={(e) =>
+                        handleTreatmentChange(
+                          treatment.id,
+                          "description",
+                          e.target.value
+                        )
+                      }
+                    />
+                    {index > 0 && (
+                      <Button
+                        color='danger'
+                        onClick={() => removeTreatment(treatment.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button color='primary' onClick={addTreatment}>
+                  + Agregar nuevo tratamiento
+                </Button>
+
+                <div className='font-bold mt-4'>Exámenes auxiliares</div>
+                {auxiliaryExams.map((auxiliaryExam, index) => (
+                  <div key={auxiliaryExam.id} className='mb-4'>
+                    <Input
+                      label='Descripción'
+                      placeholder='Escriba una descripción del examen auxiliar'
+                      value={auxiliaryExam.description}
+                      onChange={(e) =>
+                        handleAuxiliaryExamChange(
+                          auxiliaryExam.id,
+                          "description",
+                          e.target.value
+                        )
+                      }
+                    />
+                    {index > 0 && (
+                      <Button
+                        color='danger'
+                        onClick={() => removeAuxiliaryExam(auxiliaryExam.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button color='primary' onClick={addAuxiliaryExam}>
+                  + Agregar nuevo examen auxiliar
                 </Button>
               </ModalBody>
               <ModalFooter>
