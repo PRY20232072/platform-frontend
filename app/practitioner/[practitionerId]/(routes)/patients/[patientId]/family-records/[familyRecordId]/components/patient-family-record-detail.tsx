@@ -9,14 +9,19 @@ import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import FamilyRecordDetailFields from "@/components/family-records/family-record-detail-fields";
 import notificationsService from "@/services/notificationsService";
+import { FamilyRecordSchema } from "@/types/familyRecord";
 
 type PatientFamilyRecordDetailProps = {
   family_record: any;
   setFamilyRecord: any;
-}
+};
 
-export default function PatientFamilyRecordDetail({ family_record, setFamilyRecord }: PatientFamilyRecordDetailProps) {
+export default function PatientFamilyRecordDetail({
+  family_record,
+  setFamilyRecord,
+}: PatientFamilyRecordDetailProps) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [errors, setErrors] = useState<any>({});
   const { response: familyRecordResponse, fetchData: getAllergy } = useApi();
   const {
     response: updateFamilyRecordResponse,
@@ -54,6 +59,15 @@ export default function PatientFamilyRecordDetail({ family_record, setFamilyReco
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const familyRecordParsed = FamilyRecordSchema.safeParse(family_record);
+    if (familyRecordParsed.error) {
+      setErrors(familyRecordParsed.error.format());
+      return;
+    } else {
+      setErrors({});
+    }
+
     await updateFamilyRecord(
       familyRecordService.updateFamilyRecord(
         family_record.familyHistory_id,
@@ -89,6 +103,7 @@ export default function PatientFamilyRecordDetail({ family_record, setFamilyReco
               isEditing={isEditing}
               familyRecord={family_record}
               handleInputChange={handleInputChange}
+              errors={errors}
             />
             <div className="flex justify-center">
               {isEditing ? (

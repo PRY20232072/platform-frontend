@@ -39,6 +39,7 @@ export default function FamilyRecordDetail({ familyRecord, setFamilyRecord }: Fa
               familyRecord={familyRecord}
               isEditing={false}
               handleInputChange={() => {}}
+              errors={{}}
             />
           </form>
         </CardBody>

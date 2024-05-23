@@ -1,17 +1,19 @@
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
-import { familyRecordStatus, genders } from "@/data/data";
+import { familyRecordStatus } from "@/data/data";
 import { Input, Textarea } from "@nextui-org/react";
 
 interface FamilyRecordDetailsProps {
   familyRecord: any;
   isEditing: boolean;
   handleInputChange: (key: string, value: any) => void;
+  errors: any;
 }
 
 export default function FamilyRecordDetailFields({
   familyRecord,
   isEditing,
   handleInputChange,
+  errors,
 }: FamilyRecordDetailsProps) {
   return (
     <>
@@ -27,6 +29,7 @@ export default function FamilyRecordDetailFields({
           labelPlacement="outside"
           value={familyRecord.name}
           onChange={(e) => handleInputChange("name", e.target.value)}
+          errorMessage={errors.name && errors.name._errors.join(", ")}
         />
 
         <Input
@@ -37,6 +40,7 @@ export default function FamilyRecordDetailFields({
           labelPlacement="outside"
           value={familyRecord.reason}
           onChange={(e) => handleInputChange("reason", e.target.value)}
+          errorMessage={errors.reason && errors.reason._errors.join(", ")}
         />
 
         <CustomAutocomplete
@@ -48,7 +52,11 @@ export default function FamilyRecordDetailFields({
           onSelectionChange={(value) =>
             handleInputChange("clinical_status", value)
           }
+          errorMessage={
+            errors.clinical_status && errors.clinical_status._errors.join(", ")
+          }
         />
+
         <Textarea
           isReadOnly={!isEditing}
           disableAnimation
@@ -58,6 +66,7 @@ export default function FamilyRecordDetailFields({
           labelPlacement="outside"
           value={familyRecord.notes}
           onChange={(e) => handleInputChange("notes", e.target.value)}
+          errorMessage={errors.notes && errors.notes._errors.join(", ")}
         />
 
         <Input
@@ -68,40 +77,11 @@ export default function FamilyRecordDetailFields({
           placeholder="MM-DD-YYYY"
           value={familyRecord.recorded_date}
           onChange={(e) => handleInputChange("recorded_date", e.target.value)}
+          errorMessage={
+            errors.recorded_date && errors.recorded_date._errors.join(", ")
+          }
         />
       </div>
-      {/* <div className="text-2xl font-bold leading-6 max-md:max-w-full">
-        Relative Information
-      </div>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8">
-        <Input
-          isReadOnly={!isEditing}
-          className="mb-4"
-          type="text"
-          label="Relative Name"
-          labelPlacement="outside"
-          value={familyRecord.relative_name}
-          onChange={(e) => handleInputChange("relative_name", e.target.value)}
-        />
-
-        <CustomAutocomplete
-          isDisabled={!isEditing}
-          label="Gender"
-          labelPlacement="outside"
-          data={genders}
-          inputValue={familyRecord.gender}
-          onInputChange={(value) => handleInputChange("gender", value)}
-        />
-        <Input
-          isReadOnly={!isEditing}
-          type="date"
-          label="Birthdate"
-          labelPlacement="outside"
-          placeholder="MM-DD-YYYY"
-          value={familyRecord.birthdate}
-          onChange={(e) => handleInputChange("birthdate", e.target.value)}
-        />
-      </div> */}
     </>
   );
-};
+}

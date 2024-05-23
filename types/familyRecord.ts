@@ -19,9 +19,6 @@ export const FamilyRecordSchema: ZodType<FamilyRecord> = z
       })
       .min(1, {
         message: "El nombre es requerido",
-      })
-      .regex(/^[a-zA-Z\s]*$/, {
-        message: "El nombre solo puede contener letras",
       }),
     reason: z
       .string({
@@ -37,7 +34,6 @@ export const FamilyRecordSchema: ZodType<FamilyRecord> = z
       .min(1, {
         message: "El estado clínico es requerido",
       }),
-    onset_date: z.string().optional(),
     recorded_date: z
       .string({
         message: "La fecha de registro es requerida",
