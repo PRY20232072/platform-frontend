@@ -31,12 +31,6 @@ export default function PatientDemographicBasicInfo() {
           >
             <User2 className='w-12 h-12 text-white' color='white' />
           </div>
-          <div
-            className='absolute top-0 right-0 w-8 h-8 bg-blue-100 rounded-full flex justify-center items-center'
-            aria-label='Edit profile'
-          >
-            <Pencil className='w-4 h-4' color='black' />
-          </div>
         </div>
       </div>
     </CustomSuspense>

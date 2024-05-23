@@ -10,6 +10,7 @@ interface CustomAutocompleteProps {
   isDisabled: boolean;
   selectedKey: string;
   onSelectionChange?: (value: any) => void;
+  errorMessage?: string;
 }
 
 const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
@@ -20,11 +21,11 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
   isDisabled,
   selectedKey,
   onSelectionChange,
+  errorMessage,
 }) => {
   return (
     <div className='mb-4'>
       <Autocomplete
-        isRequired
         isDisabled={isDisabled}
         label={label}
         labelPlacement={labelPlacement}
@@ -32,6 +33,7 @@ const CustomAutocomplete: React.FC<CustomAutocompleteProps> = ({
         selectedKey={selectedKey}
         allowsCustomValue={false}
         onSelectionChange={onSelectionChange}
+        errorMessage={errorMessage}
       >
         {data.map((item) => (
           <AutocompleteItem key={item.value} value={item.value}>

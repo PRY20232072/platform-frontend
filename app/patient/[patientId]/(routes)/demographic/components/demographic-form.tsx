@@ -10,11 +10,13 @@ import Loading from "@/components/loading";
 import { toast } from "react-toastify";
 import patientService from "@/services/patientService";
 import PatientDemographicFields from "@/components/patient/patient-demographic-fields";
+import { Patient, PatientSchema } from "@/types/patient";
 
 export default function PatientDemographicForm() {
-  const [patient, setPatient] = useState(emptyPatient);
+  const [patient, setPatient] = useState<Patient>(emptyPatient);
   const [isRegisterPatient, setIsRegisterPatient] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [errors, setErrors] = useState<any>({});
   const { response: getPatientByIdResponse, fetchData: getPatientById } =
     useApi();
   const { response: updatePatientResponse, fetchData: updatePatient } =
@@ -54,19 +56,15 @@ export default function PatientDemographicForm() {
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (patient.telephone && !patient.telephone.match(/^9\d{8}$/)) {
-      toast.error("Número de telefono inválido", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-      });
-      return;
-    }
 
+    // Validate patient data before sending it to the server
+    const patientParsed = PatientSchema.safeParse(patient);
+    if (patientParsed.error) {
+      setErrors(patientParsed.error.format());
+      return;
+    } else {
+      setErrors({});
+    }
 
     if (isRegisterPatient) {
       await updatePatient(
@@ -77,6 +75,7 @@ export default function PatientDemographicForm() {
         patientService.createPatient(session?.user?.id as string, patient)
       );
     }
+
     setIsEditing(!isEditing);
 
     toast.info("Información actualizada", {
@@ -91,19 +90,19 @@ export default function PatientDemographicForm() {
   };
 
   const handleInputChange = (key: string, value: any) => {
-    if (key.includes('address')){
-      const [prop, field] = key.split('.');
+    if (key.includes("address")) {
+      const [prop, field] = key.split(".");
       setPatient((prevState: any) => ({
         ...prevState,
         [prop]: {
           ...prevState[prop],
-          [field]: value
-        }
+          [field]: value,
+        },
       }));
     } else {
       setPatient((prevState: any) => ({
         ...prevState,
-        [key]: value
+        [key]: value,
       }));
     }
   };
@@ -118,6 +117,7 @@ export default function PatientDemographicForm() {
           patient={patient}
           isEditing={isEditing}
           handleInputChange={handleInputChange}
+          errors={errors}
         />
         <div className="flex justify-center">
           {isEditing ? (

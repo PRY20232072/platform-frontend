@@ -44,6 +44,7 @@ export default function PatientDemographicInformation() {
             patient={patient}
             isEditing={false}
             handleInputChange={() => {}}
+            errors={{}}
           />
         </CardBody>
       </Card>
