@@ -60,7 +60,6 @@ const familyRecordStatus = [
 const allergyTableColumns = [
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
-  { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
@@ -88,7 +87,6 @@ const familyRecordAccessTableColumns = [
 
 const familyRecordTableColumns = [
   { name: "DETALLE", uid: "notes", sortable: true },
-  { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
