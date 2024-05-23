@@ -21,8 +21,6 @@ import districsData from "@/data/districts.json";
 import { PractitionerSchema } from "@/types/practitioner";
 
 export default function PractitionerProfileForm() {
-  const [isInvalid, setIsInvalid] = useState(false);
-  const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
   const [practitioner, setPractitioner] = useState(emptyPractitioner);
   const [provincesOptions, setProvincesOptions] = useState<
     { id: string; name: string; department_id: string }[]
@@ -31,12 +29,6 @@ export default function PractitionerProfileForm() {
     { id: string; name: string; province_id: string }[]
   >([]);
   const [errors, setErrors] = useState<any>({});
-
-  useEffect(() => {
-    setIsInvalid(
-      practitioner.telephone ? !validatePhone(practitioner.telephone) : false
-    );
-  }, [practitioner.telephone]);
 
   useEffect(() => {
     if (practitioner.address.department) {
@@ -257,8 +249,6 @@ export default function PractitionerProfileForm() {
                   label="Número de teléfono	"
                   labelPlacement="outside"
                   placeholder="Complete el número de teléfono"
-                  isInvalid={isInvalid}
-                  color={isInvalid ? "danger" : "default"}
                   value={practitioner.telephone}
                   onChange={(e) => {
                     setPractitioner({
