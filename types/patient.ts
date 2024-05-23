@@ -107,6 +107,9 @@ export const PatientSchema: ZodType<Patient> = z
           message: "El código postal es requerido",
           invalid_type_error: "El código postal debe ser un número",
         })
+        .min(5, {
+          message: "El código postal debe tener mínimo 5 dígitos",
+        })
         .max(5, {
           message: "El código postal debe tener máximo 5 dígitos",
         })
