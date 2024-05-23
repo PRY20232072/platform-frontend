@@ -60,10 +60,6 @@ const CustomAutoCompleteLarge: React.FC<CustomAutocompleteProps> = ({
         selectedKey={selectedKey}
         allowsCustomValue={false}
         onSelectionChange={onSelectionChange}
-        isLoading={isLoading}
-        scrollRef={scrollerRef}
-        onOpenChange={setIsOpen}
-        defaultItems={items}
       >
         {/*       <List height={200} itemCount={data.length} itemSize={35} width='100%'>
           {Row}

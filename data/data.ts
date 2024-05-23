@@ -48,7 +48,6 @@ const familyRecordStatus = [
 ];
 
 const attentionTableColumns = [
-  { name: "ID", uid: "attention_id", sortable: true },
   { name: "FECHA DE REGISTRO", uid: "recorded_date", sortable: true },
   { name: "TIPO DE ATENCIÓN", uid: "typeOfAttention", sortable: true },
   {
@@ -89,8 +88,15 @@ const timeOfDiseasePeriod = [
   { label: "AÑOS", value: "YEARS" },
 ];
 
+const timeOfDiseasePeriodUnit = [
+  { label: "DIA", value: "DAY" },
+  { label: "SEMANA", value: "WEEK" },
+  { label: "MES", value: "MONTH" },
+  { label: "AÑO", value: "YEAR" },
+]
+
 const typeOfDiagnosis = [
-  { label: "HIPÓTESIS", value: "HYPOTHESIS" },
+  { label: "PRESUNTIVO", value: "PRESUMPTIVE" },
   { label: "CONFIRMADO", value: "CONFIRMED" },
 ];
 
@@ -226,7 +232,6 @@ const platformaPractitionerEventsTableColumns = [
 ];
 
 const selectedPatientAllergiesTableColumns = [
-  { name: "ID", uid: "allergy_id", sortable: true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
@@ -257,6 +262,7 @@ const emptyPatient = {
     department: "",
     postal_code: "",
   },
+  dni: "",
 };
 
 const emptyPractitioner = {
@@ -277,7 +283,6 @@ const emptyPractitioner = {
 };
 
 const practitionerFamilyRecordsTableColumns = [
-  { name: "ID", uid: "familyHistory_id", sortable: true },
   { name: "DETALLE", uid: "notes", sortable: true },
   { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
@@ -371,4 +376,5 @@ export {
   typeOfAttentionMap,
   timeOfDiseasePeriod,
   typeOfDiagnosis,
+  timeOfDiseasePeriodUnit,
 };
