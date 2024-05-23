@@ -23,23 +23,10 @@ import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";
 import notificationsService from "@/services/notificationsService";
 import { toast } from "react-toastify";
-
-type PatientFamilyRecord = {
-  name: string;
-  patient_id: string;
-  participant_id: string;
-  reason: string;
-  clinical_status: string;
-  onset_date: string;
-  recorded_date: string;
-  notes: string;
-  // family_name: string;
-  // family_gender: string;
-  // family_birthdate: string;
-};
+import { FamilyRecord } from "@/types/familyRecord";
 
 interface FamilyRecordSelectedPractitionerProps {
-  familyRecord: PatientFamilyRecord;
+  familyRecord: FamilyRecord;
   familyRecordFormModalClose: () => void;
   formIsValid: boolean;
 }
@@ -128,8 +115,8 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
 };
 
 export const FamilyRecordFormModal = () => {
-  const [familyRecord, setRecord] = useState<PatientFamilyRecord>(
-    {} as PatientFamilyRecord
+  const [familyRecord, setRecord] = useState<FamilyRecord>(
+    {} as FamilyRecord
   );
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = useParams();
@@ -148,9 +135,6 @@ export const FamilyRecordFormModal = () => {
       onset_date: "",
       recorded_date: "",
       notes: "",
-      // family_name: '',
-      // family_gender: 'MALE',
-      // family_birthdate: '',
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
     });
@@ -222,20 +206,6 @@ export const FamilyRecordFormModal = () => {
                   <div className='text-red-500 text-sm'>{errors.name}</div>
                 )}
 
-                {/* <Input
-                  type="date"
-                  label="Record Date"
-                  placeholder="Complete the relative birthdate"
-                  classNames={{ label: 'text-md font-bold' }}
-                  value={familyRecord.recorded_date}
-                  onChange={(e) => {
-                    setRecord({
-                      ...familyRecord,
-                      family_birthdate: e.target.value,
-                    });
-                  }}
-                /> */}
-
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
                   label='Razón'
@@ -275,17 +245,6 @@ export const FamilyRecordFormModal = () => {
                 {errors.notes && (
                   <div className='text-red-500 text-sm'>{errors.notes}</div>
                 )}
-                {/* <RadioOptions
-                  label="Gender"
-                  defaultValue={genders[0].value}
-                  data={genders}
-                  onChange={(e) => {
-                    setRecord({
-                      ...familyRecord,
-                      family_gender: e.target.value,
-                    });
-                  }}
-                /> */}
 
                 <RadioOptions
                   label='Estado'
