@@ -30,8 +30,6 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useApi } from "@/hooks/useApi";
-import familyRecordService from "@/services/familyRecordService";
-import notificationsService from "@/services/notificationsService";
 import { toast } from "react-toastify";
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
 import { CustomAutoCompleteLarge } from "@/components/ui/auto-complete-large";
@@ -141,7 +139,7 @@ const ConfirmModal: React.FC<AtentionProps> = ({
       })
     );
    
-    //location.reload();
+    location.reload();
     onClose();
     atentionFormModalClose();
     toast.success("Atención creada con éxito");

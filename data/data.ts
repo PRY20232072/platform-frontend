@@ -13,6 +13,24 @@ const genders = [
   { label: "OTRO", value: "OTHER" },
 ];
 
+const rellationships = [
+  { label: "PADRE", value: "FATHER" },
+  { label: "MADRE", value: "MOTHER" },
+  { label: "HIJO", value: "SON" },
+  { label: "HIJA", value: "DAUGHTER" },
+  { label: "ABUELO", value: "GRANDFATHER" },
+  { label: "ABUELA", value: "GRANDMOTHER" },
+  { label: "HERMANO", value: "BROTHER" },
+  { label: "HERMANA", value: "SISTER" },
+  { label: "TIO", value: "UNCLE" },
+  { label: "TIA", value: "AUNT" },
+  { label: "PRIMO", value: "COUSIN" },
+  { label: "PRIMA", value: "COUSIN" },
+  { label: "SOBRINO", value: "NEPHEW" },
+  { label: "SOBRINA", value: "NIECE" },
+  { label: "OTRO", value: "OTHER" },
+];
+
 const addressTypes = [
   { label: "POSTAL", value: "POSTAL" },
   { label: "FISICA", value: "PHYSICAL" },
@@ -283,7 +301,7 @@ const emptyPractitioner = {
 };
 
 const practitionerFamilyRecordsTableColumns = [
-  { name: "DETALLE", uid: "notes", sortable: true },
+  { name: "CONDICIÓN", uid: "notes", sortable: true },
   { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
@@ -326,6 +344,12 @@ const allergyTypesMap: Record<string, string> = {
   AMINES: "AMINAS",
   OTHER: "OTRO",
 };
+
+const genderMap: Record<string, string> = {
+  MALE: "Hombre",
+  FEMALE: "Mujer",
+  OTHER: "Otro",
+}
 
 const familyRecordStatusMap: Record<string, string> = {
   PARTIAL: "PARCIAL",
@@ -377,4 +401,6 @@ export {
   timeOfDiseasePeriod,
   typeOfDiagnosis,
   timeOfDiseasePeriodUnit,
+  genderMap,
+  rellationships
 };

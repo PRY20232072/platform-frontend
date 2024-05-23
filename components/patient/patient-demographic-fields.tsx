@@ -130,6 +130,7 @@ export default function PatientDemographicFields({
             label='Fecha de nacimiento'
             labelPlacement='outside'
             placeholder='Selecciona una fecha'
+            color={isInvalidBirthdate ? "danger" : "default"}
             value={patient.birthDate}
             onChange={(e) => handleInputChange("birthDate", e.target.value)}
             isInvalid={isInvalidBirthdate}

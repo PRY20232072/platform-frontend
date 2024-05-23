@@ -25,13 +25,17 @@ export default function PractitionerProfileForm() {
   const [isInvalidBirthdate, setIsInvalidBirthdate] = useState(false);
 
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
-  const validatePostalCode = (postalCode: string) => postalCode.match(/^\d{5}$/);
+  const validatePostalCode = (postalCode: string) =>
+    postalCode.match(/^\d{5}$/);
   const validateBirthdate = (birthdate: string) => {
     const today = new Date();
     const birthdateDate = new Date(birthdate);
     let age = today.getFullYear() - birthdateDate.getFullYear();
     const month = today.getMonth() - birthdateDate.getMonth();
-    if (month < 0 || (month === 0 && today.getDate() < birthdateDate.getDate())) {
+    if (
+      month < 0 ||
+      (month === 0 && today.getDate() < birthdateDate.getDate())
+    ) {
       age--;
     }
     return age >= 18;
@@ -48,10 +52,17 @@ export default function PractitionerProfileForm() {
     setIsInvalid(
       practitioner.telephone ? !validatePhone(practitioner.telephone) : false
     );
-    setIsPCInvalid(practitioner.address.postal_code ? !validatePostalCode(practitioner.address.postal_code) : false);
-    setIsInvalidBirthdate(practitioner.birthDate ? !validateBirthdate(practitioner.birthDate) : false);
- 
-  }, [practitioner.telephone]);
+    setIsPCInvalid(
+      practitioner.address.postal_code
+        ? !validatePostalCode(practitioner.address.postal_code)
+        : false
+    );
+    setIsInvalidBirthdate(
+      practitioner.birthDate
+        ? !validateBirthdate(practitioner.birthDate)
+        : false
+    );
+  }, [practitioner.telephone, practitioner.birthDate, practitioner.address.postal_code]);
 
   useEffect(() => {
     if (practitioner.address.department) {
@@ -170,6 +181,7 @@ export default function PractitionerProfileForm() {
       draggable: true,
       theme: "colored",
     });
+    location.reload();
   };
 
   return (
@@ -232,6 +244,7 @@ export default function PractitionerProfileForm() {
                     });
                   }}
                   isInvalid={isInvalidBirthdate}
+                  color={isInvalidBirthdate ? "danger" : "default"}
                   max='2024-01-01'
                   errorMessage={
                     !practitioner.birthDate
@@ -273,7 +286,11 @@ export default function PractitionerProfileForm() {
                       telephone: e.target.value,
                     });
                   }}
-                  errorMessage={!practitioner.telephone ? "Ingrese su número de teléfono": isInvalid  && "Por favor, ingrese un número válido"}
+                  errorMessage={
+                    !practitioner.telephone
+                      ? "Ingrese su número de teléfono"
+                      : isInvalid && "Por favor, ingrese un número válido"
+                  }
                   maxLength={9}
                 />
               </div>
@@ -367,8 +384,11 @@ export default function PractitionerProfileForm() {
                       },
                     });
                   }}
-                  errorMessage={!practitioner.address.address_line ? "Ingrese su dirección de residencia":""}
-
+                  errorMessage={
+                    !practitioner.address.address_line
+                      ? "Ingrese su dirección de residencia"
+                      : ""
+                  }
                 />
               </div>
 
@@ -376,6 +396,8 @@ export default function PractitionerProfileForm() {
                 <Input
                   isRequired
                   isReadOnly={!isEditing}
+                  isInvalid={isPCInvalid}
+                  color={isPCInvalid ? "danger" : "default"}
                   type='text'
                   label='Código Postal'
                   labelPlacement='outside'
@@ -390,7 +412,12 @@ export default function PractitionerProfileForm() {
                       },
                     });
                   }}
-                  errorMessage={!practitioner.address.postal_code ? "Ingrese su código postal": isPCInvalid  && "Por favor, ingrese un código postal válido!"}
+                  errorMessage={
+                    !practitioner.address.postal_code
+                      ? "Ingrese su código postal"
+                      : isPCInvalid &&
+                        "Por favor, ingrese un código postal válido!"
+                  }
                   maxLength={5}
                 />
               </div>
@@ -404,6 +431,7 @@ export default function PractitionerProfileForm() {
                 className='text-red-600 font-medium leading-6 whitespace-nowrap justify-center items-center bg-red-300 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl'
                 onClick={() => {
                   setIsEditing(!isEditing);
+                  setPractitioner(getPractitionerByIdResponse.data);
                 }}
               >
                 Cancelar

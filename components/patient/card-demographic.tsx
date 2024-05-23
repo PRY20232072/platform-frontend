@@ -10,7 +10,7 @@ import {
   Divider,
   Button,
 } from "@nextui-org/react";
-import { emptyPatient } from "@/data/data";
+import { emptyPatient, genderMap } from "@/data/data";
 import { useApi } from "@/hooks/useApi";
 import { useSession } from "next-auth/react";
 import patientService from "@/services/patientService";
@@ -105,7 +105,7 @@ export const CardDemographic = () => {
                   label="ID"
                   value={session?.user?.id as string}
                 />
-                <DemographicInfo label="Género" value={patient.gender} />
+                <DemographicInfo label="Género" value={genderMap[patient.gender]} />
                 <DemographicInfo
                   label="Dirección"
                   value={patient.address.address_line}
