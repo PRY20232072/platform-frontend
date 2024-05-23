@@ -29,14 +29,6 @@ export default function PractitionerProfileBasicInfo() {
               color="white"
             />
           </div>
-          <div className="w-8 h-8 left-[84px] top-0 absolute">
-            <div className="w-8 h-8 left-0 top-0 absolute bg-blue-100 rounded-full">
-              <Pencil
-                className="w-4 h-4  top-1/4 left-1/4 absolute"
-                color="black"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </CustomSuspense>
