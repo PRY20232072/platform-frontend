@@ -117,10 +117,9 @@ export default function PractitionerProfileForm() {
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('practitioner', practitioner);
+
     const practitionerParsed = PractitionerSchema.safeParse(practitioner);
     if (practitionerParsed.error) {
-      console.log("errors", practitionerParsed.error.format());
       setErrors(practitionerParsed.error.format());
       return;
     } else {
