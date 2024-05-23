@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -13,6 +13,7 @@ import AllergyDetailFields from "@/components/allergy/allergy-detail-fields";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import notificationsService from "@/services/notificationsService";
+import { AllergyRecordSchema } from "@/types/allergyRecord";
 
 type PatientAllergyDetailProps = {
   allergy: any;
@@ -27,6 +28,7 @@ export default function PatientAllergyDetail({
   isEditing,
   setIsEditing,
 }: PatientAllergyDetailProps) {
+  const [errors, setErrors] = useState<any>({});
   const { response: allergyResponse, fetchData: getAllergy } = useApi();
   const { response: updateAllergyResponse, fetchData: updateAllergy } =
     useApi();
@@ -58,6 +60,16 @@ export default function PatientAllergyDetail({
 
   const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Validate allergy data before sending it to the server
+    const allergyRecordParsed = AllergyRecordSchema.safeParse(allergy);
+    if (allergyRecordParsed.error) {
+      setErrors(allergyRecordParsed.error.format());
+      return;
+    } else {
+      setErrors({});
+    }
+
     await updateAllergy(
       allergyIntoleranceService.updateAllergy(
         allergy.allergy_id,
@@ -93,6 +105,7 @@ export default function PatientAllergyDetail({
               allergy={allergy}
               isEditing={isEditing}
               handleInputChange={handleInputChange}
+              errors={errors}
             />
             <div className="flex justify-center">
               {isEditing ? (

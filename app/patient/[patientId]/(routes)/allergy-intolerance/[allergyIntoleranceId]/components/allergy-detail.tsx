@@ -44,6 +44,7 @@ export default function AllergyDetail({ allergy, setAllergy }: AllergyDetailProp
               allergy={allergy}
               isEditing={false}
               handleInputChange={() => {}}
+              errors={{}}
             />
           </form>
         </CardBody>
