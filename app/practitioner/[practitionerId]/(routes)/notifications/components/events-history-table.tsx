@@ -64,7 +64,7 @@ const EventsHistoryTable = () => {
                   onOpen();
                 }}
               >
-                View details
+                Ver detalles
               </Button>
             </div>
           );

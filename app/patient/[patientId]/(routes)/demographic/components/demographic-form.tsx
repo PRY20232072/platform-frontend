@@ -88,6 +88,7 @@ export default function PatientDemographicForm() {
       draggable: true,
       theme: "colored",
     });
+    location.reload();
   };
 
   const handleInputChange = (key: string, value: any) => {
@@ -126,6 +127,7 @@ export default function PatientDemographicForm() {
                 className="text-red-600 font-medium leading-6 whitespace-nowrap justify-center items-center bg-red-300 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl"
                 onClick={() => {
                   setIsEditing(!isEditing);
+                  setPatient(getPatientByIdResponse.data);
                 }}
               >
                 Cancelar

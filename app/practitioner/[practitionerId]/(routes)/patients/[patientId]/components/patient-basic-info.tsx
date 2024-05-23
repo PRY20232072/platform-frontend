@@ -44,7 +44,7 @@ export default function PatientBasicInfo() {
             {patient.name_id}
           </p>
           <p className='text-neutral-400 text-base leading-10'>
-            ID: {patient.patient_id}
+            DNI: {patient.dni}
           </p>
         </div>
         <div className='relative w-full max-w-[116px] h-[115.5px] md:block hidden'>

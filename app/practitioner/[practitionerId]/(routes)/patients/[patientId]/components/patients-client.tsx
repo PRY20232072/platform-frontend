@@ -7,18 +7,26 @@ import PatientDemographicInformation from "./patient-demographic-information";
 import PatientDocuments from "./patient-documents";
 import PatientAttentionHistoryTable from "./patient-attention-history-table";
 import { EncounterFormModal } from "@/components/modal/encounter-form";
+import { useParams} from "next/navigation";
+import { Key, useState } from "react";
+import Link from "next/link";
 
 export default function PatientsClient() {
+  const params = useParams();
+  const [selected, setSelected] = useState("demographic-info");
+
   return (
     <>
       <Tabs
         aria-label='Options'
-        classNames={{ tabList: "bg-sky-100", tabContent: "text-black" }}
-      >
-        <Tab key='demographic_info' title='Información demográfica'>
+        classNames={{ tabList: "bg-sky-100", tabContent: "text-black" } }
+        selectedKey={selected}
+        onSelectionChange={(value: Key) => setSelected(value.toString())}  
+       >
+        <Tab key='demographic-info' title='Información demográfica'>
           <PatientDemographicInformation />
         </Tab>
-        <Tab key='attention_history' title='Historial de atenciones'>
+        <Tab as={Link} key='encounters' title='Historial de atenciones' href={`${params.patientId}/encounters`}>
           <Card className='self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full'>
             <CardBody>
               <EncounterFormModal />
@@ -26,15 +34,15 @@ export default function PatientsClient() {
             </CardBody>
           </Card>
         </Tab>
-        <Tab key='familyRecords' title='Historial Familiar'>
+        <Tab key='familyrecords' title='Antecedente Familiar' href={`${params.patientId}/familyrecords`}>
           <Card className='self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full'>
             <CardBody>
               <FamilyRecordFormModal />
               <PatientFamilyRecordsTable />
             </CardBody>
           </Card>
-        </Tab>
-        <Tab key='allergies' title='Alergias'>
+        </Tab> 
+        <Tab key='allergies' title='Alergias' href={`${params.patientId}/allergies`}>
           <Card className='self-stretch flex flex-col  p-5 rounded-2xl max-md:max-w-full'>
             <CardBody>
               <AllergyFormModal />
@@ -42,7 +50,7 @@ export default function PatientsClient() {
             </CardBody>
           </Card>
         </Tab>
-        <Tab key='documents' title='Documentos'>
+        <Tab key='documents' title='Documentos' href={`${params.patientId}/documents`}>
           <PatientDocuments />
         </Tab>
       </Tabs>

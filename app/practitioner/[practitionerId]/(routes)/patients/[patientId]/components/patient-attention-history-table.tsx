@@ -67,7 +67,7 @@ const PatientAttentionHistoryTable = () => {
                 size="sm"
                 variant={"solid"}
                 onClick={() =>
-                  router.push(`${params.patientId}/attention-history/${attention.attention_id}`)
+                  router.push(`/practitioner/${params.practitionerId}/patients/${params.patientId}/attention-history/${attention.attention_id}`)
                 }
               >
                 Ver más

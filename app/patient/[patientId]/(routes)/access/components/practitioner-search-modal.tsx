@@ -66,48 +66,49 @@ const ConfirmModal: React.FC<SelectedPractitionerProps> = ({
 
     onClose();
     searchModalClose();
+    location.reload();
   };
 
   return (
     <>
       <Button
-        className="text-sm font-medium "
+        className='text-sm font-medium '
         onPress={onOpen}
-        radius="sm"
-        size="sm"
-        color="primary"
-        variant="flat"
+        radius='sm'
+        size='sm'
+        color='primary'
+        variant='flat'
       >
         Seleccionar
       </Button>
       <Modal
-        backdrop="blur"
+        backdrop='blur'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="w-[700px] max-w-full"
+        className='w-[700px] max-w-full'
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className='flex flex-col gap-1'>
                 Confirmación
-                <span className="text-default-400 text-small">
+                <span className='text-default-400 text-small'>
                   ¿Está seguro de brindar acceso a su registro al siguiente
                   profesional de la salud?
                 </span>
               </ModalHeader>
               <ModalBody>
                 <Table
-                  color="primary"
-                  aria-label="Selected Health practitioner table"
-                  selectionBehavior="toggle"
+                  color='primary'
+                  aria-label='Selected Health practitioner table'
+                  selectionBehavior='toggle'
                   isHeaderSticky
-                  selectionMode="single"
+                  selectionMode='single'
                 >
                   <TableHeader columns={columns}>
                     {(column) => (
                       <TableColumn
-                        className="text-bold"
+                        className='text-bold'
                         key={column.uid}
                         align={column.uid === "actions" ? "center" : "start"}
                         allowsSorting={column.sortable}
@@ -121,7 +122,7 @@ const ConfirmModal: React.FC<SelectedPractitionerProps> = ({
                       "No hay profesionales de la salud disponibles"
                     }
                   >
-                    <TableRow key="1">
+                    <TableRow key='1'>
                       <TableCell>{practitioner.name}</TableCell>
                       <TableCell>{practitioner.id}</TableCell>
                       <TableCell>{practitioner.email}</TableCell>
@@ -131,10 +132,10 @@ const ConfirmModal: React.FC<SelectedPractitionerProps> = ({
                 </Table>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button color='danger' variant='flat' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color="primary" onPress={handleCreateConsent}>
+                <Button color='primary' onPress={handleCreateConsent}>
                   Aceptar
                 </Button>
               </ModalFooter>
@@ -148,7 +149,7 @@ const ConfirmModal: React.FC<SelectedPractitionerProps> = ({
 
 const PractitionerSearchModal = ({
   practitioners,
-  createConsent
+  createConsent,
 }: PractitionerSearchProps) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
@@ -159,7 +160,7 @@ const PractitionerSearchModal = ({
       switch (columnKey) {
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <ConfirmModal
                 columns={practitionerTableColumns}
                 practitioner={practitioner}
@@ -176,36 +177,36 @@ const PractitionerSearchModal = ({
   );
 
   return (
-    <div className="items-stretch justify-end   gap-4 inline-flex mb-3">
+    <div className='items-stretch justify-end   gap-4 inline-flex mb-3'>
       <Button
         onPress={onOpen}
-        className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
+        className='text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex'
       >
-        Agregar nuevo <Plus className="h-4 w-4" />
+        Agregar nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        className="w-[700px] max-w-full"
+        className='w-[700px] max-w-full'
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className='flex flex-col gap-1'>
                 Buscar profesional de la salud
               </ModalHeader>
 
               <Table
-                color="primary"
-                aria-label="Health practitioner collection table"
-                selectionBehavior="toggle"
+                color='primary'
+                aria-label='Health practitioner collection table'
+                selectionBehavior='toggle'
                 isHeaderSticky
-                selectionMode="single"
+                selectionMode='single'
               >
                 <TableHeader columns={practitionersTableColumns}>
                   {(column) => (
                     <TableColumn
-                      className="text-bold"
+                      className='text-bold'
                       key={column.uid}
                       align={column.uid === "actions" ? "center" : "start"}
                       allowsSorting={column.sortable}

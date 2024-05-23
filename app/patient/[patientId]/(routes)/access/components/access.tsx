@@ -116,6 +116,7 @@ const Access = () => {
     await revokeConsent(
       consentService.revokeConsent(consent.patient_id, consent.practitioner_id)
     );
+    location.reload();
   };
 
   return (
