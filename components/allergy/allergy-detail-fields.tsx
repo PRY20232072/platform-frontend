@@ -17,6 +17,7 @@ export default function AllergyDetailFields({
     <div className='gap-5 flex flex-col items-stretch'>
       <div className='flex flex-col items-stretch w-full'>
         <Input
+          isRequired
           isReadOnly={!isEditing}
           className='mb-4'
           type='text'
@@ -56,6 +57,7 @@ export default function AllergyDetailFields({
       />
 
       <Textarea
+        isRequired
         isReadOnly={!isEditing}
         disableAnimation
         disableAutosize

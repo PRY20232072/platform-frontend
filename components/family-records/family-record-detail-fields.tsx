@@ -26,17 +26,28 @@ export default function FamilyRecordDetailFields({
           onChange={(e) => handleInputChange("name", e.target.value)}
         />
 
-        <CustomAutocomplete
-          isDisabled={!isEditing}
-          label='Estado clínico'
+        <Input
+          isReadOnly={!isEditing}
+          type='date'
+          label='Fecha de nacimiento'
           labelPlacement='outside'
-          data={familyRecordStatus}
-          selectedKey={familyRecord.clinical_status}
-          onSelectionChange={(value) =>
-            handleInputChange("clinical_status", value)
+          placeholder='MM-DD-YYYY'
+          value={familyRecord.relativeBirthdate}
+          onChange={(e) =>
+            handleInputChange("relativeBirthdate", e.target.value)
           }
         />
       </div>
+      <CustomAutocomplete
+        isDisabled={!isEditing}
+        label='Estado clínico'
+        labelPlacement='outside'
+        data={familyRecordStatus}
+        selectedKey={familyRecord.clinical_status}
+        onSelectionChange={(value) =>
+          handleInputChange("clinical_status", value)
+        }
+      />
       <CustomAutocomplete
         isDisabled={!isEditing}
         label='Parentesco'
@@ -44,6 +55,15 @@ export default function FamilyRecordDetailFields({
         data={relationships}
         selectedKey={familyRecord.relationship}
         onSelectionChange={(value) => handleInputChange("relationship", value)}
+      />
+
+      <CustomAutocomplete
+        isDisabled={!isEditing}
+        label='Género'
+        labelPlacement='outside'
+        data={genders}
+        selectedKey={familyRecord.gender}
+        onSelectionChange={(value) => handleInputChange("gender", value)}
       />
 
       <Textarea
@@ -55,16 +75,6 @@ export default function FamilyRecordDetailFields({
         labelPlacement='outside'
         value={familyRecord.notes}
         onChange={(e) => handleInputChange("notes", e.target.value)}
-      />
-
-      <Input
-        isReadOnly={!isEditing}
-        type='date'
-        label='Fecha de nacimiento'
-        labelPlacement='outside'
-        placeholder='MM-DD-YYYY'
-        value={familyRecord.relativeBirthdate}
-        onChange={(e) => handleInputChange("relativeBirthdate", e.target.value)}
       />
     </div>
   );

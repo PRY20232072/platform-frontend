@@ -154,12 +154,12 @@ export const AllergyFormModal = () => {
     const errors = {} as any;
 
     if (!allergy.name) {
-      errors.name = "El nombre es requerido";
+      errors.name = "La descripción es requerida";
       valid = false;
     }
 
     if (!allergy.allergy_notes) {
-      errors.allergy_notes = "La nota es requerida";
+      errors.allergy_notes = "Las reacciones son requeridas";
       valid = false;
     }
 
@@ -186,34 +186,8 @@ export const AllergyFormModal = () => {
               <ModalHeader className='flex flex-col gap-1 font-bold'>
                 Cuestionario de Alergias
               </ModalHeader>
+
               <ModalBody>
-                <RadioOptions
-                  label='Tipo'
-                  defaultValue={allergyTypes[0].value}
-                  data={allergyTypes}
-                  value={allergy.type}
-                  onValueChange={(value) => {
-                    setAllergy({ ...allergy, type: value });
-                  }}
-                />
-                <RadioOptions
-                  label='Categoría'
-                  defaultValue={allergyCategories[0].value}
-                  data={allergyCategories}
-                  value={allergy.category}
-                  onValueChange={(value) => {
-                    setAllergy({ ...allergy, category: value });
-                  }}
-                />
-                <RadioOptions
-                  label='Estado'
-                  defaultValue={allergyStatus[0].value}
-                  data={allergyStatus}
-                  value={allergy.clinical_status}
-                  onValueChange={(value) => {
-                    setAllergy({ ...allergy, clinical_status: value });
-                  }}
-                />
                 <Input
                   label='Descripción de la alergia'
                   placeholder='Complete el descripción de la alergia'
@@ -230,6 +204,34 @@ export const AllergyFormModal = () => {
                 {errors.name && (
                   <div className='text-red-500'>{errors.name}</div>
                 )}
+
+                <RadioOptions
+                  label='Categoría'
+                  defaultValue={allergyCategories[0].value}
+                  data={allergyCategories}
+                  value={allergy.category}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, category: value });
+                  }}
+                />
+                <RadioOptions
+                  label='Estado clinicos'
+                  defaultValue={allergyStatus[0].value}
+                  data={allergyStatus}
+                  value={allergy.clinical_status}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, clinical_status: value });
+                  }}
+                />
+                <RadioOptions
+                  label='Tipo'
+                  defaultValue={allergyTypes[0].value}
+                  data={allergyTypes}
+                  value={allergy.type}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, type: value });
+                  }}
+                />
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
                   label='Reacciones'

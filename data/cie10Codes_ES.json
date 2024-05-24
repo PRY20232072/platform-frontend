@@ -32,6 +32,26 @@
         "description": "Fiebre tifoidea con afectación cardiaca"
     },
     {
+        "code": "E09.3",
+        "description": "Diabetes mellitus inducida por fármaco o sustancia química con complicaciones oftálmicas"
+    },
+    {
+        "code": "E09.31",
+        "description": "Diabetes mellitus inducida por fármaco o sustancia química con retinopatía diabética no especificada"
+    },
+    {
+        "code": "E09.311",
+        "description": "Diabetes mellitus inducida por fármaco o sustancia química con retinopatía diabética no especificada con edema macular"
+    },
+    {
+        "code": "E09.319",
+        "description": "Diabetes mellitus inducida por fármaco o sustancia química con retinopatía diabética no especificada sin edema macular"
+    },
+    {
+        "code": "E09.32",
+        "description": "Diabetes mellitus inducida por fármaco o sustancia química con retinopatía diabética no proliferativa leve"
+    },
+    {
         "code": "Z98.891",
         "description": "Historia de cicatriz uterina por cirugía previa"
     },
