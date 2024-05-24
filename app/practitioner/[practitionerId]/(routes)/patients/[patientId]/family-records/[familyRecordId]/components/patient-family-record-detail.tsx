@@ -76,6 +76,7 @@ export default function PatientFamilyRecordDetail() {
     });
 
     setIsEditing(!isEditing);
+    location.reload();
   };
 
   const handleInputChange = (key: string, value: any) => {

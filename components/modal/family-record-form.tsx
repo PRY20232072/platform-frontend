@@ -10,12 +10,13 @@ import {
   ModalFooter,
   Input,
 } from "@nextui-org/react";
+import { CustomAutocomplete } from "@/components/ui/auto-complete";
 
 import { RadioOptions } from "@/components/ui/radio-options";
 
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { familyRecordStatus } from "@/data/data";
+import { familyRecordStatus, genders, relationships } from "@/data/data";
 
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
@@ -28,14 +29,13 @@ type PatientFamilyRecord = {
   name: string;
   patient_id: string;
   participant_id: string;
-  reason: string;
+  relationship: string;
   clinical_status: string;
   onset_date: string;
   recorded_date: string;
   notes: string;
-  // family_name: string;
-  // family_gender: string;
-  // family_birthdate: string;
+  gender: string;
+  relativeBirthdate: string;
 };
 
 interface FamilyRecordSelectedPractitionerProps {
@@ -135,22 +135,21 @@ export const FamilyRecordFormModal = () => {
   const params = useParams();
   const [errors, setErrors] = useState<any>({
     name: "Se requiere el nombre",
-    reason: "Se requiere la razón",
-    notes: "Se requiere la nota",
+    notes: "Se requiere la condición",
+    gender: "Se requiere el género",
   });
   const [formIsValid, setFormIsValid] = useState(false);
 
   useEffect(() => {
     setRecord({
       name: "",
-      reason: "",
       clinical_status: "PARTIAL",
+      gender: "MALE",
       onset_date: "",
       recorded_date: "",
+      relationship: "FATHER",
       notes: "",
-      // family_name: '',
-      // family_gender: 'MALE',
-      // family_birthdate: '',
+      relativeBirthdate: "",
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
     });
@@ -165,17 +164,17 @@ export const FamilyRecordFormModal = () => {
     const errors: any = {};
 
     if (!familyRecord.name) {
-      errors.name = "El nombre es requerido";
+      errors.name = "El nombre del familiar es requerido";
       valid = false;
     }
 
-    if (!familyRecord.reason) {
-      errors.reason = "La razón es requerida";
+    if (!familyRecord.gender) {
+      errors.gender = "El género es requerido";
       valid = false;
     }
 
     if (!familyRecord.notes) {
-      errors.notes = "La nota es requerida";
+      errors.notes = "La condición es requerida";
       valid = false;
     }
 
@@ -206,8 +205,8 @@ export const FamilyRecordFormModal = () => {
               </ModalHeader>
               <ModalBody>
                 <Input
-                  label='Nombre'
-                  placeholder='Escribe el nombre del '
+                  label='Nombre del familiar'
+                  placeholder='Escriba el nombre del familiar'
                   classNames={{ label: "text-md font-bold" }}
                   value={familyRecord.name}
                   onChange={(e) => {
@@ -222,44 +221,57 @@ export const FamilyRecordFormModal = () => {
                   <div className='text-red-500 text-sm'>{errors.name}</div>
                 )}
 
-                {/* <Input
-                  type="date"
-                  label="Record Date"
-                  placeholder="Complete the relative birthdate"
-                  classNames={{ label: 'text-md font-bold' }}
-                  value={familyRecord.recorded_date}
-                  onChange={(e) => {
-                    setRecord({
-                      ...familyRecord,
-                      family_birthdate: e.target.value,
-                    });
-                  }}
-                /> */}
-
-                <Textarea
+                <Input
+                  type='date'
+                  label='Fecha de nacimiento del familiar'
+                  placeholder='Completa la fecha de nacimiento'
                   classNames={{ label: "text-md font-bold" }}
-                  label='Razón'
-                  placeholder='Escribe la razón del registro'
-                  value={familyRecord.reason}
+                  value={familyRecord.relativeBirthdate}
                   onChange={(e) => {
                     setRecord({
                       ...familyRecord,
-                      reason: e.target.value,
+                      relativeBirthdate: e.target.value,
                     });
-                    if (errors.reason) {
-                      setErrors({ ...errors, reason: null });
-                    }
                   }}
-                  isRequired
                 />
-                {errors.reason && (
-                  <div className='text-red-500 text-sm'>{errors.reason}</div>
+                <CustomAutocomplete
+                  isDisabled={false}
+                  label='Parentesco'
+                  labelPlacement='outside'
+                  placeholder='Selecciona el parentesco'
+                  data={relationships}
+                  selectedKey={familyRecord.relationship}
+                  onSelectionChange={(value) =>
+                    setRecord({
+                      ...familyRecord,
+                      relationship: value,
+                    })
+                  }
+                />
+                {errors.gender && (
+                  <div className='text-red-500 text-sm'>{errors.gender}</div>
                 )}
-
+                <CustomAutocomplete
+                  isDisabled={false}
+                  label='Género'
+                  labelPlacement='outside'
+                  placeholder='Selecciona el género'
+                  data={genders}
+                  selectedKey={familyRecord.gender}
+                  onSelectionChange={(value) =>
+                    setRecord({
+                      ...familyRecord,
+                      gender: value,
+                    })
+                  }
+                />
+                {errors.gender && (
+                  <div className='text-red-500 text-sm'>{errors.gender}</div>
+                )}
                 <Textarea
-                  classNames={{ label: "text-md font-bold" }}
-                  label='Nota'
-                  placeholder='Escribe una nota sobre el registro'
+                  classNames={{ label: "text-md font-bold mt-2" }}
+                  label='Condición de salud'
+                  placeholder='Escriba la condición de salud del familiar'
                   value={familyRecord.notes}
                   onChange={(e) => {
                     setRecord({

@@ -16,6 +16,7 @@ import {
   familyRecordStatusMap,
   familyStatusColorMap,
   practitionerFamilyRecordsTableColumns,
+  relationshipMap
 } from "@/data/data";
 import { useParams, useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
@@ -27,12 +28,13 @@ import Loading from "@/components/loading";
 type FamilyRecord = {
   patient_id: string;
   participant_id: string;
-  reason: string;
   clinical_status: string;
   onset_date: string;
   recorded_date: string;
   notes: string;
   familyHistory_id: string;
+  contition: string;
+  relationship : string;
   has_access: string;
   // family_name: string;
   // family_gender: string;
@@ -42,6 +44,7 @@ type FamilyRecord = {
 
 export const PatientFamilyRecordsTable = () => {
   const [familyRecordList, setfamilyRecordList] = useState<FamilyRecord[]>();
+  console.log(familyRecordList)
   const {
     response: getFamilyRecordListResponse,
     fetchData: getFamilyRecordList,
@@ -76,7 +79,9 @@ export const PatientFamilyRecordsTable = () => {
         selected_patient_family_record[columnKey as keyof FamilyRecord];
 
       switch (columnKey) {
-        case "clinical_status":
+        case "relationship":
+          return relationshipMap[cellValue];
+        /* case "clinical_status":
           return (
             <Chip
               color={
@@ -89,7 +94,7 @@ export const PatientFamilyRecordsTable = () => {
             >
               {familyRecordStatusMap[cellValue]}
             </Chip>
-          );
+          ); */
         case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">
@@ -110,7 +115,7 @@ export const PatientFamilyRecordsTable = () => {
                   });
 
                   router.push(
-                    `${params.patientId}/family-records/${selected_patient_family_record.familyHistory_id}`
+                    `/practitioner/${params.practitionerId}/patients/${params.patientId}/family-records/${selected_patient_family_record.familyHistory_id}`
                   );
                 }}
               >
