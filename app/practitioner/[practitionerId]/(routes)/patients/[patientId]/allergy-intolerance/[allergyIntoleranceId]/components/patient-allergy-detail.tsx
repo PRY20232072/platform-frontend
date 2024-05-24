@@ -17,7 +17,7 @@ export default function PatientAllergyDetail() {
   const { response: updateAllergyResponse, fetchData: updateAllergy } =
     useApi();
   const params = useParams();
-
+console.log(allergy)
   useEffect(() => {
     const fetchData = async () => {
       if (params.patientId && params.allergyIntoleranceId) {
@@ -94,7 +94,7 @@ export default function PatientAllergyDetail() {
                 handleInputChange={handleInputChange}
               />
             )}
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-4">
               {isEditing ? (
                 <>
                   <Button

@@ -14,13 +14,13 @@ export default function AllergyDetailFields({
   handleInputChange,
 }: AllergyDetailsProps) {
   return (
-    <div className='gap-5 flex max-md:flex-col max-md:items-stretch'>
-      <div className='flex flex-col items-stretch w-[33%] max-md:w-full max-md:ml-0'>
+    <div className='gap-5 flex flex-col items-stretch'>
+      <div className='flex flex-col items-stretch w-full'>
         <Input
           isReadOnly={!isEditing}
           className='mb-4'
           type='text'
-          label='Nombre'
+          label='Descripción de la alergia'
           labelPlacement='outside'
           value={allergy.name}
           onChange={(e) => handleInputChange("name", e.target.value)}
@@ -35,48 +35,36 @@ export default function AllergyDetailFields({
           onSelectionChange={(value) => handleInputChange("category", value)}
         />
       </div>
-      <div className='flex flex-col items-stretch w-[34%] ml-5 max-md:w-full max-md:ml-0'>
-        <CustomAutocomplete
-          isDisabled={!isEditing}
-          label='Estado clínico'
-          labelPlacement='outside'
-          data={allergyStatus}
-          selectedKey={allergy.clinical_status}
-          onSelectionChange={(value) =>
-            handleInputChange("clinical_status", value)
-          }
-        />
+      <CustomAutocomplete
+        isDisabled={!isEditing}
+        label='Estado clínico'
+        labelPlacement='outside'
+        data={allergyStatus}
+        selectedKey={allergy.clinical_status}
+        onSelectionChange={(value) =>
+          handleInputChange("clinical_status", value)
+        }
+      />
 
-        <Input
-          isReadOnly={!isEditing}
-          type='date'
-          label='Fecha de registro'
-          labelPlacement='outside'
-          value={allergy.recorded_date}
-          onChange={(e) => handleInputChange("recorded_date", e.target.value)}
-        />
-      </div>
-      <div className='flex flex-col items-stretch w-[33%] ml-5 max-md:w-full max-md:ml-0'>
-        <CustomAutocomplete
-          isDisabled={!isEditing}
-          label='Tipo'
-          labelPlacement='outside'
-          data={allergyTypes}
-          selectedKey={allergy.type}
-          onSelectionChange={(value) => handleInputChange("type", value)}
-        />
+      <CustomAutocomplete
+        isDisabled={!isEditing}
+        label='Tipo de alergia'
+        labelPlacement='outside'
+        data={allergyTypes}
+        selectedKey={allergy.type}
+        onSelectionChange={(value) => handleInputChange("type", value)}
+      />
 
-        <Textarea
-          isReadOnly={!isEditing}
-          disableAnimation
-          disableAutosize
-          classNames={{ input: "resize-y min-h-[40px]" }}
-          label='Nota'
-          labelPlacement='outside'
-          value={allergy.allergy_notes}
-          onChange={(e) => handleInputChange("allergy_notes", e.target.value)}
-        />
-      </div>
+      <Textarea
+        isReadOnly={!isEditing}
+        disableAnimation
+        disableAutosize
+        classNames={{ input: "resize-y min-h-[40px]" }}
+        label='Reacciones'
+        labelPlacement='outside'
+        value={allergy.allergy_notes}
+        onChange={(e) => handleInputChange("allergy_notes", e.target.value)}
+      />
     </div>
   );
 }

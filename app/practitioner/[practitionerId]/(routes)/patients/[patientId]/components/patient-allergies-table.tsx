@@ -33,12 +33,8 @@ const statusMap: Record<string, string> = {
 };
 
 const alleryTypesMap: Record<string, string> = {
-  DAIRY: "LÁCTEOS",
-  GLUTEN: "GLUTEN",
-  CAFFEINE: "CAFEÍNA",
-  SALICYLATES: "SALICILATOS",
-  AMINES: "AMINAS",
-  OTHER: "OTRO",
+  ALLERGY: "ALERGIA",
+  INTOLERANCE: "INTOLERANCIA",
 };
 
 type Allergy = {
@@ -64,7 +60,7 @@ export const PatientAllergiesTable = () => {
     useApi();
   const params = useParams();
   const router = useRouter();
-
+  console.log(allergyList);
   useEffect(() => {
     getAllergyList(
       allergyIntoleranceService.getAllergyListByPatientId(
@@ -90,21 +86,21 @@ export const PatientAllergiesTable = () => {
           return (
             <Chip
               color={statusColorMap[selected_patient_allergy.clinical_status]}
-              size="sm"
-              variant="flat"
+              size='sm'
+              variant='flat'
             >
               {statusMap[cellValue]}
             </Chip>
           );
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
-                className="font-medium "
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium '
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => {
                   notificationsService.createNotifications({
                     user_id: params.patientId,
@@ -115,7 +111,7 @@ export const PatientAllergiesTable = () => {
                   });
 
                   router.push(
-                    `${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`
+                    `/practitioner/${params.practitionerId}/patients/${params.patientId}/allergy-intolerance/${selected_patient_allergy.allergy_id}`
                   );
                 }}
               >
@@ -136,11 +132,11 @@ export const PatientAllergiesTable = () => {
         isLoading={getAllergyListResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label="Patient allergy collection table">
+        <Table aria-label='Patient allergy collection table'>
           <TableHeader columns={selectedPatientAllergiesTableColumns}>
             {(column) => (
               <TableColumn
-                className="text-bold"
+                className='text-bold'
                 key={column.uid}
                 align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}

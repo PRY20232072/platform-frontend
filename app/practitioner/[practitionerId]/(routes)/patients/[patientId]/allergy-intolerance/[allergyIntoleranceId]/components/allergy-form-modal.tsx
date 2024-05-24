@@ -62,18 +62,20 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
       })
     );
 
-    notificationsService.createNotifications({
-      user_id: params.patientId,
-      practitioner_id: params.practitionerId,
-      register_id: allergy_id,
-      register_type: "ALLERGY",
-      type: "WRITE",
-    }).then((response) => {
-      location.reload();
-      onClose();
-      allergyFormModalClose();
-      toast.success("Registro de alergia creado con éxito");
-    });
+    notificationsService
+      .createNotifications({
+        user_id: params.patientId,
+        practitioner_id: params.practitionerId,
+        register_id: allergy_id,
+        register_type: "ALLERGY",
+        type: "WRITE",
+      })
+      .then((response) => {
+        location.reload();
+        onClose();
+        allergyFormModalClose();
+        toast.success("Registro de alergia creado con éxito");
+      });
   };
 
   return (
@@ -99,7 +101,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
           {(onClose) => (
             <>
               <ModalHeader className='flex flex-col gap-1'>
-              Confirmación
+                Confirmación
               </ModalHeader>
               <ModalBody>
                 <div>¿Estas seguro de crear este registro?</div>
@@ -125,8 +127,8 @@ export const AllergyFormModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const params = useParams();
   const [errors, setErrors] = useState<any>({
-    name: "El nombre es requerido",
-    allergy_notes: "La nota es requerida",
+    name: "La descripcion de la alergia es requerido",
+    allergy_notes: "Las reacciones de la alergia es requerida",
   });
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -136,7 +138,7 @@ export const AllergyFormModal = () => {
       category: "FOOD",
       clinical_status: "ACTIVE",
       recorded_date: "",
-      type: "DAIRY",
+      type: "ALLERGY",
       allergy_notes: "",
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
@@ -146,7 +148,7 @@ export const AllergyFormModal = () => {
   useEffect(() => {
     validateForm();
   }, [allergy]);
- 
+
   const validateForm = () => {
     let valid = true;
     const errors = {} as any;
@@ -185,23 +187,6 @@ export const AllergyFormModal = () => {
                 Cuestionario de Alergias
               </ModalHeader>
               <ModalBody>
-                <Input
-                  label='Nombre'
-                  placeholder='Complete el nombre de la alergia'
-                  classNames={{ label: "text-md font-bold" }}
-                  value={allergy.name}
-                  onChange={(e) => {
-                    setAllergy({ ...allergy, name: e.target.value });
-                    if (errors.name) {
-                      setErrors({ ...errors, name: null });
-                    }
-                  
-                  }}
-                  isRequired
-                />
-                {errors.name && (
-                  <div className='text-red-500'>{errors.name}</div>
-                )}
                 <RadioOptions
                   label='Tipo'
                   defaultValue={allergyTypes[0].value}
@@ -229,10 +214,26 @@ export const AllergyFormModal = () => {
                     setAllergy({ ...allergy, clinical_status: value });
                   }}
                 />
+                <Input
+                  label='Descripción de la alergia'
+                  placeholder='Complete el descripción de la alergia'
+                  classNames={{ label: "text-md font-bold" }}
+                  value={allergy.name}
+                  onChange={(e) => {
+                    setAllergy({ ...allergy, name: e.target.value });
+                    if (errors.name) {
+                      setErrors({ ...errors, name: null });
+                    }
+                  }}
+                  isRequired
+                />
+                {errors.name && (
+                  <div className='text-red-500'>{errors.name}</div>
+                )}
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label='Nota'
-                  placeholder='Complete la nota de la alergia'
+                  label='Reacciones'
+                  placeholder='Complete las reacciones de la alergia'
                   value={allergy.allergy_notes}
                   onChange={(e) => {
                     setAllergy({ ...allergy, allergy_notes: e.target.value });

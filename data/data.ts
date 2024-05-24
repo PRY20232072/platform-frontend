@@ -13,7 +13,7 @@ const genders = [
   { label: "OTRO", value: "OTHER" },
 ];
 
-const rellationships = [
+const relationships = [
   { label: "PADRE", value: "FATHER" },
   { label: "MADRE", value: "MOTHER" },
   { label: "HIJO", value: "SON" },
@@ -44,12 +44,8 @@ const allergyStatus = [
 ];
 
 const allergyTypes = [
-  { label: "LÁCTEOS", value: "DAIRY" },
-  { label: "GLUTEN", value: "GLUTEN" },
-  { label: "CAFEÍNA", value: "CAFFEINE" },
-  { label: "SALICILATOS", value: "SALICYLATES" },
-  { label: "AMINAS", value: "AMINES" },
-  { label: "OTRO", value: "OTHER" },
+  {label: "ALERGIA", value: "ALLERGY"},
+  {label: "INTOLERANCIA", value: "INTOLERANCE"},
 ];
 
 const allergyCategories = [
@@ -57,6 +53,7 @@ const allergyCategories = [
   { label: "MEDICAMENTO", value: "MEDICATION" },
   { label: "AMBIENTE", value: "ENVIRONMENT" },
   { label: "BIOLÓGICO", value: "BIOLOGIC" },
+  { label: "OTRO", value: "OTHER" },
 ];
 
 const familyRecordStatus = [
@@ -111,7 +108,7 @@ const timeOfDiseasePeriodUnit = [
   { label: "SEMANA", value: "WEEK" },
   { label: "MES", value: "MONTH" },
   { label: "AÑO", value: "YEAR" },
-]
+];
 
 const typeOfDiagnosis = [
   { label: "PRESUNTIVO", value: "PRESUMPTIVE" },
@@ -250,7 +247,7 @@ const platformaPractitionerEventsTableColumns = [
 ];
 
 const selectedPatientAllergiesTableColumns = [
-  { name: "DETALLE", uid: "allergy_notes", sortable: true },
+  { name: "DESCRIPCIÓN", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
@@ -302,9 +299,8 @@ const emptyPractitioner = {
 
 const practitionerFamilyRecordsTableColumns = [
   { name: "CONDICIÓN", uid: "notes", sortable: true },
-  { name: "CREADO POR", uid: "participant_id", sortable: true },
-  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
-  { name: "ESTADO", uid: "clinical_status", sortable: true },
+  { name: "NOMBRE FAMILIAR", uid: "name", sortable: true },
+  { name: "RELACIÓN", uid: "relationship", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
@@ -330,6 +326,23 @@ const statusMap: Record<string, string> = {
   INACTIVE: "INACTIVO",
 };
 
+const relationshipMap: Record<string, string> = {
+  FATHER: "PADRE",
+  MOTHER: "MADRE",
+  SON: "HIJO",
+  DAUGHTER: "HIJA",
+  GRANDFATHER: "ABUELO",
+  GRANDMOTHER: "ABUELA",
+  BROTHER: "HERMANO",
+  SISTER: "HERMANA",
+  UNCLE: "TIO",
+  AUNT: "TIA",
+  COUSIN: "PRIMO",
+  NEPHEW: "SOBRINO",
+  NIECE: "SOBRINA",
+  OTHER: "OTRO",
+};
+
 const familyStatusColorMap: Record<string, ChipProps["color"]> = {
   COMPLETE: "success",
   PARTIAL: "warning",
@@ -337,19 +350,15 @@ const familyStatusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 const allergyTypesMap: Record<string, string> = {
-  DAIRY: "LÁCTEOS",
-  GLUTEN: "GLUTEN",
-  CAFFEINE: "CAFEÍNA",
-  SALICYLATES: "SALICILATOS",
-  AMINES: "AMINAS",
-  OTHER: "OTRO",
+  ALLERGY: 'ALERGIA',
+  INTOLERANCE: 'INTOLERANCIA',
 };
 
 const genderMap: Record<string, string> = {
   MALE: "Hombre",
   FEMALE: "Mujer",
   OTHER: "Otro",
-}
+};
 
 const familyRecordStatusMap: Record<string, string> = {
   PARTIAL: "PARCIAL",
@@ -402,5 +411,6 @@ export {
   typeOfDiagnosis,
   timeOfDiseasePeriodUnit,
   genderMap,
-  rellationships
+  relationships,
+  relationshipMap,
 };
