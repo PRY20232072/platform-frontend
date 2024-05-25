@@ -34,7 +34,7 @@ export default function CardFamilyRecords() {
       const data = familyRecordResponse?.data;
       if (data && data.length > 0) {
         const updatedList = familyRecordResponse.data.map((familyRecord: any) => ({
-          col1: familyRecord.notes,
+          col1: familyRecord.name,
           col2: familyRecord.recorded_date,
         }));
         setfamilyRecordList(updatedList);

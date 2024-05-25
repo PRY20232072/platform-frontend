@@ -9,6 +9,7 @@ import CardSkeleton from "../ui/skeletons/card-skeleton";
 import { Card } from "../ui/card";
 import { Pill } from "lucide-react";
 import attentionService from "@/services/attentionService";
+import { typeOfAttentionMap } from "@/data/data";
 
 export default function CardAttentions() {
   const { response: getAttentionsListResponse, fetchData: getAttentionsList } =
@@ -36,7 +37,7 @@ export default function CardAttentions() {
       if (data && data.length > 0) {
         const updatedList = getAttentionsListResponse.data.map(
           (attention: any) => ({
-            col1: attention.nameOfConsultation,
+            col1: typeOfAttentionMap[attention.typeOfAttention],
             col2: attention.recorded_date,
           })
         );
