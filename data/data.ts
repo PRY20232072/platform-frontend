@@ -16,18 +16,10 @@ const genders = [
 const relationships = [
   { label: "PADRE", value: "FATHER" },
   { label: "MADRE", value: "MOTHER" },
-  { label: "HIJO", value: "SON" },
-  { label: "HIJA", value: "DAUGHTER" },
   { label: "ABUELO", value: "GRANDFATHER" },
   { label: "ABUELA", value: "GRANDMOTHER" },
-  { label: "HERMANO", value: "BROTHER" },
-  { label: "HERMANA", value: "SISTER" },
   { label: "TIO", value: "UNCLE" },
   { label: "TIA", value: "AUNT" },
-  { label: "PRIMO", value: "COUSIN" },
-  { label: "PRIMA", value: "COUSIN" },
-  { label: "SOBRINO", value: "NEPHEW" },
-  { label: "SOBRINA", value: "NIECE" },
   { label: "OTRO", value: "OTHER" },
 ];
 
@@ -43,9 +35,15 @@ const allergyStatus = [
   { label: "RESUELTO", value: "RESOLVED" },
 ];
 
+const allergyCriticality = [
+  { label: "LEVE", value: "LOW" },
+  { label: "GRAVE", value: "HIGH" },
+  { label: "INCAPAZ DE EVALUAR", value: "UNNABLE-TO-ASSESS" },
+];
+
 const allergyTypes = [
-  {label: "ALERGIA", value: "ALLERGY"},
-  {label: "INTOLERANCIA", value: "INTOLERANCE"},
+  { label: "ALERGIA", value: "ALLERGY" },
+  { label: "INTOLERANCIA", value: "INTOLERANCE" },
 ];
 
 const allergyCategories = [
@@ -70,6 +68,7 @@ const attentionTableColumns = [
     uid: "practitioner_name",
     sortable: true,
   },
+
   { name: "ACCIÓN", uid: "actions" },
 ];
 
@@ -116,10 +115,8 @@ const typeOfDiagnosis = [
 ];
 
 const allergyTableColumns = [
-  { name: "ID", uid: "allergy_id", sortable: true },
   { name: "DETALLE", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
-  { name: "CREADO POR", uid: "participant_id", sortable: true },
   { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
@@ -140,10 +137,9 @@ const accessTableColumns = [
 ];
 
 const familyRecordTableColumns = [
-  { name: "ID", uid: "familyHistory_id", sortable: true },
-  { name: "DETALLE", uid: "notes", sortable: true },
-  { name: "CREADO POR", uid: "participant_id", sortable: true },
-  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "NOMBRE FAMILIAR", uid: "name", sortable: true },
+  { name: "RELACIÓN", uid: "relationship", sortable: true },
+  { name: "FECHA DE NACIMIENTO", uid: "relativeBirthdate", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
@@ -158,7 +154,7 @@ const practitionersTableColumns = [
 
 const patientsTableColumns = [
   { name: "NOMBRE", uid: "name_id", sortable: true },
-  { name: "ID", uid: "patient_id", sortable: true },
+  { name: "DNI", uid: "dni", sortable: true },
   // { name: 'EMAIL', uid: 'email', sortable: true },
   { name: "NÚMERO DE TELÉFONO", uid: "telephone" },
   { name: "ACCESO", uid: "actions" },
@@ -249,7 +245,7 @@ const platformaPractitionerEventsTableColumns = [
 const selectedPatientAllergiesTableColumns = [
   { name: "DESCRIPCIÓN", uid: "allergy_notes", sortable: true },
   { name: "TIPO", uid: "type", sortable: true },
-  { name: "FECHA DE CREACIÓN", uid: "recorded_date", sortable: true },
+  { name: "CATEGORÍA", uid: "category", sortable: true },
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
@@ -265,6 +261,7 @@ const documentsTableColumns = [
 const emptyPatient = {
   patient_id: "",
   name_id: "",
+  last_name: "",
   gender: "",
   birthDate: "",
   maritalStatus: "",
@@ -283,6 +280,8 @@ const emptyPatient = {
 const emptyPractitioner = {
   practitioner_id: "",
   name_id: "",
+  last_name: "",
+  cmpCode: "",
   gender: "",
   birthDate: "",
   maritalStatus: "",
@@ -298,9 +297,10 @@ const emptyPractitioner = {
 };
 
 const practitionerFamilyRecordsTableColumns = [
-  { name: "CONDICIÓN", uid: "notes", sortable: true },
   { name: "NOMBRE FAMILIAR", uid: "name", sortable: true },
   { name: "RELACIÓN", uid: "relationship", sortable: true },
+  { name: "FECHA DE NACIMIENTO", uid: "relativeBirthdate", sortable: true },
+  { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
 
@@ -350,8 +350,8 @@ const familyStatusColorMap: Record<string, ChipProps["color"]> = {
 };
 
 const allergyTypesMap: Record<string, string> = {
-  ALLERGY: 'ALERGIA',
-  INTOLERANCE: 'INTOLERANCIA',
+  ALLERGY: "ALERGIA",
+  INTOLERANCE: "INTOLERANCIA",
 };
 
 const genderMap: Record<string, string> = {
@@ -413,4 +413,5 @@ export {
   genderMap,
   relationships,
   relationshipMap,
+  allergyCriticality,
 };
