@@ -15,7 +15,7 @@ class AttentionIntoleranceService {
   };
 
   createAttention = (data: any) => {
-    return http.post(`${attentionPath}/prueba`, data);
+    return http.post(`${attentionPath}`, data);
   };
 
   updateAttention = (id: string, data: any) => {
