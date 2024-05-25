@@ -1,6 +1,14 @@
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
-import { familyRecordStatus, genders, relationships } from "@/data/data";
+import {
+  familyRecordStatus,
+  genders,
+  relationships,
+  typeOfDiagnosis,
+} from "@/data/data";
 import { Input, Textarea } from "@nextui-org/react";
+import { CustomAutoCompleteLarge } from "../ui/auto-complete-large";
+import cieCodes from "@/data/cie10Codes_ES.json";
+import { Key } from "react";
 
 interface FamilyRecordDetailsProps {
   familyRecord: any;
@@ -76,6 +84,53 @@ export default function FamilyRecordDetailFields({
         value={familyRecord.notes}
         onChange={(e) => handleInputChange("notes", e.target.value)}
       />
+      <div className='flex flex-col items-stretch w-full'>
+        <label className='mb-2'>Diagnósticos</label>
+        {(familyRecord.diagnoses || []).map((diagnosis: any, index: any) => (
+          <div key={index} className='mb-4'>
+            <CustomAutoCompleteLarge
+              labelPlacement='outside'
+              isDisabled={false}
+              label={`Diagnóstico ${Number(index) + 1}`}
+              data={(cieCodes as { code: string; description: string }[]).map(
+                (cie10) => ({
+                  value: cie10.code,
+                  label: cie10.code + "-" + cie10.description,
+                })
+              )}
+              selectedKey={diagnosis.code}
+              onSelectionChange={(value) =>
+                handleInputChange(`diagnoses[${index}].code`, value)
+              }
+            />
+            <CustomAutocomplete
+              isDisabled={!isEditing}
+              label='Tipo de diagnostico'
+              labelPlacement='outside'
+              data={typeOfDiagnosis}
+              selectedKey={diagnosis.type}
+              onSelectionChange={(value) =>
+                handleInputChange(`diagnoses[${index}].type`, value)
+              }
+            />
+            <Textarea
+              isReadOnly={!isEditing}
+              disableAnimation
+              disableAutosize
+              classNames={{ input: "resize-y min-h-[40px]" }}
+              label={"Descripción del diagnóstico "}
+              labelPlacement='outside'
+              value={diagnosis.description}
+              onChange={(e) =>
+                handleInputChange(
+                  `diagnoses[${index}].description`,
+                  e.target.value
+                )
+              }
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

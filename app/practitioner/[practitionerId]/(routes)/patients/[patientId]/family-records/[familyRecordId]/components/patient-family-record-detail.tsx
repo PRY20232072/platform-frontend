@@ -20,7 +20,7 @@ export default function PatientFamilyRecordDetail() {
     fetchData: updateFamilyRecord,
   } = useApi();
   const params = useParams();
-
+  console.log(family_record);
   useEffect(() => {
     const fetchData = async () => {
       if (params.familyRecordId && params.patientId) {
@@ -78,9 +78,32 @@ export default function PatientFamilyRecordDetail() {
     setIsEditing(!isEditing);
     location.reload();
   };
-
+  const setNestedValue = (obj: any, path: any, value: any) => {
+    const keys = path.split(".");
+    keys.forEach((key: any, index: any) => {
+      if (index === keys.length - 1) {
+        obj[key] = value;
+      } else {
+        if (!obj[key]) {
+          obj[key] = {};
+        }
+        obj = obj[key];
+      }
+    });
+    return obj;
+  };
   const handleInputChange = (key: string, value: any) => {
-    setFamilyRecord({ ...family_record, [key]: value });
+    setFamilyRecord((prevState: any) => {
+      const updatedRecord = { ...prevState };
+      setNestedValue(updatedRecord, key.replace(/\[(\d+)\]/g, ".$1"), value);
+      const cleanedRecord = { ...updatedRecord };
+      Object.keys(cleanedRecord).forEach((k) => {
+        if (k.includes("[") && k.includes("]")) {
+          delete cleanedRecord[k];
+        }
+      });
+      return cleanedRecord;
+    });
   };
 
   return (
@@ -89,7 +112,7 @@ export default function PatientFamilyRecordDetail() {
       fallback={<Loading />}
     >
       <Card>
-        <CardBody className="items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full">
+        <CardBody className='items-stretch self-stretch shadow  flex flex-col mt-2.5 p-5 rounded-2xl max-md:max-w-full'>
           {family_record && (
             <form onSubmit={handleEdit}>
               <FamilyRecordDetailFields
@@ -97,11 +120,11 @@ export default function PatientFamilyRecordDetail() {
                 familyRecord={family_record}
                 handleInputChange={handleInputChange}
               />
-              <div className="flex justify-center">
+              <div className='flex justify-center'>
                 {isEditing ? (
                   <>
                     <Button
-                      className="text-red-600 font-medium leading-6 whitespace-nowrap justify-center items-center bg-red-300 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl"
+                      className='text-red-600 font-medium leading-6 whitespace-nowrap justify-center items-center bg-red-300 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl'
                       onClick={() => {
                         setIsEditing(!isEditing);
                       }}
@@ -109,15 +132,15 @@ export default function PatientFamilyRecordDetail() {
                       Cancelar
                     </Button>
                     <Button
-                      className="text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl"
-                      type="submit"
+                      className='text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-amber-500 self-center w-[77px] max-w-full mt-2 ml-4 px-4 py-3 rounded-xl'
+                      type='submit'
                     >
                       Guardar
                     </Button>
                   </>
                 ) : (
                   <Button
-                    className="text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-blue-600 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl"
+                    className='text-white font-medium leading-6 whitespace-nowrap justify-center items-center bg-blue-600 self-center w-[77px] max-w-full mt-2 px-4 py-3 rounded-xl'
                     onClick={() => {
                       setIsEditing(!isEditing);
                     }}

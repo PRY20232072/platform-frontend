@@ -131,7 +131,7 @@ const ConfirmModal: React.FC<AtentionProps> = ({
     };
     atention.recorded_date = new Date().toISOString().split("T")[0];
     const attention_id = uuidv4();
-    console.log(payload)
+ 
     createAttention(
       attentionService.createAttention({
         identifier: attention_id,
@@ -439,6 +439,103 @@ export const EncounterFormModal = () => {
                     }}
                   />
                 </div>
+                <div className='mt-4 flex'>
+                  <div className='flex flex-col mr-4'>
+                    <RadioOptions
+                      label='Tipo de servicio'
+                      defaultValue={typeOfService[0].value}
+                      data={typeOfService}
+                      value={atention.typeOfService}
+                      onValueChange={(value) => {
+                        setAtention({ ...atention, typeOfService: value });
+                      }}
+                    />
+                  </div>
+                  <div className='flex flex-col mr-4'>
+                    <RadioOptions
+                      label='Tipo de establecimiento'
+                      defaultValue={typeOfFacility[0].value}
+                      data={typeOfFacility}
+                      value={atention.typeOfFacility}
+                      onValueChange={(value) => {
+                        setAtention({ ...atention, typeOfFacility: value });
+                      }}
+                    />
+                  </div>
+                  <div className='flex flex-col justify-start'>
+                    <div className='mt-2'>
+                      Leyenda: <br />
+                      N: Nuevo C: Continuador R: Reingreso
+                    </div>
+                  </div>
+                </div>
+                
+                <div className='font-bold mt-4'>Anamnesis</div>
+                <div className='mt-4 flex'>
+                  <div className='flex flex-col mr-4'>
+                    <Input
+                      type='number'
+                      labelPlacement='outside'
+                      label='Tiempo de la enfermedad'
+                      placeholder='Ingresa el tiempo de la enfermedad'
+                      value={atention.timeOfDisease.units.toString()}
+                      onChange={(e) =>
+                        setAtention({
+                          ...atention,
+                          timeOfDisease: {
+                            ...atention.timeOfDisease,
+                            units: parseFloat(e.target.value),
+                          },
+                        })
+                      }
+                      isRequired
+                    />
+                  </div>
+                  <div className='flex flex-col'>
+                    <CustomAutocomplete
+                      isDisabled={false}
+                      label='Periodo'
+                      labelPlacement='outside'
+                      placeholder='Selecciona el periodo'
+                      data={
+                        atention.timeOfDisease.units > 1
+                          ? timeOfDiseasePeriod
+                          : timeOfDiseasePeriodUnit
+                      }
+                      selectedKey={atention.timeOfDisease.period}
+                      onSelectionChange={(value) =>
+                        setAtention({
+                          ...atention,
+                          timeOfDisease: {
+                            ...atention.timeOfDisease,
+                            period: value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+                <Textarea
+                  label='Enfermedad actual y motivo de la consulta'
+                  placeholder='Ingresa el motivo de la consulta'
+                  value={atention.reasonForConsultation}
+                  onChange={(e) =>
+                    setAtention({
+                      ...atention,
+                      reasonForConsultation: e.target.value,
+                    })
+                  }
+                  isRequired
+                />
+
+                <Textarea
+                  label='Observaciones'
+                  placeholder='Ingresa observaciones de la atención'
+                  value={atention.observations}
+                  onChange={(e) =>
+                    setAtention({ ...atention, observations: e.target.value })
+                  }
+                />
                 <div className='font-bold mt-4'>Signos vitales</div>
                 <div className='grid grid-cols-2 gap-4'>
                   <Input
@@ -559,101 +656,7 @@ export const EncounterFormModal = () => {
                     readOnly
                   />
                 </div>
-                <div className='mt-4 flex'>
-                  <div className='flex flex-col mr-4'>
-                    <RadioOptions
-                      label='Tipo de servicio'
-                      defaultValue={typeOfService[0].value}
-                      data={typeOfService}
-                      value={atention.typeOfService}
-                      onValueChange={(value) => {
-                        setAtention({ ...atention, typeOfService: value });
-                      }}
-                    />
-                  </div>
-                  <div className='flex flex-col mr-4'>
-                    <RadioOptions
-                      label='Tipo de establecimiento'
-                      defaultValue={typeOfFacility[0].value}
-                      data={typeOfFacility}
-                      value={atention.typeOfFacility}
-                      onValueChange={(value) => {
-                        setAtention({ ...atention, typeOfFacility: value });
-                      }}
-                    />
-                  </div>
-                  <div className='flex flex-col justify-start'>
-                    <div className='mt-2'>
-                      Leyenda: <br />
-                      N: Nuevo C: Continuador R: Reingreso
-                    </div>
-                  </div>
-                </div>
-                <div className='mt-4 flex'>
-                  <div className='flex flex-col mr-4'>
-                    <Input
-                      type='number'
-                      labelPlacement='outside'
-                      label='Tiempo de la enfermedad'
-                      placeholder='Ingresa el tiempo de la enfermedad'
-                      value={atention.timeOfDisease.units.toString()}
-                      onChange={(e) =>
-                        setAtention({
-                          ...atention,
-                          timeOfDisease: {
-                            ...atention.timeOfDisease,
-                            units: parseFloat(e.target.value),
-                          },
-                        })
-                      }
-                      isRequired
-                    />
-                  </div>
-                  <div className='flex flex-col'>
-                    <CustomAutocomplete
-                      isDisabled={false}
-                      label='Periodo'
-                      labelPlacement='outside'
-                      placeholder='Selecciona el periodo'
-                      data={
-                        atention.timeOfDisease.units > 1
-                          ? timeOfDiseasePeriod
-                          : timeOfDiseasePeriodUnit
-                      }
-                      selectedKey={atention.timeOfDisease.period}
-                      onSelectionChange={(value) =>
-                        setAtention({
-                          ...atention,
-                          timeOfDisease: {
-                            ...atention.timeOfDisease,
-                            period: value,
-                          },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <Textarea
-                  label='Enfermedad actual y motivo de la consulta'
-                  placeholder='Ingresa el motivo de la consulta'
-                  value={atention.reasonForConsultation}
-                  onChange={(e) =>
-                    setAtention({
-                      ...atention,
-                      reasonForConsultation: e.target.value,
-                    })
-                  }
-                  isRequired
-                />
-
-                <Textarea
-                  label='Observaciones'
-                  placeholder='Ingresa observaciones de la atención'
-                  value={atention.observations}
-                  onChange={(e) =>
-                    setAtention({ ...atention, observations: e.target.value })
-                  }
-                />
+                
 
                 <div className='font-bold mt-4'>Examen físico</div>
                 <Input
@@ -883,11 +886,11 @@ export const EncounterFormModal = () => {
                   + Agregar nuevo diagnóstico
                 </Button>
 
-                <div className='font-bold mt-4'>Tratamientos</div>
+                <div className='font-bold mt-4'>Tratamiento</div>
                 {treatments.map((treatment, index) => (
                   <div key={treatment.id} className='mb-4'>
                     <Input
-                      label={`Tratamiento ${index + 1}`}
+                      label={`Prescripción  ${index + 1}`}
                       labelPlacement='outside'
                       placeholder='Escriba una descripción del tratamiento'
                       value={treatment.description}
@@ -917,7 +920,8 @@ export const EncounterFormModal = () => {
                 {auxiliaryExams.map((auxiliaryExam, index) => (
                   <div key={auxiliaryExam.id} className='mb-4'>
                     <Input
-                      label='Descripción'
+                      label={`Examen   ${index + 1}`}
+                      labelPlacement="outside"
                       placeholder='Escriba una descripción del examen auxiliar'
                       value={auxiliaryExam.description}
                       onChange={(e) =>

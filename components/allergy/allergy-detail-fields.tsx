@@ -1,5 +1,5 @@
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
-import { allergyCategories, allergyStatus, allergyTypes } from "@/data/data";
+import { allergyCategories, allergyCriticality, allergyStatus, allergyTypes } from "@/data/data";
 import { Input, Textarea } from "@nextui-org/react";
 
 interface AllergyDetailsProps {
@@ -56,13 +56,22 @@ export default function AllergyDetailFields({
         onSelectionChange={(value) => handleInputChange("type", value)}
       />
 
+      <CustomAutocomplete
+        isDisabled={!isEditing}
+        label='Criticidad'
+        labelPlacement='outside'
+        data={allergyCriticality}
+        selectedKey={allergy.criticality}
+        onSelectionChange={(value) => handleInputChange("criticality", value)}
+      />
+
       <Textarea
         isRequired
         isReadOnly={!isEditing}
         disableAnimation
         disableAutosize
         classNames={{ input: "resize-y min-h-[40px]" }}
-        label='Reacciones'
+        label='Reacciones presentadas'
         labelPlacement='outside'
         value={allergy.allergy_notes}
         onChange={(e) => handleInputChange("allergy_notes", e.target.value)}

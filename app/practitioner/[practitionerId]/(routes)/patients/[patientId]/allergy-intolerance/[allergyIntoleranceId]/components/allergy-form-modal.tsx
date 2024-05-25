@@ -15,7 +15,12 @@ import { RadioOptions } from "@/components/ui/radio-options";
 
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { allergyCategories, allergyStatus, allergyTypes } from "@/data/data";
+import {
+  allergyCategories,
+  allergyStatus,
+  allergyTypes,
+  allergyCriticality,
+} from "@/data/data";
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4, validate } from "uuid";
 import { useApi } from "@/hooks/useApi";
@@ -30,6 +35,7 @@ type Allergy = {
   recorded_date: string;
   type: string;
   allergy_notes: string;
+  criticality: string;
   patient_id: string;
   participant_id: string;
 };
@@ -104,7 +110,7 @@ const ConfirmModal: React.FC<AllergySelectedPractitionerProps> = ({
                 Confirmación
               </ModalHeader>
               <ModalBody>
-                <div>¿Estas seguro de crear este registro?</div>
+                <div>¿Estas seguro de crear esta alergia?</div>
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='flat' onPress={onClose}>
@@ -128,7 +134,7 @@ export const AllergyFormModal = () => {
   const params = useParams();
   const [errors, setErrors] = useState<any>({
     name: "La descripcion de la alergia es requerido",
-    allergy_notes: "Las reacciones de la alergia es requerida",
+    allergy_notes: "Complete las reacciones de la alergia",
   });
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -140,6 +146,7 @@ export const AllergyFormModal = () => {
       recorded_date: "",
       type: "ALLERGY",
       allergy_notes: "",
+      criticality: "LOW",
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
     });
@@ -159,7 +166,7 @@ export const AllergyFormModal = () => {
     }
 
     if (!allergy.allergy_notes) {
-      errors.allergy_notes = "Las reacciones son requeridas";
+      errors.allergy_notes = "Complete las reacciones de la alergia";
       valid = false;
     }
 
@@ -215,7 +222,7 @@ export const AllergyFormModal = () => {
                   }}
                 />
                 <RadioOptions
-                  label='Estado clinicos'
+                  label='Estado clinico'
                   defaultValue={allergyStatus[0].value}
                   data={allergyStatus}
                   value={allergy.clinical_status}
@@ -232,9 +239,18 @@ export const AllergyFormModal = () => {
                     setAllergy({ ...allergy, type: value });
                   }}
                 />
+                <RadioOptions
+                  label='Criticidad'
+                  defaultValue={allergyCriticality[0].value}
+                  data={allergyCriticality}
+                  value={allergy.criticality}
+                  onValueChange={(value) => {
+                    setAllergy({ ...allergy, criticality: value });
+                  }}
+                />
                 <Textarea
                   classNames={{ label: "text-md font-bold" }}
-                  label='Reacciones'
+                  label='Reacciones presentadas'
                   placeholder='Complete las reacciones de la alergia'
                   value={allergy.allergy_notes}
                   onChange={(e) => {

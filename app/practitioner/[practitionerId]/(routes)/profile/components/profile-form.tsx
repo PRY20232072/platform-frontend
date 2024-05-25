@@ -22,11 +22,14 @@ import districsData from "@/data/districts.json";
 export default function PractitionerProfileForm() {
   const [isInvalid, setIsInvalid] = useState(false);
   const [isPCInvalid, setIsPCInvalid] = useState(false);
+  const [isCMPInvalid, setIsCMPInvalid] = useState(false);
   const [isInvalidBirthdate, setIsInvalidBirthdate] = useState(false);
 
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
   const validatePostalCode = (postalCode: string) =>
     postalCode.match(/^\d{5}$/);
+  const validateCMPCode = (cmpCode: string) =>
+    cmpCode.match(/^\d{6}$/);
   const validateBirthdate = (birthdate: string) => {
     const today = new Date();
     const birthdateDate = new Date(birthdate);
@@ -57,12 +60,22 @@ export default function PractitionerProfileForm() {
         ? !validatePostalCode(practitioner.address.postal_code)
         : false
     );
+    setIsCMPInvalid(
+      practitioner.cmpCode
+        ? !validateCMPCode(practitioner.cmpCode)
+        : false
+    );
     setIsInvalidBirthdate(
       practitioner.birthDate
         ? !validateBirthdate(practitioner.birthDate)
         : false
     );
-  }, [practitioner.telephone, practitioner.birthDate, practitioner.address.postal_code]);
+  }, [
+    practitioner.telephone,
+    practitioner.cmpCode,
+    practitioner.birthDate,
+    practitioner.address.postal_code,
+  ]);
 
   useEffect(() => {
     if (practitioner.address.department) {
@@ -203,7 +216,7 @@ export default function PractitionerProfileForm() {
                   type='text'
                   label='Nombre completo'
                   labelPlacement='outside'
-                  placeholder='Ingresa el nombre completo'
+                  placeholder='Ingresa tu nombres'
                   value={practitioner.name_id}
                   onChange={(e) => {
                     setPractitioner({
@@ -216,6 +229,50 @@ export default function PractitionerProfileForm() {
                   }
                 />
               </div>
+              <div className='mb-4'>
+                <Input
+                  isRequired
+                  isReadOnly={!isEditing}
+                  type='text'
+                  label='Apellidos completos'
+                  labelPlacement='outside'
+                  placeholder='Ingresa tus apellidos'
+                  value={practitioner.last_name}
+                  onChange={(e) => {
+                    setPractitioner({
+                      ...practitioner,
+                      last_name: e.target.value,
+                    });
+                  }}
+                  errorMessage={
+                    !practitioner.last_name ? "Ingrese sus apellidos" : ""
+                  }
+                />
+              </div>
+              <Input
+                isRequired
+                isReadOnly={!isEditing}
+                isInvalid={isCMPInvalid}
+                color={isCMPInvalid ? "danger" : "default"}
+                type='text'
+                label='Código Colegio Médico del Perú (CMP)'
+                labelPlacement='outside'
+                placeholder='Ingrese su código CMP'
+                value={practitioner.cmpCode}
+                onChange={(e) => {
+                  setPractitioner({
+                    ...practitioner,
+                    cmpCode: e.target.value,
+                  });
+                }}
+                errorMessage={
+                  !practitioner.cmpCode
+                      ? "Ingrese su código del colegio médico del Perú"
+                      : 
+                  isCMPInvalid && "Por favor, ingrese un CMP válido!"
+                }
+                maxLength={6}
+              />
               <CustomAutocomplete
                 isDisabled={!isEditing}
                 label='Género'
@@ -394,7 +451,6 @@ export default function PractitionerProfileForm() {
 
               <div className='inline-flex flex-col items-start gap-[5px] relative !flex-[0_0_auto]'>
                 <Input
-                  isRequired
                   isReadOnly={!isEditing}
                   isInvalid={isPCInvalid}
                   color={isPCInvalid ? "danger" : "default"}
@@ -413,10 +469,7 @@ export default function PractitionerProfileForm() {
                     });
                   }}
                   errorMessage={
-                    !practitioner.address.postal_code
-                      ? "Ingrese su código postal"
-                      : isPCInvalid &&
-                        "Por favor, ingrese un código postal válido!"
+                    isPCInvalid && "Por favor, ingrese un código postal válido!"
                   }
                   maxLength={5}
                 />

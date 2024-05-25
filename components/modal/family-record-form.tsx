@@ -16,7 +16,12 @@ import { RadioOptions } from "@/components/ui/radio-options";
 
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { familyRecordStatus, genders, relationships } from "@/data/data";
+import {
+  familyRecordStatus,
+  genders,
+  relationships,
+  typeOfDiagnosis,
+} from "@/data/data";
 
 import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
@@ -24,7 +29,15 @@ import { useApi } from "@/hooks/useApi";
 import familyRecordService from "@/services/familyRecordService";
 import notificationsService from "@/services/notificationsService";
 import { toast } from "react-toastify";
+import { CustomAutoCompleteLarge } from "../ui/auto-complete-large";
+import cieCodes from "@/data/cie10Codes_ES.json";
 
+type Diagnosis = {
+  id: number;
+  code: string;
+  description: string;
+  type: string;
+};
 type PatientFamilyRecord = {
   name: string;
   patient_id: string;
@@ -36,6 +49,7 @@ type PatientFamilyRecord = {
   notes: string;
   gender: string;
   relativeBirthdate: string;
+  diagnoses: Diagnosis[];
 };
 
 interface FamilyRecordSelectedPractitionerProps {
@@ -58,12 +72,19 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
   const params = useParams();
 
   const handleCreate = () => {
+    const filteredDiagnoses = familyRecord.diagnoses.map(
+      ({ id, ...rest }) => rest
+    );
+    const payload = {
+      ...familyRecord,
+      diagnoses: filteredDiagnoses,
+    };
     familyRecord.recorded_date = new Date().toISOString().split("T")[0];
     const familyHistory_id = uuidv4();
     createFamilyRecord(
       familyRecordService.createFamilyRecord({
         identifier: familyHistory_id,
-        payload: familyRecord,
+        payload: payload,
       })
     );
 
@@ -109,7 +130,7 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
                 Confirmación
               </ModalHeader>
               <ModalBody>
-                <div>¿Estas seguro de crear este registro?</div>
+                <div>¿Estas seguro de crear el antecedente?</div>
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='flat' onPress={onClose}>
@@ -139,7 +160,9 @@ export const FamilyRecordFormModal = () => {
     gender: "Se requiere el género",
   });
   const [formIsValid, setFormIsValid] = useState(false);
-
+  const [diagnoses, setDiagnoses] = useState([
+    { id: 1, code: "", type: "", description: "" },
+  ]);
   useEffect(() => {
     setRecord({
       name: "",
@@ -150,10 +173,40 @@ export const FamilyRecordFormModal = () => {
       relationship: "FATHER",
       notes: "",
       relativeBirthdate: "",
+      diagnoses: [],
       patient_id: params.patientId as string,
       participant_id: params.practitionerId as string,
     });
   }, [params.patientId, params.practitionerId]);
+
+  const addDiagnosis = () => {
+    setDiagnoses([
+      ...diagnoses,
+      {
+        id: diagnoses.length + 1,
+        code: "",
+        type: "",
+        description: "",
+      },
+    ]);
+  };
+
+  const removeDiagnosis = (id: any) => {
+    setDiagnoses(diagnoses.filter((d) => d.id !== id));
+    setRecord({
+      ...familyRecord,
+      diagnoses: diagnoses.filter((d) => d.id !== id),
+    });
+  };
+
+  const handleDiagnosisChange = (id: any, key: any, value: any) => {
+    const updatedDiagnoses = diagnoses.map((d) =>
+      d.id === id ? { ...d, [key]: value } : d
+    );
+    setDiagnoses(updatedDiagnoses);
+
+    setRecord({ ...familyRecord, diagnoses: updatedDiagnoses });
+  };
 
   useEffect(() => {
     validateForm();
@@ -298,16 +351,84 @@ export const FamilyRecordFormModal = () => {
                     });
                   }}
                 /> */}
+                <div className='flex flex-row items-start'>
+                  <RadioOptions
+                    label='Estado clínico'
+                    defaultValue={familyRecordStatus[0].value}
+                    data={familyRecordStatus}
+                    value={familyRecord.clinical_status}
+                    onValueChange={(value) => {
+                      setRecord({ ...familyRecord, clinical_status: value });
+                    }}
+                  />
+                  <div className='ml-4'>
+                    <strong>PARCIAL:</strong> Se cuenta con información
+                    incompleta sobre el familiar
+                    <br />
+                    <strong>COMPLETO:</strong> Se cuenta con información
+                    detallada sobre el familiar
+                    <br />
+                    <strong>SALUD DESCONOCIDA:</strong> No se tiene ningún dato
+                    sobre el estado de salud del familiar
+                  </div>
+                </div>
+                <div className='font-bold mt-4'>Diagnóstico</div>
+                {diagnoses.map((diagnosis, index) => (
+                  <div key={diagnosis.id} className='mb-4'>
+                    <CustomAutoCompleteLarge
+                      labelPlacement='outside'
+                      isDisabled={false}
+                      label='Diagnóstico'
+                      placeholder='Seleccione diagnóstico principal (CIE-10)'
+                      data={(
+                        cieCodes as { code: string; description: string }[]
+                      ).map((cie10) => ({
+                        value: cie10.code,
+                        label: cie10.code + "-" + cie10.description,
+                      }))}
+                      selectedKey={diagnosis.code}
+                      onSelectionChange={(value) =>
+                        handleDiagnosisChange(diagnosis.id, "code", value)
+                      }
+                    />
+                    <CustomAutocomplete
+                      isDisabled={false}
+                      label='Tipo de diagnostico'
+                      labelPlacement='outside'
+                      placeholder='Selecciona el tipo de diagnóstico'
+                      data={typeOfDiagnosis}
+                      selectedKey={diagnosis.type}
+                      onSelectionChange={(value) =>
+                        handleDiagnosisChange(diagnosis.id, "type", value)
+                      }
+                    />
+                    <Input
+                      label='Descripción'
+                      placeholder='Escriba una descripción del diagnóstico'
+                      value={diagnosis.description}
+                      onChange={(e) =>
+                        handleDiagnosisChange(
+                          diagnosis.id,
+                          "description",
+                          e.target.value
+                        )
+                      }
+                    />
+                    {index > 0 && (
+                      <Button
+                        className='mt-2'
+                        color='danger'
+                        onClick={() => removeDiagnosis(diagnosis.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    )}
+                  </div>
+                ))}
 
-                <RadioOptions
-                  label='Estado'
-                  defaultValue={familyRecordStatus[0].value}
-                  data={familyRecordStatus}
-                  value={familyRecord.clinical_status}
-                  onValueChange={(value) => {
-                    setRecord({ ...familyRecord, clinical_status: value });
-                  }}
-                />
+                <Button color='primary' onClick={addDiagnosis}>
+                  + Agregar nuevo diagnóstico
+                </Button>
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='flat' onPress={onClose}>
