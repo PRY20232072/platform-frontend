@@ -22,7 +22,7 @@ export default function PatientDemographicForm() {
   const { response: createPatientResponse, fetchData: createPatient } =
     useApi();
   const { data: session } = useSession();
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       if (session?.user?.id) {

@@ -104,14 +104,28 @@ export default function PatientDemographicFields({
             isRequired
             isReadOnly={!isEditing}
             type='text'
-            label='Nombre completo'
+            label='Nombres completos'
             labelPlacement='outside'
             placeholder='Jhon Doe Smith'
             value={patient.name_id}
             onChange={(e) => handleInputChange("name_id", e.target.value)}
-            errorMessage={!patient.name_id ? "Ingrese su nombre completo" : ""}
+            errorMessage={!patient.name_id ? "Ingrese sus nombres" : ""}
           />
         </div>
+        <div className='mb-4'>
+          <Input
+            isRequired
+            isReadOnly={!isEditing}
+            type='text'
+            label='Apellidos completos'
+            labelPlacement='outside'
+            placeholder='Doe Smith'
+            value={patient.last_name}
+            onChange={(e) => handleInputChange("last_name", e.target.value)}
+            errorMessage={!patient.last_name ? "Ingrese sus apellidos" : ""}
+          />
+        </div>
+       
         <CustomAutocomplete
           isDisabled={!isEditing}
           label='Género'
@@ -290,9 +304,7 @@ export default function PatientDemographicFields({
             handleInputChange("address.postal_code", e.target.value)
           }
           errorMessage={
-            !patient.address.postal_code
-              ? "Ingrese su código postal"
-              : isPCInvalid && "Por favor, ingrese un código postal válido!"
+             isPCInvalid && "Por favor, ingrese un código postal válido!"
           }
           maxLength={5}
         />
