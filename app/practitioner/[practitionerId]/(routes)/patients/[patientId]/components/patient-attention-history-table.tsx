@@ -5,6 +5,7 @@ import { useApi } from "@/hooks/useApi";
 import attentionService from "@/services/attentionService";
 import {
   Button,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -21,6 +22,7 @@ type Attention = {
   typeOfAttention: string;
   nameOfConsultation: string;
   practitioner_name: string;
+  practitioner_cmp: string;
 };
 
 const PatientAttentionHistoryTable = () => {
@@ -55,19 +57,33 @@ const PatientAttentionHistoryTable = () => {
       const cellValue = attention[columnKey as keyof Attention];
 
       switch (columnKey) {
+        case "practitioner_name":
+          return (
+            <Link
+              href={`https://200.48.13.39/conoce_a_tu_medico/datos-colegiado-detallado.php?id=${attention.practitioner_cmp}`}
+              color='primary'
+              isExternal
+              showAnchorIcon
+            >
+              {cellValue}
+            </Link>
+          );
+
         case "typeOfAttention":
           return typeOfAttentionMap[cellValue];
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
                 className={"text-sm font-medium "}
-                color="primary"
-                radius="sm"
-                size="sm"
+                color='primary'
+                radius='sm'
+                size='sm'
                 variant={"solid"}
                 onClick={() =>
-                  router.push(`/practitioner/${params.practitionerId}/patients/${params.patientId}/attention-history/${attention.attention_id}`)
+                  router.push(
+                    `/practitioner/${params.practitionerId}/patients/${params.patientId}/attention-history/${attention.attention_id}`
+                  )
                 }
               >
                 Ver más
@@ -86,11 +102,11 @@ const PatientAttentionHistoryTable = () => {
       isLoading={getAttentionListResponse?.isLoading}
       fallback={<TableSkeleton />}
     >
-      <Table aria-label="Attention collection table">
+      <Table aria-label='Attention collection table'>
         <TableHeader columns={attentionTableColumns}>
           {(column) => (
             <TableColumn
-              className="text-bold"
+              className='text-bold'
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}

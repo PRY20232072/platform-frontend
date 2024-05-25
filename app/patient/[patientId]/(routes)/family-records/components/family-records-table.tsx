@@ -11,7 +11,7 @@ import {
   ChipProps,
   Button,
 } from "@nextui-org/react";
-import { familyRecordTableColumns as columns, familyRecordStatusMap, familyStatusColorMap } from "@/data/data";
+import { familyRecordTableColumns as columns, familyRecordStatusMap, familyStatusColorMap,relationshipMap } from "@/data/data";
 import { useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
 import { useSession } from "next-auth/react";
@@ -30,6 +30,7 @@ type PatientFamilyRecord = {
   recorded_date: string;
   notes: string;
   familyHistory_id: string;
+  relationship: string;
   // family_name: string;
   // family_gender: string;
   // family_birthdate: string;
@@ -67,6 +68,8 @@ const FamilyRecordsTable: React.FC = () => {
       const cellValue = familyRecord[columnKey as keyof PatientFamilyRecord];
 
       switch (columnKey) {
+        case "relationship":
+          return relationshipMap[cellValue];
         case "clinical_status":
           return (
             <Chip

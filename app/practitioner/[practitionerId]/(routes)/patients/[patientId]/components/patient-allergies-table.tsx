@@ -37,6 +37,14 @@ const alleryTypesMap: Record<string, string> = {
   INTOLERANCE: "INTOLERANCIA",
 };
 
+const allergyCategories: Record<string, string> = {
+  FOOD: "ALIMENTO",
+  MEDICATION: "MEDICAMENTO",
+  ENVIRONMENT: "AMBIENTE",
+  BIOLOGIC: "BIOLOGICO",
+  OTHER: "OTRO",
+};
+
 type Allergy = {
   patient_id: string;
   participant_id: string;
@@ -60,7 +68,6 @@ export const PatientAllergiesTable = () => {
     useApi();
   const params = useParams();
   const router = useRouter();
-  console.log(allergyList);
   useEffect(() => {
     getAllergyList(
       allergyIntoleranceService.getAllergyListByPatientId(
@@ -80,6 +87,8 @@ export const PatientAllergiesTable = () => {
       const cellValue = selected_patient_allergy[columnKey as keyof Allergy];
 
       switch (columnKey) {
+        case "category":
+          return allergyCategories[cellValue];
         case "type":
           return alleryTypesMap[cellValue];
         case "clinical_status":

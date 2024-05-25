@@ -16,7 +16,7 @@ import {
   familyRecordStatusMap,
   familyStatusColorMap,
   practitionerFamilyRecordsTableColumns,
-  relationshipMap
+  relationshipMap,
 } from "@/data/data";
 import { useParams, useRouter } from "next/navigation";
 import { useApi } from "@/hooks/useApi";
@@ -34,7 +34,7 @@ type FamilyRecord = {
   notes: string;
   familyHistory_id: string;
   contition: string;
-  relationship : string;
+  relationship: string;
   has_access: string;
   // family_name: string;
   // family_gender: string;
@@ -44,7 +44,7 @@ type FamilyRecord = {
 
 export const PatientFamilyRecordsTable = () => {
   const [familyRecordList, setfamilyRecordList] = useState<FamilyRecord[]>();
-  console.log(familyRecordList)
+  console.log(familyRecordList);
   const {
     response: getFamilyRecordListResponse,
     fetchData: getFamilyRecordList,
@@ -81,7 +81,7 @@ export const PatientFamilyRecordsTable = () => {
       switch (columnKey) {
         case "relationship":
           return relationshipMap[cellValue];
-        /* case "clinical_status":
+        case "clinical_status":
           return (
             <Chip
               color={
@@ -89,21 +89,21 @@ export const PatientFamilyRecordsTable = () => {
                   selected_patient_family_record.clinical_status
                 ]
               }
-              size="sm"
-              variant="flat"
+              size='sm'
+              variant='flat'
             >
               {familyRecordStatusMap[cellValue]}
             </Chip>
-          ); */
+          );
         case "actions":
           return (
-            <div className="relative flex justify-start items-start gap-2">
+            <div className='relative flex justify-start items-start gap-2'>
               <Button
-                className="font-medium "
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium '
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => {
                   notificationsService.createNotifications({
                     user_id: params.patientId,
@@ -136,11 +136,11 @@ export const PatientFamilyRecordsTable = () => {
         isLoading={getFamilyRecordListResponse.isLoading}
         fallback={<Loading />}
       >
-        <Table aria-label="Patient family record collection table">
+        <Table aria-label='Patient family record collection table'>
           <TableHeader columns={practitionerFamilyRecordsTableColumns}>
             {(column) => (
               <TableColumn
-                className="text-bold"
+                className='text-bold'
                 key={column.uid}
                 align={column.uid === "actions" ? "center" : "start"}
                 allowsSorting={column.sortable}

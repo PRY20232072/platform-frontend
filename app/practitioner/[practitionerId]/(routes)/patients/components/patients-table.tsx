@@ -25,6 +25,7 @@ type Patient = {
   name_id: string;
   telephone: string;
   patient_id: string;
+  dni: string;
   access: string;
 };
 
@@ -36,7 +37,7 @@ export const PatientsSearch = () => {
   const { fetchData: createConsent } = useApi();
   const params = useParams();
   const router = useRouter();
-
+  console.log(patientsResponse?.data)
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
   );
@@ -77,6 +78,7 @@ export const PatientsSearch = () => {
           name_id: patient.name_id,
           telephone: patient.telephone,
           patient_id: patient.patient_id,
+          dni: patient.dni,
           access: getAccessState(patient.patient_id, consentList),
         } as Patient)
     );
