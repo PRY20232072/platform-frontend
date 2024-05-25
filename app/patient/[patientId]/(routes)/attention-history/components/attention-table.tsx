@@ -5,6 +5,7 @@ import { useApi } from "@/hooks/useApi";
 import attentionService from "@/services/attentionService";
 import {
   Button,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -20,6 +21,7 @@ type Attention = {
   recorded_date: string;
   typeOfAttention: string;
   practitioner_name: string;
+  practitioner_cmp: string;
 };
 
 const AttentionTable = () => {
@@ -28,7 +30,7 @@ const AttentionTable = () => {
     useApi();
   const router = useRouter();
   const params = useParams();
-
+  console.log(getAttentionListResponse.data);
   useEffect(() => {
     const fetchData = async () => {
       if (params.patientId) {
@@ -56,6 +58,8 @@ const AttentionTable = () => {
       switch (columnKey) {
         case "typeOfAttention":
           return typeOfAttentionMap[cellValue];
+        case "practitioner_name":
+          return  <Link href={`https://200.48.13.39/conoce_a_tu_medico/datos-colegiado-detallado.php?id=${attention.practitioner_cmp}`} color="primary" isExternal showAnchorIcon>{cellValue}</Link>;
         case "actions":
           return (
             <div className="relative flex justify-start items-start gap-2">

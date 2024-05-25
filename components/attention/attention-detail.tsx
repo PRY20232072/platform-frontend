@@ -1,3 +1,4 @@
+"use client";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
 import { Card } from "@nextui-org/card";
@@ -23,8 +24,14 @@ const periodUnitMap: Record<string, string> = {
   MONTH: "mes",
   YEAR: "año",
 };
+
+const typeOfDiagnosisMap: Record<string, string> = {
+  PRESUMPTIVE: "PRESUNTIVO",
+  CONFIRMED: "CONFIRMADO", 
+};
 import jsPDF from "jspdf";
 import { Download } from "lucide-react";
+import { typeOfAttentionMap, typeOfDiagnosis } from "@/data/data";
 const AttentionDetail = () => {
   const [attention, setAttention] = useState<Attention>({} as Attention);
   const {
@@ -34,8 +41,7 @@ const AttentionDetail = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { data: session } = useSession();
 
-  const params = useParams();
-  console.log(attention);
+  const params = useParams(); 
   useEffect(() => {
     const fetchData = async () => {
       if (params.attentionId && params.patientId) {
@@ -90,9 +96,9 @@ const AttentionDetail = () => {
 
     addHeading("Detalle de la atención médica");
 
-    addText(`Paciente: ${session?.user?.name || ""}`);
+    addText(`Nombre del paciente: ${session?.user?.name || ""}`);
     addText(`ID: ${session?.user?.id || ""}`);
-    addText(`Tipo de atención: ${attention.typeOfAttention || ""}`);
+    addText(`Tipo de atención: ${typeOfAttentionMap[attention.typeOfAttention] || ""}`);
     addText(`Fecha de registro: ${attention.recorded_date || ""}`);
     addHeading("Signos vitales");
     addText(`Peso: ${attention.vitalSigns?.weight || ""} KG`);
@@ -146,7 +152,7 @@ const AttentionDetail = () => {
       addText(
         `Diagnóstico ${index + 1}: ${diagnosis.code} - ${
           diagnosis.description
-        } - ${diagnosis.type}`
+        } - ${typeOfDiagnosisMap[diagnosis.type]}`
       );
     });
 

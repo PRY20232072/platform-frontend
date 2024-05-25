@@ -1,9 +1,7 @@
-import AttentionDetail from "./attention-detail";
+import AttentionDetail from "@/components/attention/attention-detail";
 
 const AttentionClient = () => {
-  return (
-    <AttentionDetail />
-  );
+  return <AttentionDetail />;
 };
 
 export default AttentionClient;

@@ -40,9 +40,12 @@ const AttentionDetail = () => {
   }, [getAllergyByIdPatientIdResponse.isSuccess]);
 
   return (
-    <CustomSuspense isLoading={getAllergyByIdPatientIdResponse.isLoading} fallback={<Loading />}>
-      <Card className="items-stretch self-stretch shadow flex flex-col my-2.5 p-5 rounded-2xl max-md:max-w-full">
-        <form className="max-md:max-w-full">
+    <CustomSuspense
+      isLoading={getAllergyByIdPatientIdResponse.isLoading}
+      fallback={<Loading />}
+    >
+      <Card className='items-stretch self-stretch shadow flex flex-col my-2.5 p-5 rounded-2xl max-md:max-w-full'>
+        <form className='max-md:max-w-full'>
           <AttentionDetailFields
             attention={attention}
             isEditing={false}
