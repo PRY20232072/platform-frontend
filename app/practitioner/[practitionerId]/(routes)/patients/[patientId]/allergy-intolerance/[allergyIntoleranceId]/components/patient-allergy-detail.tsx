@@ -17,7 +17,7 @@ export default function PatientAllergyDetail() {
   const { response: updateAllergyResponse, fetchData: updateAllergy } =
     useApi();
   const params = useParams();
-console.log(allergy)
+
   useEffect(() => {
     const fetchData = async () => {
       if (params.patientId && params.allergyIntoleranceId) {

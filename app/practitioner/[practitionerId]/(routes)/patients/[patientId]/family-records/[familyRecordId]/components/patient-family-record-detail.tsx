@@ -20,7 +20,7 @@ export default function PatientFamilyRecordDetail() {
     fetchData: updateFamilyRecord,
   } = useApi();
   const params = useParams();
-  console.log(family_record);
+
   useEffect(() => {
     const fetchData = async () => {
       if (params.familyRecordId && params.patientId) {

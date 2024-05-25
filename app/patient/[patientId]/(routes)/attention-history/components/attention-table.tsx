@@ -30,7 +30,6 @@ const AttentionTable = () => {
     useApi();
   const router = useRouter();
   const params = useParams();
-  console.log(getAttentionListResponse.data);
   useEffect(() => {
     const fetchData = async () => {
       if (params.patientId) {

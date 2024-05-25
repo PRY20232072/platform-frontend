@@ -35,7 +35,7 @@ const AttentionDetail = () => {
   const { data: session } = useSession();
 
   const params = useParams();
-  console.log(attention);
+
   useEffect(() => {
     const fetchData = async () => {
       if (params.attentionId && params.patientId) {

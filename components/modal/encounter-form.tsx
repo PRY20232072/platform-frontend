@@ -390,7 +390,6 @@ export const EncounterFormModal = () => {
       setAtention((prev) => ({ ...prev, recorded_date: formattedDateTime }));
     }
   }, [isOpen]);
-  console.log("Atention", atention);
 
   return (
     <div className="items-stretch justify-end gap-4 inline-flex mb-3">

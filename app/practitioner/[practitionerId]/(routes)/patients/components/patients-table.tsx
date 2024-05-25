@@ -37,7 +37,7 @@ export const PatientsSearch = () => {
   const { fetchData: createConsent } = useApi();
   const params = useParams();
   const router = useRouter();
-  console.log(patientsResponse?.data)
+
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
     new Set([])
   );

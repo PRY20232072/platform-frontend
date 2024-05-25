@@ -13,7 +13,6 @@ if (
   process.exit();
 }
 async function refreshAccessToken(token: any) {
-  console.log("passed here", token);
   try {
     const url =
       `https://${process.env.AZURE_AD_B2C_TENANT_NAME}.b2clogin.com/${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/${process.env.AZURE_AD_B2C_PRIMARY_USER_FLOW}/oauth2/v2.0/token`;
@@ -34,7 +33,7 @@ async function refreshAccessToken(token: any) {
     });
 
     const refreshedTokens = await response.json();
-    console.log("Response", refreshedTokens);
+
     if (!response.ok) {
       throw refreshedTokens;
     }
@@ -119,7 +118,6 @@ export const authOptions: NextAuthOptions = {
       }
      
       if (Date.now() < (token.accessTokenExpires ?? 0)*1000) {
-        //console.log("token active", token);
         return token;
       }
       return await refreshAccessToken(token);

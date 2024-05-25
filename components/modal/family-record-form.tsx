@@ -75,11 +75,12 @@ const ConfirmModal: React.FC<FamilyRecordSelectedPractitionerProps> = ({
     const filteredDiagnoses = familyRecord.diagnoses.map(
       ({ id, ...rest }) => rest
     );
+    familyRecord.recorded_date = new Date().toISOString().split("T")[0];
     const payload = {
       ...familyRecord,
       diagnoses: filteredDiagnoses,
     };
-    familyRecord.recorded_date = new Date().toISOString().split("T")[0];
+
     const familyHistory_id = uuidv4();
     createFamilyRecord(
       familyRecordService.createFamilyRecord({

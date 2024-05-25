@@ -44,7 +44,7 @@ type FamilyRecord = {
 
 export const PatientFamilyRecordsTable = () => {
   const [familyRecordList, setfamilyRecordList] = useState<FamilyRecord[]>();
-  console.log(familyRecordList);
+
   const {
     response: getFamilyRecordListResponse,
     fetchData: getFamilyRecordList,
