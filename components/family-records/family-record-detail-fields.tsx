@@ -9,6 +9,7 @@ import { Input, Textarea } from "@nextui-org/react";
 import { CustomAutoCompleteLarge } from "../ui/auto-complete-large";
 import cieCodes from "@/data/cie10Codes_ES.json";
 import { Key } from "react";
+import AutocompleteLg from "../ui/auto-complete-lg";
 
 interface FamilyRecordDetailsProps {
   familyRecord: any;
@@ -88,21 +89,22 @@ export default function FamilyRecordDetailFields({
         <label className='mb-2'>Diagnósticos</label>
         {(familyRecord.diagnoses || []).map((diagnosis: any, index: any) => (
           <div key={index} className='mb-4'>
-            <CustomAutoCompleteLarge
+            <AutocompleteLg
+              isDisabled={!isEditing}
               labelPlacement='outside'
-              isDisabled={false}
-              label={`Diagnóstico ${Number(index) + 1}`}
+              label={`Código diagnóstico ${index + 1}`}
+              placeholder='Seleccione diagnóstico principal (CIE-10)'
+              onChange={(value) =>
+                handleInputChange(`diagnoses[${index}].code`, value)
+              }
               data={(cieCodes as { code: string; description: string }[]).map(
                 (cie10) => ({
                   value: cie10.code,
                   label: cie10.code + "-" + cie10.description,
                 })
               )}
-              selectedKey={diagnosis.code}
-              onSelectionChange={(value) =>
-                handleInputChange(`diagnoses[${index}].code`, value)
-              }
             />
+
             <CustomAutocomplete
               isDisabled={!isEditing}
               label='Tipo de diagnostico'

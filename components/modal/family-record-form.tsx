@@ -31,6 +31,7 @@ import notificationsService from "@/services/notificationsService";
 import { toast } from "react-toastify";
 import { CustomAutoCompleteLarge } from "../ui/auto-complete-large";
 import cieCodes from "@/data/cie10Codes_ES.json";
+import AutocompleteLg from "../ui/auto-complete-lg";
 
 type Diagnosis = {
   id: number;
@@ -376,21 +377,20 @@ export const FamilyRecordFormModal = () => {
                 <div className='font-bold mt-4'>Diagnóstico</div>
                 {diagnoses.map((diagnosis, index) => (
                   <div key={diagnosis.id} className='mb-4'>
-                    <CustomAutoCompleteLarge
+                    <AutocompleteLg
                       labelPlacement='outside'
                       isDisabled={false}
-                      label='Diagnóstico'
+                      label={`Código diagnóstico ${index + 1}`}
                       placeholder='Seleccione diagnóstico principal (CIE-10)'
+                      onChange={(value) =>
+                        handleDiagnosisChange(diagnosis.id, "code", value)
+                      }
                       data={(
                         cieCodes as { code: string; description: string }[]
                       ).map((cie10) => ({
                         value: cie10.code,
                         label: cie10.code + "-" + cie10.description,
                       }))}
-                      selectedKey={diagnosis.code}
-                      onSelectionChange={(value) =>
-                        handleDiagnosisChange(diagnosis.id, "code", value)
-                      }
                     />
                     <CustomAutocomplete
                       isDisabled={false}
