@@ -8,9 +8,7 @@ import {
   Textarea,
   ModalBody,
   ModalFooter,
-  Input,
-  RadioGroup,
-  Radio,
+  Input, 
 } from "@nextui-org/react";
 
 import { RadioOptions } from "@/components/ui/radio-options";
@@ -18,7 +16,6 @@ import { RadioOptions } from "@/components/ui/radio-options";
 import { Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
-  familyRecordStatus,
   typeOfAttention,
   typeOfFacility,
   typeOfService,
@@ -32,11 +29,10 @@ import { v4 as uuidv4 } from "uuid";
 import { useApi } from "@/hooks/useApi";
 import { toast } from "react-toastify";
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
-import { CustomAutoCompleteLarge } from "@/components/ui/auto-complete-large";
-import { useDebounce } from "@/hooks/useDebounce";
 
-import cieCodes from "@/data/cie10Codes_ES.json";
+import cieCodesData from "@/data/cie10Codes_ES.json";
 import attentionService from "@/services/attentionService";
+import AutocompleteLg from "../ui/auto-complete-lg";
 type Diagnosis = {
   id: number;
   code: string;
@@ -104,6 +100,11 @@ interface AtentionProps {
   formIsValid: boolean;
 }
 
+const cieCodes: { code: string; description: string }[] = cieCodesData as {
+  code: string;
+  description: string;
+}[];
+
 const ConfirmModal: React.FC<AtentionProps> = ({
   atention,
   atentionFormModalClose,
@@ -153,31 +154,31 @@ const ConfirmModal: React.FC<AtentionProps> = ({
             onOpen();
           }
         }}
-        color="primary"
-        variant="flat"
+        color='primary'
+        variant='flat'
       >
         Guardar
       </Button>
       <Modal
-        size="md"
-        backdrop="blur"
+        size='md'
+        backdrop='blur'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <ModalHeader className='flex flex-col gap-1'>
                 Confirmación
               </ModalHeader>
               <ModalBody>
                 <div>¿Estas seguro de crear esta atención?</div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button color='danger' variant='flat' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color="primary" onClick={handleCreate}>
+                <Button color='primary' onClick={handleCreate}>
                   Aceptar
                 </Button>
               </ModalFooter>
@@ -205,21 +206,6 @@ export const EncounterFormModal = () => {
     {} as PatientAtention
   );
   const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState([] as any[]);
-  const debouncedInput = useDebounce(inputValue, 300);
-
-  /*  const cie10Data = Object.entries(cieCodes).map(([value, label]) => ({
-    value,
-    label,
-  })); */
-  /*   useEffect(() => {
-    const filteredOptions = Object.entries(cieCodes)
-      .filter(([key, value]) =>
-        value.toLowerCase().includes(debouncedInput.toLowerCase())
-      )
-      .map(([value, label]) => ({ value, label }));
-    setOptions(filteredOptions);
-  }, [debouncedInput]); */
 
   useEffect(() => {
     setAtention({
@@ -329,7 +315,7 @@ export const EncounterFormModal = () => {
       d.id === id ? { ...d, [key]: value } : d
     );
     setDiagnoses(updatedDiagnoses);
-    setInputValue(value);
+    //setInputValue(value);
     setAtention({ ...atention, diagnoses: updatedDiagnoses });
   };
 
@@ -392,42 +378,42 @@ export const EncounterFormModal = () => {
   }, [isOpen]);
 
   return (
-    <div className="items-stretch justify-end gap-4 inline-flex mb-3">
+    <div className='items-stretch justify-end gap-4 inline-flex mb-3'>
       <Button
         onPress={onOpen}
-        className="text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex"
+        className='text-white bg-blue-600 px-4 rounded-xl justify-center items-center gap-3 flex'
       >
-        Añadir nuevo <Plus className="h-4 w-4" />
+        Añadir nuevo <Plus className='h-4 w-4' />
       </Button>
       <Modal
-        size="xl"
-        placement="auto"
-        backdrop="opaque"
-        scrollBehavior="outside"
+        size='xl'
+        placement='auto'
+        backdrop='opaque'
+        scrollBehavior='outside'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       >
         <ModalContent>
           {(onClose) => (
             <form>
-              <ModalHeader className="flex flex-col gap-1 font-bold">
+              <ModalHeader className='flex flex-col gap-1 font-bold'>
                 Cuestionario atención ambulatoria
               </ModalHeader>
               <ModalBody>
-                <div className="flex justify-between">
+                <div className='flex justify-between'>
                   <div>
-                    <span className="font-bold">NHC:</span> {nhc}
+                    <span className='font-bold'>NHC:</span> {nhc}
                   </div>
                   <div>
-                    <span className="font-bold">Fecha y hora atención:</span>
+                    <span className='font-bold'>Fecha y hora atención:</span>
                     {currentDateTime}
                   </div>
                 </div>
 
-                <div className="mt-4">
-                  <label className="font-bold">Atención</label>
+                <div className='mt-4'>
+                  <label className='font-bold'>Atención</label>
                   <RadioOptions
-                    label="Tipo de atención"
+                    label='Tipo de atención'
                     defaultValue={typeOfAttention[0].value}
                     data={typeOfAttention}
                     value={atention.typeOfAttention}
@@ -436,10 +422,10 @@ export const EncounterFormModal = () => {
                     }}
                   />
                 </div>
-                <div className="mt-4 flex">
-                  <div className="flex flex-col mr-4">
+                <div className='mt-4 flex'>
+                  <div className='flex flex-col mr-4'>
                     <RadioOptions
-                      label="Tipo de servicio"
+                      label='Tipo de servicio'
                       defaultValue={typeOfService[0].value}
                       data={typeOfService}
                       value={atention.typeOfService}
@@ -448,9 +434,9 @@ export const EncounterFormModal = () => {
                       }}
                     />
                   </div>
-                  <div className="flex flex-col mr-4">
+                  <div className='flex flex-col mr-4'>
                     <RadioOptions
-                      label="Tipo de establecimiento"
+                      label='Tipo de establecimiento'
                       defaultValue={typeOfFacility[0].value}
                       data={typeOfFacility}
                       value={atention.typeOfFacility}
@@ -459,22 +445,22 @@ export const EncounterFormModal = () => {
                       }}
                     />
                   </div>
-                  <div className="flex flex-col justify-start">
-                    <div className="mt-2">
+                  <div className='flex flex-col justify-start'>
+                    <div className='mt-2'>
                       Leyenda: <br />
                       N: Nuevo C: Continuador R: Reingreso
                     </div>
                   </div>
                 </div>
 
-                <div className="font-bold mt-4">Anamnesis</div>
-                <div className="mt-4 flex">
-                  <div className="flex flex-col mr-4">
+                <div className='font-bold mt-4'>Anamnesis</div>
+                <div className='mt-4 flex'>
+                  <div className='flex flex-col mr-4'>
                     <Input
-                      type="number"
-                      labelPlacement="outside"
-                      label="Tiempo de la enfermedad"
-                      placeholder="Ingresa el tiempo de la enfermedad"
+                      type='number'
+                      labelPlacement='outside'
+                      label='Tiempo de la enfermedad'
+                      placeholder='Ingresa el tiempo de la enfermedad'
                       value={atention.timeOfDisease.units.toString()}
                       onChange={(e) =>
                         setAtention({
@@ -488,12 +474,12 @@ export const EncounterFormModal = () => {
                       isRequired
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className='flex flex-col'>
                     <CustomAutocomplete
                       isDisabled={false}
-                      label="Periodo"
-                      labelPlacement="outside"
-                      placeholder="Selecciona el periodo"
+                      label='Periodo'
+                      labelPlacement='outside'
+                      placeholder='Selecciona el periodo'
                       data={
                         atention.timeOfDisease.units > 1
                           ? timeOfDiseasePeriod
@@ -513,8 +499,8 @@ export const EncounterFormModal = () => {
                   </div>
                 </div>
                 <Textarea
-                  label="Enfermedad actual y motivo de la consulta"
-                  placeholder="Ingresa el motivo de la consulta"
+                  label='Enfermedad actual y motivo de la consulta'
+                  placeholder='Ingresa el motivo de la consulta'
                   value={atention.reasonForConsultation}
                   onChange={(e) =>
                     setAtention({
@@ -526,19 +512,19 @@ export const EncounterFormModal = () => {
                 />
 
                 <Textarea
-                  label="Observaciones"
-                  placeholder="Ingresa observaciones de la atención"
+                  label='Observaciones'
+                  placeholder='Ingresa observaciones de la atención'
                   value={atention.observations}
                   onChange={(e) =>
                     setAtention({ ...atention, observations: e.target.value })
                   }
                 />
-                <div className="font-bold mt-4">Signos vitales</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className='font-bold mt-4'>Signos vitales</div>
+                <div className='grid grid-cols-2 gap-4'>
                   <Input
-                    type="number"
-                    label="Temperatura (°C)"
-                    placeholder="0"
+                    type='number'
+                    label='Temperatura (°C)'
+                    placeholder='0'
                     value={atention.vitalSigns.temperature.toString()}
                     onChange={(e) =>
                       setAtention({
@@ -551,9 +537,9 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
-                    type="number"
-                    label="Frecuencia cardíaca (lpm)"
-                    placeholder="Ingresa la frecuencia cardíaca"
+                    type='number'
+                    label='Frecuencia cardíaca (lpm)'
+                    placeholder='Ingresa la frecuencia cardíaca'
                     value={atention.vitalSigns.heartRate.toString()}
                     onChange={(e) =>
                       setAtention({
@@ -566,9 +552,9 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
-                    type="number"
-                    label="Frecuencia respiratoria (rpm)"
-                    placeholder="Ingresa la frecuencia respiratoria"
+                    type='number'
+                    label='Frecuencia respiratoria (rpm)'
+                    placeholder='Ingresa la frecuencia respiratoria'
                     value={atention.vitalSigns.respiratoryRate.toString()}
                     onChange={(e) =>
                       setAtention({
@@ -581,9 +567,9 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
-                    type="number"
-                    label="Presión arterial sistólica (mm Hg)"
-                    placeholder="Ingresa la presión arterial sistólica"
+                    type='number'
+                    label='Presión arterial sistólica (mm Hg)'
+                    placeholder='Ingresa la presión arterial sistólica'
                     value={atention.vitalSigns.bloodPressure.systolic.toString()}
                     onChange={(e) =>
                       setAtention({
@@ -599,9 +585,9 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
-                    type="number"
-                    label="Presión arterial diastólica (mm Hg)"
-                    placeholder="Ingresa la presión arterial diastólica"
+                    type='number'
+                    label='Presión arterial diastólica (mm Hg)'
+                    placeholder='Ingresa la presión arterial diastólica'
                     value={atention.vitalSigns.bloodPressure.diastolic.toString()}
                     onChange={(e) =>
                       setAtention({
@@ -617,9 +603,9 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
-                    type="number"
-                    label="Saturación de oxígeno (%)"
-                    placeholder="Ingresa la saturación de oxígeno"
+                    type='number'
+                    label='Saturación de oxígeno (%)'
+                    placeholder='Ingresa la saturación de oxígeno'
                     value={atention.vitalSigns.oxygenSaturation.toString()}
                     onChange={(e) =>
                       setAtention({
@@ -632,32 +618,32 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
-                    type="number"
-                    label="Peso (kg)"
-                    placeholder="Ingresa el peso"
+                    type='number'
+                    label='Peso (kg)'
+                    placeholder='Ingresa el peso'
                     value={atention.vitalSigns.weight.toString()}
                     onChange={handleWeightChange}
                   />
                   <Input
-                    type="number"
-                    label="Tamaño (cm)"
-                    placeholder="Ingresa el tamaño"
+                    type='number'
+                    label='Tamaño (cm)'
+                    placeholder='Ingresa el tamaño'
                     value={atention.vitalSigns.size.toString()}
                     onChange={handleHeightChange}
                   />
                   <Input
-                    type="number"
-                    label="IMC"
-                    placeholder="IMC"
+                    type='number'
+                    label='IMC'
+                    placeholder='IMC'
                     value={atention.vitalSigns.imc.toString()}
                     readOnly
                   />
                 </div>
 
-                <div className="font-bold mt-4">Examen físico</div>
+                <div className='font-bold mt-4'>Examen físico</div>
                 <Input
-                  label="Cabeza"
-                  placeholder="Ingresa el estado de la cabeza"
+                  label='Cabeza'
+                  placeholder='Ingresa el estado de la cabeza'
                   value={atention.physicalExam.head}
                   onChange={(e) =>
                     setAtention({
@@ -670,8 +656,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Ojos"
-                  placeholder="Ingresa el estado de los ojos"
+                  label='Ojos'
+                  placeholder='Ingresa el estado de los ojos'
                   value={atention.physicalExam.eyes}
                   onChange={(e) =>
                     setAtention({
@@ -684,8 +670,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Nariz"
-                  placeholder="Ingresa el estado de la nariz"
+                  label='Nariz'
+                  placeholder='Ingresa el estado de la nariz'
                   value={atention.physicalExam.nose}
                   onChange={(e) =>
                     setAtention({
@@ -698,8 +684,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Oídos"
-                  placeholder="Ingresa el estado de los oídos"
+                  label='Oídos'
+                  placeholder='Ingresa el estado de los oídos'
                   value={atention.physicalExam.ears}
                   onChange={(e) =>
                     setAtention({
@@ -712,8 +698,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Garganta"
-                  placeholder="Ingresa el estado de la garganta"
+                  label='Garganta'
+                  placeholder='Ingresa el estado de la garganta'
                   value={atention.physicalExam.throat}
                   onChange={(e) =>
                     setAtention({
@@ -726,8 +712,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Cuello"
-                  placeholder="Ingresa el estado del cuello"
+                  label='Cuello'
+                  placeholder='Ingresa el estado del cuello'
                   value={atention.physicalExam.neck}
                   onChange={(e) =>
                     setAtention({
@@ -740,8 +726,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Torax y pulmones"
-                  placeholder="Ingresa el estado del torax y pulmones"
+                  label='Torax y pulmones'
+                  placeholder='Ingresa el estado del torax y pulmones'
                   value={atention.physicalExam.chestAndLungs}
                   onChange={(e) =>
                     setAtention({
@@ -754,8 +740,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Cardiovascular"
-                  placeholder="Ingresa el estado cardiovascular"
+                  label='Cardiovascular'
+                  placeholder='Ingresa el estado cardiovascular'
                   value={atention.physicalExam.cardiovascular}
                   onChange={(e) =>
                     setAtention({
@@ -768,8 +754,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Abdomen"
-                  placeholder="Ingresa el estado del abdomen"
+                  label='Abdomen'
+                  placeholder='Ingresa el estado del abdomen'
                   value={atention.physicalExam.abdominal}
                   onChange={(e) =>
                     setAtention({
@@ -782,8 +768,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Genitourinario"
-                  placeholder="Ingresa el estado genitourinario"
+                  label='Genitourinario'
+                  placeholder='Ingresa el estado genitourinario'
                   value={atention.physicalExam.gereatricouniary}
                   onChange={(e) =>
                     setAtention({
@@ -796,8 +782,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Neurológico"
-                  placeholder="Ingresa el estado neurológico"
+                  label='Neurológico'
+                  placeholder='Ingresa el estado neurológico'
                   value={atention.physicalExam.neurological}
                   onChange={(e) =>
                     setAtention({
@@ -810,8 +796,8 @@ export const EncounterFormModal = () => {
                   }
                 />
                 <Input
-                  label="Extremidades"
-                  placeholder="Ingresa el estado de las extremidades"
+                  label='Extremidades'
+                  placeholder='Ingresa el estado de las extremidades'
                   value={atention.physicalExam.extremities}
                   onChange={(e) =>
                     setAtention({
@@ -824,30 +810,29 @@ export const EncounterFormModal = () => {
                   }
                 />
 
-                <div className="font-bold mt-4">Diagnóstico</div>
+                <div className='font-bold mt-4'>Diagnóstico</div>
                 {diagnoses.map((diagnosis, index) => (
-                  <div key={diagnosis.id} className="mb-4">
-                    <CustomAutoCompleteLarge
-                      labelPlacement="outside"
+                  <div key={diagnosis.id} className='mb-4'>
+                    <AutocompleteLg
+                      labelPlacement='outside'
                       isDisabled={false}
-                      label="Diagnóstico"
-                      placeholder="Seleccione diagnóstico principal (CIE-10)"
+                      label={`Código diagnóstico ${index + 1}`}
+                      placeholder='Seleccione diagnóstico principal (CIE-10)'
+                      onChange={(value) =>
+                        handleDiagnosisChange(diagnosis.id, "code", value)
+                      }
                       data={(
                         cieCodes as { code: string; description: string }[]
                       ).map((cie10) => ({
                         value: cie10.code,
                         label: cie10.code + "-" + cie10.description,
                       }))}
-                      selectedKey={diagnosis.code}
-                      onSelectionChange={(value) =>
-                        handleDiagnosisChange(diagnosis.id, "code", value)
-                      }
                     />
                     <CustomAutocomplete
                       isDisabled={false}
-                      label="Tipo de diagnostico"
-                      labelPlacement="outside"
-                      placeholder="Selecciona el tipo de diagnóstico"
+                      label='Tipo de diagnostico'
+                      labelPlacement='outside'
+                      placeholder='Selecciona el tipo de diagnóstico'
                       data={typeOfDiagnosis}
                       selectedKey={diagnosis.type}
                       onSelectionChange={(value) =>
@@ -855,8 +840,8 @@ export const EncounterFormModal = () => {
                       }
                     />
                     <Input
-                      label="Descripción"
-                      placeholder="Escriba una descripción del diagnóstico"
+                      label='Descripción'
+                      placeholder='Escriba una descripción del diagnóstico'
                       value={diagnosis.description}
                       onChange={(e) =>
                         handleDiagnosisChange(
@@ -868,8 +853,8 @@ export const EncounterFormModal = () => {
                     />
                     {index > 0 && (
                       <Button
-                        className="mt-2"
-                        color="danger"
+                        className='mt-2'
+                        color='danger'
                         onClick={() => removeDiagnosis(diagnosis.id)}
                       >
                         Eliminar
@@ -878,17 +863,17 @@ export const EncounterFormModal = () => {
                   </div>
                 ))}
 
-                <Button color="primary" onClick={addDiagnosis}>
+                <Button color='primary' onClick={addDiagnosis}>
                   + Agregar nuevo diagnóstico
                 </Button>
 
-                <div className="font-bold mt-4">Tratamiento</div>
+                <div className='font-bold mt-4'>Tratamiento</div>
                 {treatments.map((treatment, index) => (
-                  <div key={treatment.id} className="mb-4">
+                  <div key={treatment.id} className='mb-4'>
                     <Input
                       label={`Prescripción  ${index + 1}`}
-                      labelPlacement="outside"
-                      placeholder="Escriba una descripción del tratamiento"
+                      labelPlacement='outside'
+                      placeholder='Escriba una descripción del tratamiento'
                       value={treatment.description}
                       onChange={(e) =>
                         handleTreatmentChange(
@@ -900,7 +885,7 @@ export const EncounterFormModal = () => {
                     />
                     {index > 0 && (
                       <Button
-                        color="danger"
+                        color='danger'
                         onClick={() => removeTreatment(treatment.id)}
                       >
                         Eliminar
@@ -908,17 +893,17 @@ export const EncounterFormModal = () => {
                     )}
                   </div>
                 ))}
-                <Button color="primary" onClick={addTreatment}>
+                <Button color='primary' onClick={addTreatment}>
                   + Agregar nuevo tratamiento
                 </Button>
 
-                <div className="font-bold mt-4">Exámenes auxiliares</div>
+                <div className='font-bold mt-4'>Exámenes auxiliares</div>
                 {auxiliaryExams.map((auxiliaryExam, index) => (
-                  <div key={auxiliaryExam.id} className="mb-4">
+                  <div key={auxiliaryExam.id} className='mb-4'>
                     <Input
                       label={`Examen   ${index + 1}`}
-                      labelPlacement="outside"
-                      placeholder="Escriba una descripción del examen auxiliar"
+                      labelPlacement='outside'
+                      placeholder='Escriba una descripción del examen auxiliar'
                       value={auxiliaryExam.description}
                       onChange={(e) =>
                         handleAuxiliaryExamChange(
@@ -930,7 +915,7 @@ export const EncounterFormModal = () => {
                     />
                     {index > 0 && (
                       <Button
-                        color="danger"
+                        color='danger'
                         onClick={() => removeAuxiliaryExam(auxiliaryExam.id)}
                       >
                         Eliminar
@@ -938,12 +923,12 @@ export const EncounterFormModal = () => {
                     )}
                   </div>
                 ))}
-                <Button color="primary" onClick={addAuxiliaryExam}>
+                <Button color='primary' onClick={addAuxiliaryExam}>
                   + Agregar nuevo examen auxiliar
                 </Button>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="flat" onPress={onClose}>
+                <Button color='danger' variant='flat' onPress={onClose}>
                   Cancelar
                 </Button>
                 <ConfirmModal

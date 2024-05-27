@@ -53,6 +53,7 @@ const CustomAutoCompleteLarge: React.FC<CustomAutocompleteProps> = ({
     <div className='mb-4 w-full'>
       <Autocomplete
         isRequired
+        defaultItems={data}
         isDisabled={isDisabled}
         label={label}
         labelPlacement={labelPlacement}
@@ -64,11 +65,11 @@ const CustomAutoCompleteLarge: React.FC<CustomAutocompleteProps> = ({
         {/*       <List height={200} itemCount={data.length} itemSize={35} width='100%'>
           {Row}
         </List> */}
-        {data.map((item) => (
+        {(item) => (
           <AutocompleteItem key={item.value} value={item.value}>
             {item.label}
           </AutocompleteItem>
-        ))}
+        )}
 
         {/*   {(item: any) => (
           <AutocompleteItem key={item.code} value={item.code}>
