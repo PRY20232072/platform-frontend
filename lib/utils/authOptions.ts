@@ -129,6 +129,7 @@ export const authOptions: NextAuthOptions = {
         session.user.extension_PhoneNumber = token.extension_PhoneNumber;
         session.user.extension_UserRole = token.extension_UserRole;
         session.accessToken = token.accessToken as undefined;
+        session.user.expires = token.accessTokenExpires; // Convert to string
       }
 
       return session;

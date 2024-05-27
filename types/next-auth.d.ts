@@ -12,6 +12,7 @@ declare module 'next-auth' {
       id: string | undefined;
       extension_PhoneNumber: string | undefined;
       extension_UserRole: string | undefined;
+      expires: number | undefined;
     } & DefaultSession['user'];
   }
 
