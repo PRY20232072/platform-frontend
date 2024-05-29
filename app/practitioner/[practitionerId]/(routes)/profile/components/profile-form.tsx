@@ -9,6 +9,7 @@ import {
   emptyPractitioner,
   genders,
 } from "@/data/data";
+import speacilizationData from "@/data/especialization.json";
 import practitionerService from "@/services/practitionerService";
 import { CustomAutocomplete } from "@/components/ui/auto-complete";
 import { Button, Input } from "@nextui-org/react";
@@ -18,6 +19,9 @@ import { toast } from "react-toastify";
 import departments from "@/data/departments.json";
 import provincesData from "@/data/provinces.json";
 import districsData from "@/data/districts.json";
+import AutocompleteLg from "@/components/ui/auto-complete-lg";
+
+const especiality = speacilizationData as { id: string; name: string }[];
 
 export default function PractitionerProfileForm() {
   const [isInvalid, setIsInvalid] = useState(false);
@@ -28,8 +32,7 @@ export default function PractitionerProfileForm() {
   const validatePhone = (phone: string) => phone.match(/^9\d{8}$/);
   const validatePostalCode = (postalCode: string) =>
     postalCode.match(/^\d{5}$/);
-  const validateCMPCode = (cmpCode: string) =>
-    cmpCode.match(/^\d{6}$/);
+  const validateCMPCode = (cmpCode: string) => cmpCode.match(/^\d{6}$/);
   const validateBirthdate = (birthdate: string) => {
     const today = new Date();
     const birthdateDate = new Date(birthdate);
@@ -61,9 +64,7 @@ export default function PractitionerProfileForm() {
         : false
     );
     setIsCMPInvalid(
-      practitioner.cmpCode
-        ? !validateCMPCode(practitioner.cmpCode)
-        : false
+      practitioner.cmpCode ? !validateCMPCode(practitioner.cmpCode) : false
     );
     setIsInvalidBirthdate(
       practitioner.birthDate
@@ -267,11 +268,24 @@ export default function PractitionerProfileForm() {
                 }}
                 errorMessage={
                   !practitioner.cmpCode
-                      ? "Ingrese su código del colegio médico del Perú"
-                      : 
-                  isCMPInvalid && "Por favor, ingrese un CMP válido!"
+                    ? "Ingrese su código del colegio médico del Perú"
+                    : isCMPInvalid && "Por favor, ingrese un CMP válido!"
                 }
                 maxLength={6}
+              />
+              <CustomAutocomplete
+                isDisabled={!isEditing}
+                label='Especialidad'
+                labelPlacement='outside'              
+                placeholder='Seleccione su especialidad '
+                data={especiality.map((especiality) => ({
+                  value: especiality.id,
+                  label: especiality.name,
+                }))}
+                selectedKey={practitioner.speciality}
+                onSelectionChange={(value) =>
+                  setPractitioner({ ...practitioner, speciality: value })
+                }
               />
               <CustomAutocomplete
                 isDisabled={!isEditing}

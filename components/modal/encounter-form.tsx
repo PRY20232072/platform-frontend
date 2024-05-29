@@ -1,4 +1,3 @@
-"use client";
 import {
   Button,
   Modal,
@@ -8,7 +7,7 @@ import {
   Textarea,
   ModalBody,
   ModalFooter,
-  Input, 
+  Input,
 } from "@nextui-org/react";
 
 import { RadioOptions } from "@/components/ui/radio-options";
@@ -24,7 +23,7 @@ import {
   typeOfDiagnosis,
 } from "@/data/data";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useApi } from "@/hooks/useApi";
 import { toast } from "react-toastify";
@@ -113,10 +112,10 @@ const ConfirmModal: React.FC<AtentionProps> = ({
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { response: createAtentionResponse, fetchData: createAttention } =
     useApi();
-  const router = useRouter();
-  const params = useParams();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCreate = () => {
+    setIsLoading(true);
     const filteredDiagnoses = atention.diagnoses.map(({ id, ...rest }) => rest);
     const filteredTreatments = atention.treatments.map(
       ({ id, ...rest }) => rest
@@ -139,10 +138,14 @@ const ConfirmModal: React.FC<AtentionProps> = ({
         payload: payload,
       })
     ).then(() => {
+      setIsLoading(false);
       location.reload();
       onClose();
       atentionFormModalClose();
       toast.success("Atención creada con éxito");
+    }).catch(() => {
+      setIsLoading(false);
+      toast.error("Error al crear la atención");
     });
   };
 
@@ -178,7 +181,11 @@ const ConfirmModal: React.FC<AtentionProps> = ({
                 <Button color='danger' variant='flat' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onClick={handleCreate}>
+                <Button
+                  color='primary'
+                  onClick={handleCreate}
+                  isLoading={isLoading}
+                >
                   Aceptar
                 </Button>
               </ModalFooter>
@@ -237,9 +244,9 @@ export const EncounterFormModal = () => {
         extremities: "",
       },
       vitalSigns: {
-        temperature: 0,
-        heartRate: 0,
-        respiratoryRate: 0,
+        temperature: 37,
+        heartRate: 60,
+        respiratoryRate: 12,
         bloodPressure: {
           systolic: 0,
           diastolic: 0,
@@ -522,6 +529,8 @@ export const EncounterFormModal = () => {
                 <div className='font-bold mt-4'>Signos vitales</div>
                 <div className='grid grid-cols-2 gap-4'>
                   <Input
+                    min={27}
+                    max={50}
                     type='number'
                     label='Temperatura (°C)'
                     placeholder='0'
@@ -537,6 +546,8 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
+                    min={27}
+                    max={220}
                     type='number'
                     label='Frecuencia cardíaca (lpm)'
                     placeholder='Ingresa la frecuencia cardíaca'
@@ -552,6 +563,8 @@ export const EncounterFormModal = () => {
                     }
                   />
                   <Input
+                    min={0}
+                    max={30}
                     type='number'
                     label='Frecuencia respiratoria (rpm)'
                     placeholder='Ingresa la frecuencia respiratoria'
@@ -824,7 +837,7 @@ export const EncounterFormModal = () => {
                       data={(
                         cieCodes as { code: string; description: string }[]
                       ).map((cie10) => ({
-                        value: cie10.code,
+                        value: cie10.code + "-" + cie10.description,
                         label: cie10.code + "-" + cie10.description,
                       }))}
                     />

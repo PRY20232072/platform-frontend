@@ -30,6 +30,7 @@ type Patient = {
 };
 
 export const PatientsSearch = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [patientsList, setPatientsList] = useState<Patient[]>([]);
   const { response: patientsResponse, fetchData: getPatients } = useApi();
   const { response: getConsentListResponse, fetchData: getConsentList } =
@@ -92,22 +93,23 @@ export const PatientsSearch = () => {
 
     return consent?.state || "NO";
   };
-
   const handleCreateConsent = async (patientId: string) => {
-    // Create consent
-    await createConsent(
-      consentService.createConsent({
-        patient_id: patientId,
-        practitioner_id: params.practitionerId as string,
-      })
-    );
+    setIsLoading(true);
+    try {
+      await createConsent(
+        consentService.createConsent({
+          patient_id: patientId,
+          practitioner_id: params.practitionerId as string,
+        })
+      );
 
-    // Fetch updated consent list
-    await getConsentList(
-      consentService.getByPractitionerId(params.practitionerId as string)
-    );
-
-    toast.success("Solicitud de acceso enviada correctamente.");
+      toast.success("Solicitud de acceso enviada correctamente.");
+      await getConsentList(
+        consentService.getByPractitionerId(params.practitionerId as string)
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderCell = useCallback((patient: Patient, columnKey: React.Key) => {
@@ -116,14 +118,14 @@ export const PatientsSearch = () => {
     switch (columnKey) {
       case "actions":
         return (
-          <div className="relative flex justify-start items-start gap-2">
+          <div className='relative flex justify-start items-start gap-2'>
             {patient.access === "ACTIVE" ? (
               <Button
-                className="font-medium "
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium '
+                color='primary'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => router.push(`patients/${patient.patient_id}`)}
               >
                 Ver más
@@ -131,22 +133,23 @@ export const PatientsSearch = () => {
             ) : patient.access === "PENDING" ? (
               <Button
                 isDisabled
-                className="font-medium "
-                color="secondary"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium '
+                color='secondary'
+                radius='sm'
+                size='sm'
+                variant='flat'
               >
                 Pendiente
               </Button>
             ) : (
               <Button
-                className="font-medium "
-                color="warning"
-                radius="sm"
-                size="sm"
-                variant="flat"
+                className='font-medium '
+                color='warning'
+                radius='sm'
+                size='sm'
+                variant='flat'
                 onClick={() => handleCreateConsent(patient.patient_id)}
+                isLoading={isLoading}
               >
                 Solicitar acceso
               </Button>
@@ -164,11 +167,11 @@ export const PatientsSearch = () => {
       fallback={<TableSkeleton />}
     >
       <Table
-        color="primary"
-        aria-label="Patient table"
-        selectionBehavior="toggle"
+        color='primary'
+        aria-label='Patient table'
+        selectionBehavior='toggle'
         isHeaderSticky
-        selectionMode="single"
+        selectionMode='single'
         onSelectionChange={setSelectedKeys}
         onSortChange={setSortDescriptor}
         sortDescriptor={sortDescriptor}
@@ -177,7 +180,7 @@ export const PatientsSearch = () => {
         <TableHeader columns={patientsTableColumns}>
           {(column) => (
             <TableColumn
-              className="text-bold"
+              className='text-bold'
               key={column.uid}
               align={column.uid === "actions" ? "center" : "start"}
               allowsSorting={column.sortable}

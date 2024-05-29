@@ -23,6 +23,7 @@ import {
 import consentService from "@/services/consentService";
 import { AxiosResponse } from "axios";
 import { useParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 type Practitioner = {
   id: string;
@@ -62,11 +63,12 @@ const ConfirmModal: React.FC<SelectedPractitionerProps> = ({
         patient_id: params.patientId as string,
         practitioner_id: practitioner.id,
       })
-    );
-
-    onClose();
-    searchModalClose();
-    location.reload();
+    ).then(() => {
+      location.reload();
+      onClose();
+      searchModalClose();
+      toast.success("Acceso otorgado con éxito");
+    });
   };
 
   return (
