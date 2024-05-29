@@ -65,19 +65,22 @@ export default function NavMenu({ userEmail }: NavMenuProps) {
         justify='end'
       >
         {userEmail ? (
-          <MainNavbar className='mx-2' userRole={urole} userId={id} />
+          <>
+            <MainNavbar className='mx-2' userRole={urole} userId={id} />
+            {urole === "patient" ? (
+              <Link href={`/patient/${id}/notifications`}>
+                <Bell color='#006FEE' />
+              </Link>
+            ) : (
+              <Link href={`/practitioner/${id}/notifications`}>
+                <Bell color='#006FEE' />
+              </Link>
+            )}
+          </>
         ) : (
           ""
         )}
-        {userEmail && urole === "patient" ? (
-          <Link href={`/patient/${id}/notifications`}>
-            <Bell color='#006FEE' />
-          </Link>
-        ) : (
-          <Link href={`/practitioner/${id}/notifications`}>
-            <Bell color='#006FEE' />
-          </Link>
-        )}
+
         <ThemeSwitch />
 
         {userEmail ? (

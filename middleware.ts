@@ -19,7 +19,8 @@ export default withAuth(function middleware(request: NextRequestWithAuth) {
   if (request.nextauth.token?.extension_UserRole !== "practitioner" && request.nextauth.token?.extension_UserRole !== "patient" && !request.nextUrl.pathname.startsWith("/auth/signout")) {
     return NextResponse.rewrite(new URL("/error", request.url));
   }
-});
+
+}, {pages: {signIn: '/auth/login'}});
 
 /* export { default } from 'next-auth/middleware';
 

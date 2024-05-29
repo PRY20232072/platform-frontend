@@ -62,8 +62,15 @@ const AutocompleteLg: React.FC<AutocompleteLgProps> = ({
       onChange("");
     }
   };
-  const renderRow = ({ index }: { index: number }) => (
+  const renderRow = ({
+    index,
+    style,
+  }: {
+    index: number;
+    style: React.CSSProperties;
+  }) => (
     <div
+      style={style}
       key={index}
       className='cursor-pointer p-2 hover:bg-gray-200'
       onClick={() => handleItemClick(filteredItems[index])}
@@ -75,8 +82,8 @@ const AutocompleteLg: React.FC<AutocompleteLgProps> = ({
   return (
     <div>
       <Input
-        label = {label}
-        labelPlacement = {labelPlacement}
+        label={label}
+        labelPlacement={labelPlacement}
         placeholder={placeholder || "Busca un diagnóstico..."}
         value={query}
         onChange={handleInputChange}
@@ -99,14 +106,11 @@ const AutocompleteLg: React.FC<AutocompleteLgProps> = ({
         }
       />
       {isListVisible && filteredItems.length > 0 && (
-        <div
-          className='border border-gray-300 rounded mt-1 mb-2 overflow-hidden'
-          style={{ maxHeight: "200px" }}
-        >
+        <div className='border border-gray-300 rounded mt-1 mb-2 overflow-hidden max-h-52'>
           <List
-            height={200}
+            height={350}
             itemCount={filteredItems.length}
-            itemSize={35}
+            itemSize={52}
             width='100%'
           >
             {renderRow}

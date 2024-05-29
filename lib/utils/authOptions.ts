@@ -2,6 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import AzureADB2CProvider from "next-auth/providers/azure-ad-b2c";
 import { AzureB2CProfile } from "next-auth/providers/azure-ad-b2c";
+import NextAuth from "next-auth";
 
 if (
   !process.env.AZURE_AD_B2C_TENANT_NAME ||
@@ -14,9 +15,7 @@ if (
 }
 async function refreshAccessToken(token: any) {
   try {
-    const url =
-      `https://${process.env.AZURE_AD_B2C_TENANT_NAME}.b2clogin.com/${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/${process.env.AZURE_AD_B2C_PRIMARY_USER_FLOW}/oauth2/v2.0/token`;
-      
+    const url = `https://${process.env.AZURE_AD_B2C_TENANT_NAME}.b2clogin.com/${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/${process.env.AZURE_AD_B2C_PRIMARY_USER_FLOW}/oauth2/v2.0/token`;
 
     const response = await fetch(url, {
       headers: {
@@ -28,8 +27,7 @@ async function refreshAccessToken(token: any) {
         scope: `https://${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/api-pry2372/tasks.read https://${process.env.AZURE_AD_B2C_TENANT_NAME}.onmicrosoft.com/api-pry2372/tasks.write offline_access openid`,
         refresh_token: token.refreshToken,
         grant_type: "refresh_token",
-        
-      })
+      }),
     });
 
     const refreshedTokens = await response.json();
@@ -69,7 +67,6 @@ export const authOptions: NextAuthOptions = {
       checks: ["pkce"],
 
       profile(profile: AzureB2CProfile) {
-       
         return {
           ...profile,
           id: profile.sub.toString(),
@@ -96,17 +93,20 @@ export const authOptions: NextAuthOptions = {
     },
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ account }) {
+      if (account?.provider !== "credentials") return true;
       return true;
     },
+
     async redirect({ url, baseUrl }) {
       if (url.startsWith("/")) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
+    
     async jwt({ token, user, account, profile }) {
       // IMPORTANT: Persist the access_token to the token right after sign in
-      
+
       if (account) {
         token.accessToken = account.access_token;
         token.idToken = profile?.sub;
@@ -116,8 +116,8 @@ export const authOptions: NextAuthOptions = {
         token.accessTokenExpires = account?.expires_at;
         token.refreshToken = account?.refresh_token;
       }
-     
-      if (Date.now() < (token.accessTokenExpires ?? 0)*1000) {
+
+      if (Date.now() < (token.accessTokenExpires ?? 0) * 1000) {
         return token;
       }
       return await refreshAccessToken(token);
@@ -138,5 +138,8 @@ export const authOptions: NextAuthOptions = {
   theme: {
     buttonText: "Iniciar sesión con Azure Active Directory B2C",
     logo: "https://vercel.pub/favicon.ico",
+  },
+  pages: {
+    signIn: "/auth/login",
   },
 };

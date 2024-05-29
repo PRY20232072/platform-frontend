@@ -18,8 +18,8 @@ const relationships = [
   { label: "MADRE", value: "MOTHER" },
   { label: "ABUELO", value: "GRANDFATHER" },
   { label: "ABUELA", value: "GRANDMOTHER" },
-  { label: "TIO", value: "UNCLE" },
-  { label: "TIA", value: "AUNT" },
+  { label: "HERMANO", value: "BROTHER" },
+  { label: "HERMANA", value: "SISTER" },
   { label: "OTRO", value: "OTHER" },
 ];
 
@@ -139,7 +139,7 @@ const accessTableColumns = [
 const familyRecordTableColumns = [
   { name: "NOMBRE FAMILIAR", uid: "name", sortable: true },
   { name: "RELACIÓN", uid: "relationship", sortable: true },
-  { name: "FECHA DE NACIMIENTO", uid: "relativeBirthdate", sortable: true },
+
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];
@@ -282,6 +282,7 @@ const emptyPractitioner = {
   name_id: "",
   last_name: "",
   cmpCode: "",
+  speciality: "",
   gender: "",
   birthDate: "",
   maritalStatus: "",
@@ -299,7 +300,7 @@ const emptyPractitioner = {
 const practitionerFamilyRecordsTableColumns = [
   { name: "NOMBRE FAMILIAR", uid: "name", sortable: true },
   { name: "RELACIÓN", uid: "relationship", sortable: true },
-  { name: "FECHA DE NACIMIENTO", uid: "relativeBirthdate", sortable: true },
+
   { name: "ESTADO", uid: "clinical_status", sortable: true },
   { name: "ACCIÓN", uid: "actions" },
 ];

@@ -47,10 +47,10 @@ export default async function RootLayout({
           )}
         >
           <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-            <LogoutModal isOpen={exp < now} />
+            <LogoutModal isOpen={exp < now && !!session} />
             <div className='relative flex flex-col h-screen'>
               <Navbar isLoggedIn={session} />
-              <main className='container mx-auto px-4 sm:px-6 md:px-8 lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl flex-grow'>
+              <main className='container mx-auto  px-4 py-24 sm:px-6 md:px-8 lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl flex-grow'>
                 {children}
               </main>
               <Footer isLoggedIn={session != null} />
