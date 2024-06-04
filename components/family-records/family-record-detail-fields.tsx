@@ -22,6 +22,15 @@ export default function FamilyRecordDetailFields({
   isEditing,
   handleInputChange,
 }: FamilyRecordDetailsProps) {
+
+  const getCieCodeValue = (code: string) => {
+    const cieCode = (cieCodes as { code: string; description: string }[]).find(
+      (c) => c.code === code
+    );
+
+    return cieCode ? cieCode.code + " - " + cieCode.description : '';
+  }
+
   return (
     <div className='gap-5 flex flex-col items-stretch'>
       <div className='flex flex-col items-stretch w-full'>
@@ -103,6 +112,7 @@ export default function FamilyRecordDetailFields({
                   label: cie10.code + "-" + cie10.description,
                 })
               )}
+              value={getCieCodeValue(diagnosis.code) || ""}
             />
 
             <CustomAutocomplete

@@ -10,6 +10,7 @@ interface AutocompleteLgProps {
   data: { value: string; label: string }[];
   isDisabled: boolean;
   onChange?: (value: any) => void;
+  value?: string;
 }
 
 const AutocompleteLg: React.FC<AutocompleteLgProps> = ({
@@ -19,8 +20,9 @@ const AutocompleteLg: React.FC<AutocompleteLgProps> = ({
   data,
   isDisabled,
   onChange,
+  value
 }) => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(value || "");
   const [filteredItems, setFilteredItems] = useState(data);
   const [selectedItem, setSelectedItem] = useState<{
     value: string;
