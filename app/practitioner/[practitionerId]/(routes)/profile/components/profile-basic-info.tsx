@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil, User2 } from "lucide-react";
+import { User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
@@ -28,14 +28,6 @@ export default function PractitionerProfileBasicInfo() {
               className="w-12 h-12 px-2.5 py-1 flex-col justify-start items-center gap-0.5 inline-flex"
               color="white"
             />
-          </div>
-          <div className="w-8 h-8 left-[84px] top-0 absolute">
-            <div className="w-8 h-8 left-0 top-0 absolute bg-blue-100 rounded-full">
-              <Pencil
-                className="w-4 h-4  top-1/4 left-1/4 absolute"
-                color="black"
-              />
-            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil, User2 } from "lucide-react";
+import { User2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import CustomSuspense from "@/components/custom-suspense";
 import Loading from "@/components/loading";
@@ -30,12 +30,6 @@ export default function PatientDemographicBasicInfo() {
             aria-label='BookUser'
           >
             <User2 className='w-12 h-12 text-white' color='white' />
-          </div>
-          <div
-            className='absolute top-0 right-0 w-8 h-8 bg-blue-100 rounded-full flex justify-center items-center'
-            aria-label='Edit profile'
-          >
-            <Pencil className='w-4 h-4' color='black' />
           </div>
         </div>
       </div>
