@@ -70,6 +70,64 @@ export default function AttentionDetailFields({
             labelPlacement='outside'
             value={attention.recorded_date}
           />
+          <CustomAutocomplete
+            isDisabled={!isEditing}
+            label='Servicio'
+            labelPlacement='outside'
+            data={typeOfService}
+            selectedKey={attention.typeOfService}
+            onSelectionChange={(value) =>
+              handleInputChange("typeOfService", value)
+            }
+          />
+          <CustomAutocomplete
+            isDisabled={!isEditing}
+            label='Establecimiento'
+            labelPlacement='outside'
+            data={typeOfFacility}
+            selectedKey={attention.typeOfFacility}
+            onSelectionChange={(value) =>
+              handleInputChange("typeOfFacility", value)
+            }
+          />
+        </div>
+        <div className='flex flex-col gap-5'>
+          <p className='w-full font-bold'>Anamnesis</p>
+          <div className='flex flex-col gap-5'>
+            <Input
+              isReadOnly={!isEditing}
+              type='text'
+              label='Tiempo de enfermedad'
+              labelPlacement='outside'
+              value={
+                attention.timeOfDisease.units > 1
+                  ? attention.timeOfDisease.units +
+                    " " +
+                    periodMap[attention.timeOfDisease.period]
+                  : attention.timeOfDisease.units +
+                    " " +
+                    periodUnitMap[attention.timeOfDisease.period]
+              }
+            />
+            <Textarea
+              isReadOnly={!isEditing}
+              label='Enfermedad actual y motivo de la consulta'
+              labelPlacement='outside'
+              value={attention.reasonForConsultation}
+              onChange={(e) =>
+                handleInputChange("reasonForConsultation", e.target.value)
+              }
+            />
+            <Textarea
+              isReadOnly={!isEditing}
+              label='Observaciones'
+              labelPlacement='outside'
+              value={attention.observations}
+              onChange={(e) =>
+                handleInputChange("observations", e.target.value)
+              }
+            />
+          </div>
         </div>
         <div className='flex flex-col gap-5'>
           <p className='w-full font-bold'>Signos vitales</p>
@@ -206,7 +264,7 @@ export default function AttentionDetailFields({
           <Textarea
             disableAutosize
             isReadOnly={!isEditing}
-            label='Geriátrico y urinario: '
+            label='Genitourinario: '
             labelPlacement='outside'
             value={attention.physicalExam.gereatricouniary}
           />
@@ -224,69 +282,6 @@ export default function AttentionDetailFields({
             labelPlacement='outside'
             value={attention.physicalExam.extremities}
           />
-        </div>
-        <div className='flex flex-col gap-5'>
-          <p className='w-full font-bold'>Tipo de paciente</p>
-          <div className='flex gap-5'>
-            <CustomAutocomplete
-              isDisabled={!isEditing}
-              label='Servicio'
-              labelPlacement='outside'
-              data={typeOfService}
-              selectedKey={attention.typeOfService}
-              onSelectionChange={(value) =>
-                handleInputChange("typeOfService", value)
-              }
-            />
-            <CustomAutocomplete
-              isDisabled={!isEditing}
-              label='Establecimiento'
-              labelPlacement='outside'
-              data={typeOfFacility}
-              selectedKey={attention.typeOfFacility}
-              onSelectionChange={(value) =>
-                handleInputChange("typeOfFacility", value)
-              }
-            />
-          </div>
-        </div>
-        <div className='flex flex-col gap-5'>
-          <p className='w-full font-bold'>Consulta</p>
-          <div className='flex flex-col gap-5'>
-            <Input
-              isReadOnly={!isEditing}
-              type='text'
-              label='Tiempo de enfermedad'
-              labelPlacement='outside'
-              value={
-                attention.timeOfDisease.units > 1
-                  ? attention.timeOfDisease.units +
-                    " " +
-                    periodMap[attention.timeOfDisease.period]
-                  : attention.timeOfDisease.units +
-                    " " +
-                    periodUnitMap[attention.timeOfDisease.period]
-              }
-            />
-            <Textarea
-              isReadOnly={!isEditing}
-              label='Enfermedad actual y motivo de la consulta'
-              labelPlacement='outside'
-              value={attention.reasonForConsultation}
-              onChange={(e) =>
-                handleInputChange("reasonForConsultation", e.target.value)
-              }
-            />
-            <Textarea
-              isReadOnly={!isEditing}
-              label='Observaciones'
-              labelPlacement='outside'
-              value={attention.observations}
-              onChange={(e) =>
-                handleInputChange("observations", e.target.value)
-              }
-            />
-          </div>
         </div>
         <div className='flex flex-col gap-5'>
           <p className='w-full font-bold'>Diagnóstico</p>
@@ -319,7 +314,6 @@ export default function AttentionDetailFields({
               ))}
           </div>
         </div>
-
         <div className='flex flex-col gap-5'>
           <p className='w-full font-bold'>Tratamiento</p>
           <div className='flex flex-col gap-5'>
@@ -336,7 +330,6 @@ export default function AttentionDetailFields({
               ))}
           </div>
         </div>
-
         <div className='flex flex-col gap-5'>
           <p className='w-full font-bold'>Examenes auxiliares</p>
           <div className='flex flex-col gap-5'>
