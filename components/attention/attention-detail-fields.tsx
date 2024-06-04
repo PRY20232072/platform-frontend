@@ -288,7 +288,8 @@ export default function AttentionDetailFields({
           <div className='flex flex-col gap-5'>
             {attention.diagnoses &&
               attention.diagnoses.map((diagnosis, index) => (
-                <div key={index} className='flex gap-5'>
+                <div key={index} className='flex flex-col gap-5'>
+                  <p>Diagnóstico {index + 1}</p>
                   <Input
                     isReadOnly={!isEditing}
                     type='text'
@@ -319,7 +320,8 @@ export default function AttentionDetailFields({
           <div className='flex flex-col gap-5'>
             {attention.treatments &&
               attention.treatments.map((treatment, index) => (
-                <div key={index} className='flex gap-5'>
+                <div key={index} className='flex flex-col gap-5'>
+                  <p>Tratamiento {index + 1}</p>
                   <Textarea
                     isReadOnly={!isEditing}
                     label='Descripción'
@@ -335,7 +337,8 @@ export default function AttentionDetailFields({
           <div className='flex flex-col gap-5'>
             {attention.auxiliaryExams &&
               attention.auxiliaryExams.map((exam, index) => (
-                <div key={index} className='flex gap-5'>
+                <div key={index} className='flex flex-col gap-5'>
+                  <p>Examen {index + 1}</p>
                   <Textarea
                     isReadOnly={!isEditing}
                     label='Descripción'
